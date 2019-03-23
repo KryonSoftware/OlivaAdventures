@@ -154,8 +154,17 @@ public class PanelLVL1 extends JPanel {
 	            k=listaPlataformas.get(x).getAlto();
 	
 	            if(350+15+s>=z&&350+s<=(z+g)) {
-	
-                    colision-=350-(z+g-s);
+	            	
+	            	if(s>0) {
+	            		
+	            		 colision-=370-(z-s);
+	            		
+	            	}
+	            	else {
+	            		
+	            		 colision-=350-(z+g-s);
+	            		
+	            	}
 		            
 	        	}
         		
@@ -186,8 +195,8 @@ public class PanelLVL1 extends JPanel {
         g.fillRect(0-x, 720, 10000, 50);
         addPlatformToList(0-x,720,10000,50,Tipo.GROUND);
         g.setColor(Color.green);
-        g.fillRect(10000-x,400,50,370);
-        addPlatformToList(10000-x,400,50,370,Tipo.BOTH);
+        g.fillRect(1000-x,400,50,370);
+        addPlatformToList(1000-x,400,50,370,Tipo.BOTH);
 
         //Plataformas para saltar
         g.setColor(Color.black);
