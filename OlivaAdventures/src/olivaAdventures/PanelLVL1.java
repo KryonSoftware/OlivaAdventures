@@ -15,17 +15,15 @@ public class PanelLVL1 extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 
-    private int x;
+    private int x,y;
 
-    private int y;
+    public void setEjeX(int x){this.x=x;}
 
-    public void setX(int x){this.x=x;}
+    public void setEjeY(int y){this.y=y;}
+    
+    public int getEjeX() {return this.x;}
 
-    public void setY(int y){this.y=y;}
-
-    private int getX(int x) {return x;}
-
-    private int getY(int y) {return y;}
+    public int getEjeY() {return this.y;}
 
     /**
      * Método para generar y añadir una nueva plataforma a la lista, que es borrada a cada repintado.
@@ -36,7 +34,7 @@ public class PanelLVL1 extends JPanel {
      */
     private void addPlatformToList(int ejeX,int ejeY,int ancho,int alto){
 
-        listaPlataformas.add(new Platform(ejeX,ejeY,ancho));
+        listaPlataformas.add(new Platform(ejeX,ejeY,ancho,alto));
 
     }
 
@@ -50,6 +48,7 @@ public class PanelLVL1 extends JPanel {
      */
     public boolean isGround(int ejeX,int ejeY,int prevY){
 
+    	boolean foundPlatform=false;
         int z;
         int y;
         int g;
@@ -57,21 +56,27 @@ public class PanelLVL1 extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
 
-            z=listaPlataformas.get(x).getEjeX();
-            y=listaPlataformas.get(x).getEjeY();
-            g=listaPlataformas.get(x).getAncho();
-
-            if(350>=z&&350<=(z+g)) {
-
-                if(700-ejeY+35>=y&&prevY<y){
-
-                    colision=true;
-
-                    this.y=y;
-
-                }
-
-            }
+        	if(!foundPlatform) {
+            
+        		z=listaPlataformas.get(x).getEjeX();
+	            y=listaPlataformas.get(x).getEjeY();
+	            g=listaPlataformas.get(x).getAncho();
+	
+	            if(350>=z&&350<=(z+g)) {
+	
+	                if(700-ejeY+35>=y&&prevY<y){
+	
+	                    colision=true;
+	                    
+	                    foundPlatform=true;
+	
+	                    this.y=y;
+	
+	                }
+	
+	            }
+	            
+        	}
 
         }
 
@@ -115,7 +120,7 @@ public class PanelLVL1 extends JPanel {
 
         //Nuestro keko
         g.setColor(Color.yellow);
-        g.fillRect(350,700-y,20,35);
+        g.fillRect(350,720-y-34,20,35);
 
     }
 }

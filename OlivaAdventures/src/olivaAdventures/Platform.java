@@ -7,7 +7,7 @@ public class Platform {
     private int ancho;
     private int alto;
 
-    public Platform(int ejeX,int ejeY,int ancho){this.ejeX=ejeX;this.ejeY=ejeY;this.ancho=ancho;}
+    public Platform(int ejeX,int ejeY,int ancho,int alto){this.ejeX=ejeX;this.ejeY=ejeY;this.ancho=ancho;this.alto=alto;}
 
     public int getEjeX() {
         return ejeX;

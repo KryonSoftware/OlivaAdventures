@@ -241,30 +241,53 @@ public class GameEngineLVL1 implements KeyListener {
             }
             else if(contadorSalto==15){
 
-                prevY=700-ejeY;
+                prevY=720-ejeY-35;
 
             }
-            //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
-            else if((contadorSalto>15&&contadorSalto<20)&& !panel.isGround(ejeX, ejeY, prevY)){
+            else if(!panel.isGround(ejeX, ejeY, prevY)) {
+            	
+            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
+                if(contadorSalto>15&&contadorSalto<20){
 
-                prevY=700-ejeY;
-                ejeY-=5;
+                    prevY=720-ejeY-35;
+                    ejeY-=5;
 
-            }
-            else if((contadorSalto>19&&contadorSalto<25)&& !panel.isGround(ejeX, ejeY, prevY)){
+                }
+                else if(contadorSalto>19&&contadorSalto<25){
 
-                prevY=700-ejeY;
-                ejeY-=10;
+                    prevY=720-ejeY-35;
+                    ejeY-=10;
 
-            }
-            else if(contadorSalto>24&& !panel.isGround(ejeX, ejeY, prevY)){
+                }
+                else if(contadorSalto>24&&contadorSalto<30){
 
-                prevY=700-ejeY;
-                ejeY-=20;
+                    prevY=720-ejeY-35;
+                    ejeY-=20;
 
+                }
+                else if(contadorSalto>29&&contadorSalto<36){
+
+                    prevY=720-ejeY-35;
+                    ejeY-=25;
+
+                }
+                else if(contadorSalto>35&&contadorSalto<42){
+
+                    prevY=720-ejeY-35;
+                    ejeY-=30;
+
+                }
+                else if(contadorSalto>41){
+
+                    prevY=720-ejeY-35;
+                    ejeY-=35;
+
+                }
+            	
             }
             else{
 
+            	ejeY=720-panel.getEjeY();
                 saltando=false;
 
             }
@@ -283,8 +306,8 @@ public class GameEngineLVL1 implements KeyListener {
   
     	ejecutarSalto();
         
-        panel.setX(ejeX);
-        panel.setY(ejeY);
+        panel.setEjeX(ejeX);
+        panel.setEjeY(ejeY);
         panel.repaint();
 
     }
