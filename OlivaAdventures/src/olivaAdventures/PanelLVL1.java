@@ -32,9 +32,9 @@ public class PanelLVL1 extends JPanel {
      * @param ancho
      * @param alto
      */
-    private void addPlatformToList(int ejeX,int ejeY,int ancho,int alto){
+    private void addPlatformToList(int ejeX,int ejeY,int ancho,int alto,Tipo tipo){
 
-        listaPlataformas.add(new Platform(ejeX,ejeY,ancho,alto));
+        listaPlataformas.add(new Platform(ejeX,ejeY,ancho,alto,tipo));
 
     }
 
@@ -46,36 +46,90 @@ public class PanelLVL1 extends JPanel {
      * @return false -> si sigue cayendo | true -> si se posado sobre una plataforma
      * @TODO Arreglar las colisiones, a veces se pinta en mitad de la plataforma.
      */
-    public boolean isGround(int ejeX,int ejeY,int prevY){
+    public boolean isGround(int ejeX,int ejeY,int prevY,int prevX){
 
     	boolean foundPlatform=false;
-        int z;
-        int y;
-        int g;
+        int y,z,g,k;
         boolean colision=false;
 
         for(int x=0;x<listaPlataformas.size();x++){
+        	
+        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM) {
 
-        	if(!foundPlatform) {
-            
-        		z=listaPlataformas.get(x).getEjeX();
-	            y=listaPlataformas.get(x).getEjeY();
-	            g=listaPlataformas.get(x).getAncho();
-	
-	            if(350>=z&&350<=(z+g)) {
-	
-	                if(700-ejeY+35>=y&&prevY<y){
-	
-	                    colision=true;
-	                    
-	                    foundPlatform=true;
-	
-	                    this.y=y;
-	
-	                }
-	
-	            }
+	        	if(!foundPlatform) {
 	            
+	        		z=listaPlataformas.get(x).getEjeX();
+		            y=listaPlataformas.get(x).getEjeY();
+		            g=listaPlataformas.get(x).getAncho();
+		
+		            if(350+5>=z&&350+11<=(z+g)) {
+		
+		                if(720-ejeY+35>=y&&prevY<y){
+		
+		                    colision=true;
+		                    
+		                    foundPlatform=true;
+		
+		                    this.y=y;
+		
+		                }
+		
+		            }
+		            
+	        	}
+	        	
+        	}
+        	else if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+        		
+        		if(!foundPlatform) {
+    	            
+	        		z=listaPlataformas.get(x).getEjeX();
+		            y=listaPlataformas.get(x).getEjeY();
+		            g=listaPlataformas.get(x).getAncho();
+		            k=listaPlataformas.get(x).getAlto();
+		
+		            if(350+5>=z&&350+11<=(z+g)) {
+		
+		                if(720-ejeY+35>=y&&prevY<y+k){
+		
+		                    colision=true;
+		                    
+		                    foundPlatform=true;
+		                    
+		                    this.y=y;
+		
+		                }
+		
+		            }
+		            
+	        	}
+        		
+        	}
+        	else if(listaPlataformas.get(x).getTipo()==Tipo.GROUND) {
+        		
+        		if(!foundPlatform) {
+    	            
+	        		z=listaPlataformas.get(x).getEjeX();
+		            y=listaPlataformas.get(x).getEjeY();
+		            g=listaPlataformas.get(x).getAncho();
+		            k=listaPlataformas.get(x).getAlto();
+		
+		            if(350+5>=z&&350+11<=(z+g)) {
+		
+		                if(720-ejeY+35>=y&&prevY<y+k){
+		
+		                    colision=true;
+		                    
+		                    foundPlatform=true;
+		                    
+		                    this.y=y;
+		
+		                }
+		
+		            }
+		            
+	        	}
+        		
         	}
 
         }
@@ -84,6 +138,34 @@ public class PanelLVL1 extends JPanel {
 
     }
 
+    public int isWall(int id) {
+    	
+    	boolean foundPlatform=false;
+        int y,z,g,k,s=id;
+        int colision=id;
+
+        for(int x=0;x<listaPlataformas.size();x++){
+        	
+        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+	            
+        		z=listaPlataformas.get(x).getEjeX();
+	            y=listaPlataformas.get(x).getEjeY();
+	            g=listaPlataformas.get(x).getAncho();
+	            k=listaPlataformas.get(x).getAlto();
+	
+	            if(350+15+s>=z&&350+s<=(z+g)) {
+	
+                    colision-=350-(z+g-s);
+		            
+	        	}
+        		
+        	}
+        	
+        }
+        
+        return colision;
+    	
+    }
     /**
      * Método para pintar nuestro panel
      */
@@ -98,25 +180,31 @@ public class PanelLVL1 extends JPanel {
 
         //Plataforma suelo
         g.setColor(Color.green);
-        g.fillRect(0-x, 720, 1500, 50);
-        addPlatformToList(0-x,720,1500,50);
+        g.fillRect(0-x,400,50,370);
+        addPlatformToList(0-x,400,50,370,Tipo.BOTH);
+        g.setColor(Color.green);
+        g.fillRect(0-x, 720, 10000, 50);
+        addPlatformToList(0-x,720,10000,50,Tipo.GROUND);
+        g.setColor(Color.green);
+        g.fillRect(10000-x,400,50,370);
+        addPlatformToList(10000-x,400,50,370,Tipo.BOTH);
 
         //Plataformas para saltar
         g.setColor(Color.black);
         g.fillRect(700-x,300,100,10);
-        addPlatformToList(700-x,300,100,10);
+        addPlatformToList(700-x,300,100,10,Tipo.PLATFORM);
 
         g.setColor(Color.black);
         g.fillRect(900-x,150,100,10);
-        addPlatformToList(900-x,150,100,10);
+        addPlatformToList(900-x,150,100,10,Tipo.PLATFORM);
 
         g.setColor(Color.black);
         g.fillRect(450-x,450,100,10);
-        addPlatformToList(450-x,450,100,10);
+        addPlatformToList(450-x,450,100,10,Tipo.PLATFORM);
 
         g.setColor(Color.black);
         g.fillRect(160-x,600,100,10);
-        addPlatformToList(160-x,600,100,10);
+        addPlatformToList(160-x,600,100,10,Tipo.PLATFORM);
 
         //Nuestro keko
         g.setColor(Color.yellow);

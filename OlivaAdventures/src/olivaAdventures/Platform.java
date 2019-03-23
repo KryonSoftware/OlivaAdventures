@@ -6,8 +6,9 @@ public class Platform {
     private int ejeY;
     private int ancho;
     private int alto;
+    private Tipo tipo;
 
-    public Platform(int ejeX,int ejeY,int ancho,int alto){this.ejeX=ejeX;this.ejeY=ejeY;this.ancho=ancho;this.alto=alto;}
+    public Platform(int ejeX,int ejeY,int ancho,int alto,Tipo tipo){this.ejeX=ejeX;this.ejeY=ejeY;this.ancho=ancho;this.alto=alto;this.setTipo(tipo);}
 
     public int getEjeX() {
         return ejeX;
@@ -40,4 +41,12 @@ public class Platform {
     public void setAlto(int alto) {
         this.alto = alto;
     }
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
 }

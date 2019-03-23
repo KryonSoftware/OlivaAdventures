@@ -14,7 +14,7 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0;
+    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0,prevX=0;
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
@@ -124,6 +124,9 @@ public class GameEngineLVL1 implements KeyListener {
      */
     private void PJMove() {
     	
+    	//Guardamos su posición lateral antes de volver a moverse
+    	prevX=ejeX;
+    	
     	//Cuando la tecla arriba esté presionada:
     	if(arriba) {
     		
@@ -140,9 +143,9 @@ public class GameEngineLVL1 implements KeyListener {
     	if(izquierda) {
     		
     		if(!saltando) {
-
+    			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX-=10;
+            	ejeX-=-panel.isWall(-10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
@@ -153,50 +156,50 @@ public class GameEngineLVL1 implements KeyListener {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
             		
-            		ejeX-=26-contadorSalto;
+            		ejeX-=(-panel.isWall(-26))-contadorSalto;
             		
             	}
             	else if(contadorSalto>19) {
             	
-            		ejeX-=6;
+            		ejeX-=(-panel.isWall(-6));
             	
             	}
             	else {
             		
-            		ejeX-=10;
+            		ejeX-=(-panel.isWall(-10));
             		
             	}
             	
             }
     		
     	}
-    	if(derecha) {
-    			
+	    if(derecha) {
+	    	
     		if(!saltando) {
 
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX+=10;
+            	ejeX+=panel.isWall(10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
-                
+    			
             }
     		else {
             	
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
             		
-            		ejeX+=26-contadorSalto;
+            		ejeX+=panel.isWall(26)-contadorSalto;
             		
             	}
             	else if(contadorSalto>19) {
             	
-            		ejeX+=6;
+            		ejeX+=panel.isWall(6);
             	
             	}
             	else {
             		
-            		ejeX+=10;
+            		ejeX+=panel.isWall(10);
             		
             	}
             	
@@ -244,55 +247,60 @@ public class GameEngineLVL1 implements KeyListener {
                 prevY=720-ejeY-35;
 
             }
-            else if(!panel.isGround(ejeX, ejeY, prevY)) {
-            	
-            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
-                if(contadorSalto>15&&contadorSalto<20){
-
-                    prevY=720-ejeY-35;
-                    ejeY-=5;
-
-                }
-                else if(contadorSalto>19&&contadorSalto<25){
-
-                    prevY=720-ejeY-35;
-                    ejeY-=10;
-
-                }
-                else if(contadorSalto>24&&contadorSalto<30){
-
-                    prevY=720-ejeY-35;
-                    ejeY-=20;
-
-                }
-                else if(contadorSalto>29&&contadorSalto<36){
-
-                    prevY=720-ejeY-35;
-                    ejeY-=25;
-
-                }
-                else if(contadorSalto>35&&contadorSalto<42){
-
-                    prevY=720-ejeY-35;
-                    ejeY-=30;
-
-                }
-                else if(contadorSalto>41){
-
-                    prevY=720-ejeY-35;
-                    ejeY-=35;
-
-                }
-            	
+            else if(contadorSalto>15) {
+            
+	            if(!panel.isGround(ejeX, ejeY, prevY,prevX)) {
+	            	
+	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
+	                if(contadorSalto>15&&contadorSalto<20){
+	
+	                    prevY=720-ejeY-35;
+	                    ejeY-=5;
+	
+	                }
+	                else if(contadorSalto>19&&contadorSalto<25){
+	
+	                    prevY=720-ejeY-35;
+	                    ejeY-=10;
+	
+	                }
+	                else if(contadorSalto>24&&contadorSalto<30){
+	
+	                    prevY=720-ejeY-35;
+	                    ejeY-=20;
+	
+	                }
+	                else if(contadorSalto>29&&contadorSalto<36){
+	
+	                    prevY=720-ejeY-35;
+	                    ejeY-=25;
+	
+	                }
+	                else if(contadorSalto>35&&contadorSalto<42){
+	
+	                    prevY=720-ejeY-35;
+	                    ejeY-=30;
+	
+	                }
+	                else if(contadorSalto>41){
+	
+	                    prevY=720-ejeY-35;
+	                    ejeY-=35;
+	
+	                }
+	            	
+	            }
+	            else{
+	
+	            	ejeY=720-panel.getEjeY();
+	                saltando=false;
+	
+	            }
+	            
             }
-            else{
-
-            	ejeY=720-panel.getEjeY();
-                saltando=false;
-
-            }
-
-            contadorSalto++;
+	
+	            contadorSalto++;
+            
         }
     	
     }
