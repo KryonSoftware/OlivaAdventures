@@ -288,7 +288,7 @@ public class GameEngineLVL1 implements KeyListener {
     
     /**
      * Método de inicialización del nuevo nivel. Contiene un bucle (infinito por ahora) que se encarga de ordenar el repintado mediante el llamado
-     *  al método fps() cada X milisegundos.
+     *  al método fps() cada 11 milisegundos.
      */
     public void arrancar(){
 
