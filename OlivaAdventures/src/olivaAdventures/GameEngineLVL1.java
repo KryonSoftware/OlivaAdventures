@@ -125,24 +125,24 @@ public class GameEngineLVL1 implements KeyListener {
     private void PJMove() {
     	
     	//Cuando la tecla arriba esté presionada:
-    	if(arriba==true) {
+    	if(arriba) {
     		
     		//Si no está saltando ya:
     		 if(!saltando) {
 
-                 ejeY+=60;
+                 ejeY+=40;
                  saltar();
 
              }
     		
     	}
     	//Si la tecla izquierda está presionada:
-    	if(izquierda==true) {
+    	if(izquierda) {
     		
     		if(!saltando) {
 
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX-=20;
+            	ejeX-=10;
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
@@ -151,49 +151,52 @@ public class GameEngineLVL1 implements KeyListener {
     		else {
             	
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
-            	if(contadorSalto>15 && contadorSalto<20) {
+            	if(contadorSalto>17 && contadorSalto<20) {
             		
-            		ejeX-=34-contadorSalto;
+            		ejeX-=26-contadorSalto;
             		
             	}
             	else if(contadorSalto>19) {
             	
-            		ejeX-=14;
+            		ejeX-=6;
             	
             	}
             	else {
             		
-            		ejeX-=20;
+            		ejeX-=10;
             		
             	}
             	
             }
     		
     	}
-    	if(derecha==true) {
+    	if(derecha) {
     			
-            if(!saltando) {
+    		if(!saltando) {
 
-            	ejeX+=20;
+    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
+            	ejeX+=10;
+            	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
                 
             }
-            else {
+    		else {
             	
-            	if(contadorSalto>15 && contadorSalto<20) {
+            	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
+            	if(contadorSalto>17 && contadorSalto<20) {
             		
-            		ejeX+=34-contadorSalto;
+            		ejeX+=26-contadorSalto;
             		
             	}
             	else if(contadorSalto>19) {
             	
-            		ejeX+=14;
+            		ejeX+=6;
             	
             	}
             	else {
             		
-            		ejeX+=20;
+            		ejeX+=10;
             		
             	}
             	
@@ -223,17 +226,17 @@ public class GameEngineLVL1 implements KeyListener {
         if(saltando){
 
             if(contadorSalto>=0&&contadorSalto<5) {
-                ejeY += 35;
+                ejeY += 20;
             }
             else if(contadorSalto>4&&contadorSalto<8){
-                ejeY+=20;
+                ejeY+=10;
             }
             else if(contadorSalto>7&&contadorSalto<12){
-                ejeY+=10;
+                ejeY+=5;
             }
             else if(contadorSalto>11&&contadorSalto<15){
 
-                ejeY+=5;
+                ejeY+=1;
 
             }
             else if(contadorSalto==15){

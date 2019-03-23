@@ -102,8 +102,8 @@ public class PanelLVL1 extends JPanel {
         addPlatformToList(700-x,300,100,10);
 
         g.setColor(Color.black);
-        g.fillRect(900-x,100,100,10);
-        addPlatformToList(900-x,100,100,10);
+        g.fillRect(900-x,150,100,10);
+        addPlatformToList(900-x,150,100,10);
 
         g.setColor(Color.black);
         g.fillRect(450-x,450,100,10);
