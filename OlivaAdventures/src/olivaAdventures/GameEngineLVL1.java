@@ -2,41 +2,59 @@ package olivaAdventures;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 /**
+ * Clase de motor del juego. Físicas. Lvl 1.
+ * 
  * @author kryon
  */
 public class GameEngineLVL1 implements KeyListener {
 
-    private boolean gameOver=false,par=false,saltando=false;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
     private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0;
-    PanelLVL1 panel = new PanelLVL1();
-    JFrame frame = new JFrame("Oliva Adventures");
+    //Inicializamos el panel que va dentro del Frame:
+    private PanelLVL1 panel = new PanelLVL1();
+    //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
+    private Player player = new Player();
 
+    /**
+     * Constructor de nuestro nivel 1. Establece automáticamente el Frame. CAMBIAR PARA LE FUTURO: TODO FRAME EN CLASE APARTE.
+     */
     public GameEngineLVL1(){
 
+    	//Creamos e instanciamos el Frame:
+        JFrame frame = new JFrame("Oliva Adventures");
+        //Valores del frame:
         frame.setSize(1000,1000);
         frame.setResizable(false);
         frame.addKeyListener(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
+        //Añadimos el panel que instanciamos antes:
         frame.add(panel);
 
+        //Dejamos el frame visible al final para evitar problemas:
         frame.setVisible(true);
-
-        arrancar();
-
 
     }
 
+    /**
+     * Sin usar.
+     */
     @Override
     public void keyTyped(KeyEvent keyEvent) {
 
+    	//HOLA ME LLAMO MÉTODO TYPED Y SOY UN VAGO
+    	
     }
 
+    /**
+     * Estos eventos los usamos para activar las booleanas de presión de tecla. Gracias a esto podemos tener varias teclas pulsadas a la vez.
+     */
     @Override
     public void keyPressed(KeyEvent keyEvent) {
 
@@ -44,75 +62,174 @@ public class GameEngineLVL1 implements KeyListener {
 
             case KeyEvent.VK_D:
 
-                ejeX+=20;
-
-                if(!saltando) {
-
-                    contadorSalto = 16;
-                    saltando = true;
-                }
+                derecha=true;
 
                 break;
             case KeyEvent.VK_A:
 
-                ejeX-=20;
-
-                if(!saltando) {
-
-                    contadorSalto = 16;
-                    saltando = true;
-                }
+                izquierda=true;
 
                 break;
 
             case KeyEvent.VK_W:
 
-                if(saltando==false) {
-
-                    ejeY+=60;
-                    saltar();
-
-                }
-
-
+                arriba=true;
+                
                 break;
+                
+                //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
+
             default:;
         }
 
     }
 
+    /**
+     * Usamos estos eventos para desactivar las booleanas de presión de teclas.
+     */
     @Override
     public void keyReleased(KeyEvent keyEvent) {
 
+    	switch(keyEvent.getKeyCode()){
+
+        case KeyEvent.VK_D:
+
+            derecha=false;
+
+            break;
+        case KeyEvent.VK_A:
+
+            izquierda=false;
+
+            break;
+
+        case KeyEvent.VK_W:
+
+            arriba=false;
+            
+            break;
+            
+            //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
+
+
+        default:;
     }
 
+    	
+    }
+    
+    /**
+     * Método para leer las booleanas y en función de su estado, alterar los movimientos de nuestro personaje 
+     * (sus coordenadas de colocación) ANTES de repintarlo en la pantalla.
+     */
+    private void PJMove() {
+    	
+    	//Cuando la tecla arriba esté presionada:
+    	if(arriba==true) {
+    		
+    		//Si no está saltando ya:
+    		 if(!saltando) {
 
-    public void saltar(){
+                 ejeY+=60;
+                 saltar();
 
+             }
+    		
+    	}
+    	//Si la tecla izquierda está presionada:
+    	if(izquierda==true) {
+    		
+    		if(!saltando) {
+
+    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
+            	ejeX-=20;
+            	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
+                contadorSalto = 16;
+                saltando = true;
+                
+            }
+    		else {
+            	
+            	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
+            	if(contadorSalto>15 && contadorSalto<20) {
+            		
+            		ejeX-=34-contadorSalto;
+            		
+            	}
+            	else if(contadorSalto>19) {
+            	
+            		ejeX-=14;
+            	
+            	}
+            	else {
+            		
+            		ejeX-=20;
+            		
+            	}
+            	
+            }
+    		
+    	}
+    	if(derecha==true) {
+    			
+            if(!saltando) {
+
+            	ejeX+=20;
+                contadorSalto = 16;
+                saltando = true;
+                
+            }
+            else {
+            	
+            	if(contadorSalto>15 && contadorSalto<20) {
+            		
+            		ejeX+=34-contadorSalto;
+            		
+            	}
+            	else if(contadorSalto>19) {
+            	
+            		ejeX+=14;
+            	
+            	}
+            	else {
+            		
+            		ejeX+=20;
+            		
+            	}
+            	
+            }
+    		
+    	}
+    	
+    }
+
+    /**
+     * Método simple que nos reinicializa a cero el contador de Salto y activa el saltando. 
+     * @TODO Habrá que modificarlo y pasarle un parámetro para reutilizarlo
+     * en los suelos que desaparecen o como método también para comporbar si debería caerse. Posible cambio de nombre a gravedad.
+     */
+    private void saltar(){
+    	
         contadorSalto=0;
-
         saltando=true;
-
+        
     }
-
-    public void fps(){
-
-        if(saltando&&contador%2==0){
+    
+    /**
+     * Método que gestiona la secuenciación del salto. El impulso a cada momento.
+     */
+    private void ejecutarSalto() {
+    	
+        if(saltando){
 
             if(contadorSalto>=0&&contadorSalto<5) {
-
                 ejeY += 35;
-
             }
             else if(contadorSalto>4&&contadorSalto<8){
-
                 ejeY+=20;
-
             }
             else if(contadorSalto>7&&contadorSalto<12){
-
                 ejeY+=10;
-
             }
             else if(contadorSalto>11&&contadorSalto<15){
 
@@ -124,19 +241,20 @@ public class GameEngineLVL1 implements KeyListener {
                 prevY=700-ejeY;
 
             }
-            else if((contadorSalto>15&&contadorSalto<20)&&panel.isGround(ejeX,ejeY,prevY)==false){
+            //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
+            else if((contadorSalto>15&&contadorSalto<20)&& !panel.isGround(ejeX, ejeY, prevY)){
 
                 prevY=700-ejeY;
                 ejeY-=5;
 
             }
-            else if((contadorSalto>19&&contadorSalto<25)&&panel.isGround(ejeX,ejeY,prevY)==false){
+            else if((contadorSalto>19&&contadorSalto<25)&& !panel.isGround(ejeX, ejeY, prevY)){
 
                 prevY=700-ejeY;
                 ejeY-=10;
 
             }
-            else if(contadorSalto>24&&panel.isGround(ejeX,ejeY,prevY)==false){
+            else if(contadorSalto>24&& !panel.isGround(ejeX, ejeY, prevY)){
 
                 prevY=700-ejeY;
                 ejeY-=20;
@@ -148,61 +266,55 @@ public class GameEngineLVL1 implements KeyListener {
 
             }
 
-            if(/*panel.isGround(ejeX,ejeY,prevY)==true || */700+ejeY<=700){
-
-                saltando=false;
-                ejeY=0;
-
-            }
-
             contadorSalto++;
         }
+    	
+    }
 
+    /**
+     * Método que ejecuta los demás métodos importantes y se encarga de decirle al panel las posiciones X e Y y ordenarle el repintado.
+     */
+    private void fps(){
+        
+    	PJMove();
+  
+    	ejecutarSalto();
+        
         panel.setX(ejeX);
         panel.setY(ejeY);
         panel.repaint();
 
     }
-
-    public void gravedad(){
-
-        if(!saltando){
-
-
-            if(panel.isGround(0,700-panel.getY()+35,700-panel.getY()-35)){
-
-                contadorSalto=16;
-                saltando=true;
-
-            }
-
-        }
-
-    }
-
-
+    
+    /**
+     * Método de inicialización del nuevo nivel. Contiene un bucle (infinito por ahora) que se encarga de ordenar el repintado mediante el llamado
+     *  al método fps() cada X milisegundos.
+     */
     public void arrancar(){
 
+        boolean gameOver = false;
+        int puntuacion = 100;
+        
         while(!gameOver){
-
-//            gravedad();
-            fps();
+        	
+        	if(contador%3==0) {
+        		
+        		fps();
+        		
+        	}
 
             try {
-                Thread.sleep(16);
+                Thread.sleep(11);
             } catch (InterruptedException e) {
-                //HA PETAO
+                System.out.println("Error de interrupción del Thread.sleep en contador="+contador+". Error log: "+e);
             }
-
-            if(contador%2==0){
-                par=true;
-            }
-            else{
-                par=false;
+            //Test por consola reducción de puntuación basada en el tiempo transcurrido:
+            if(contador%90==0){
+                puntuacion--;
+                System.out.println(puntuacion);
             }
 
             contador++;
-
         }
 
     }
