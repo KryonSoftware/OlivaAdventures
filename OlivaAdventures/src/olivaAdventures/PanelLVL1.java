@@ -107,11 +107,9 @@ public class PanelLVL1 extends JPanel {
      */
     public boolean isGround(int ejeX,int ejeY,int prevY,int prevX){
 
-    	
     	/*
     	 * QUEDAN CAMBIOS POR HACER Y AJUSTAR. LUEGO HAY QUE COMENTARLO
     	 */
-    	
     	
     	boolean foundPlatform=false;
         int y,z,g,k;
