@@ -19,11 +19,17 @@ public class PanelLVL1 extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 
-	private BufferedImage fondo,keko_stand,hud,barraVidaCompleta;
+	private BufferedImage fondo,keko_right,keko_right2,keko_stand_right,keko_left,keko_left2,keko_stand_left,hud,barraVidaCompleta;
 	
-    private int x,y;
+	private BufferedImage[] animKeko = new BufferedImage[6];
+	
+    private int x,y,arrPosKeko;
 
-    public void setEjeX(int x){this.x=x;}
+    public int getArrPosKeko() {return arrPosKeko;}
+
+	public void setArrPosKeko(int arrPosKeko) {this.arrPosKeko = arrPosKeko;}
+
+	public void setEjeX(int x){this.x=x;}
 
     public void setEjeY(int y){this.y=y;}
     
@@ -38,6 +44,7 @@ public class PanelLVL1 extends JPanel {
 	public PanelLVL1() {
 			
 		cargarImagenes();
+		cargarRaizImagenesKeko();
 	    	
 	}
 	
@@ -51,7 +58,12 @@ public class PanelLVL1 extends JPanel {
 			//Sacamos las imágenes desde nuestra carpeta de recursos
 			fondo = ImageIO.read(new File("resources/Mapa/Mapa_reajustado.png"));
 			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
-			keko_stand = ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer2.png"));
+			keko_right = ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer2.png"));
+			keko_right2 = ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer4.png"));
+			keko_stand_right= ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer3.png"));
+			keko_left= ImageIO.read(new File("resources/Personaje/pjIzquierda/pjIzq2.png"));
+			keko_left2= ImageIO.read(new File("resources/Personaje/pjIzquierda/pjIzq4.png"));
+			keko_stand_left= ImageIO.read(new File("resources/Personaje/pjIzquierda/pjIzq3.png"));
 			barraVidaCompleta = ImageIO.read(new File("resources/Hud/BarraExp/BarraExpTerminada/barraExpFull.png"));
           
        } catch (IOException e) {
@@ -63,6 +75,16 @@ public class PanelLVL1 extends JPanel {
 	
 	}
 
+	private void cargarRaizImagenesKeko() {
+		
+		animKeko[0]=keko_right;
+		animKeko[1]=keko_right2;
+		animKeko[2]=keko_stand_right;
+		animKeko[3]=keko_left;
+		animKeko[4]=keko_left2;
+		animKeko[5]=keko_stand_left;
+		
+	}
 	/**
      * Método para generar y añadir una nueva plataforma a la lista, que es borrada a cada repintado.
      * @param ejeX
@@ -97,15 +119,20 @@ public class PanelLVL1 extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM) {
+        	if(listaPlataformas.get(x).getTipo()==Tipo.TUBE) {
 
-	        	if(!foundPlatform) {
-	            
+	        	
+	        	
+        	}
+        	else {
+        		
+        		if(!foundPlatform) {
+    	            
 	        		z=listaPlataformas.get(x).getEjeX();
 		            y=listaPlataformas.get(x).getEjeY();
 		            g=listaPlataformas.get(x).getAncho();
 		
-		            if(350+5>=z&&350+11<=(z+g)) {
+		            if(350+15>=z&&350+22<=(z+g)) {
 		
 		                if(720-ejeY+35>=y&&prevY<y){
 		
@@ -113,58 +140,6 @@ public class PanelLVL1 extends JPanel {
 		                    
 		                    foundPlatform=true;
 		
-		                    this.y=y;
-		
-		                }
-		
-		            }
-		            
-	        	}
-	        	
-        	}
-        	else if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
-        		
-        		if(!foundPlatform) {
-    	            
-	        		z=listaPlataformas.get(x).getEjeX();
-		            y=listaPlataformas.get(x).getEjeY();
-		            g=listaPlataformas.get(x).getAncho();
-		            k=listaPlataformas.get(x).getAlto();
-		
-		            if(350+5>=z&&350+11<=(z+g)) {
-		
-		                if(720-ejeY+35>=y&&prevY<y+k){
-		
-		                    colision=true;
-		                    
-		                    foundPlatform=true;
-		                    
-		                    this.y=y;
-		
-		                }
-		
-		            }
-		            
-	        	}
-        		
-        	}
-        	else if(listaPlataformas.get(x).getTipo()==Tipo.GROUND) {
-        		
-        		if(!foundPlatform) {
-    	            
-	        		z=listaPlataformas.get(x).getEjeX();
-		            y=listaPlataformas.get(x).getEjeY();
-		            g=listaPlataformas.get(x).getAncho();
-		            k=listaPlataformas.get(x).getAlto();
-		
-		            if(350+5>=z&&350+11<=(z+g)) {
-		
-		                if(720-ejeY+35>=y&&prevY<y+k){
-		
-		                    colision=true;
-		                    
-		                    foundPlatform=true;
-		                    
 		                    this.y=y;
 		
 		                }
@@ -194,23 +169,23 @@ public class PanelLVL1 extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
 	            
         		z=listaPlataformas.get(x).getEjeX();
 	            y=listaPlataformas.get(x).getEjeY();
 	            g=listaPlataformas.get(x).getAncho();
 	            k=listaPlataformas.get(x).getAlto();
 	
-	            if((350+15+s>=z&&350+s<=(z+g)) && (720-this.y>y&&720-this.y+34<(y+k))) {
+	            if((350+15+s>=z-5&&350+s<=(z+g-15)) && (720-this.y>y&&720-this.y+34<(y+k))) {
 	            	
 	            	if(s>0) {
 	            		
-	            		 colision-=370-(z-s);
+	            		 colision-=370-(z-s-5);
 	            		
 	            	}
 	            	else {
 	            		
-	            		 colision-=350-(z+g-s);
+	            		 colision-=350-(z+g-s-15);
 	            		
 	            	}
 		            
@@ -272,7 +247,7 @@ public class PanelLVL1 extends JPanel {
         addPlatformToList(160-x,600,100,10,Tipo.PLATFORM);
 
         //Nuestro keko
-        g.drawImage(keko_stand,350,720-y-34,20,35,this);
+        g.drawImage(animKeko[arrPosKeko],350,720-y-69,40,70,this);
 
     }
 }

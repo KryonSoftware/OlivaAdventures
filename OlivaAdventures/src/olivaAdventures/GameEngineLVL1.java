@@ -14,7 +14,8 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0,prevX=0;
+    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0,prevX=0,cambio=0;
+    private char lastSide='D';
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
@@ -94,6 +95,7 @@ public class GameEngineLVL1 implements KeyListener {
             //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
         default:;
         }
+    	cambio=0;
     }
     
     /**
@@ -101,6 +103,19 @@ public class GameEngineLVL1 implements KeyListener {
      * (sus coordenadas de colocación) ANTES de repintarlo en la pantalla.
      */
     private void PJMove() {
+    	
+    	if(!derecha && !izquierda) {
+	    	switch(lastSide) {
+	    	
+	    	case 'D':
+	    		panel.setArrPosKeko(2);
+	    		break;
+	    	case 'I':
+	    		panel.setArrPosKeko(5);
+	    		break;
+			default:;
+	    	}
+    	}
     	
     	//Guardamos su posición lateral antes de volver a moverse
     	prevX=ejeX;
@@ -114,8 +129,26 @@ public class GameEngineLVL1 implements KeyListener {
              }
     	}
     	//Si la tecla izquierda está presionada:
-    	if(izquierda) {
+    	if(izquierda && !derecha) {
+    		
     		if(!saltando) {
+    			
+    			if(cambio==0) {
+	    			if(panel.getArrPosKeko()==3) {
+	                	panel.setArrPosKeko(5);
+	                }
+	    			else if(panel.getArrPosKeko()==5) {
+	    				panel.setArrPosKeko(4);
+	    			}
+	                else {
+	                	panel.setArrPosKeko(3);
+	                }
+	    			cambio=1;
+	    			lastSide='I';
+    			}
+    			else if(cambio==1){cambio=2;}
+    			else {cambio=0;}
+    			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX-=-panel.isWall(-10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
@@ -135,9 +168,26 @@ public class GameEngineLVL1 implements KeyListener {
             	}
             }
     	}
-	    if(derecha) {
+	    if(derecha && !izquierda) {
 	    	
     		if(!saltando) {
+    			
+    			if(cambio==0) {
+	    			if(panel.getArrPosKeko()==0) {
+	                	panel.setArrPosKeko(2);
+	                }
+	    			else if(panel.getArrPosKeko()==2) {
+	    				panel.setArrPosKeko(1);
+	    			}
+	                else {
+	                	panel.setArrPosKeko(0);
+	                }
+	    			cambio=1;
+	    			lastSide='D';
+    			}
+    			else if(cambio==1){cambio=2;}
+    			else {cambio=0;}
+    			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX+=panel.isWall(10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
@@ -174,7 +224,7 @@ public class GameEngineLVL1 implements KeyListener {
      */
     private void ejecutarSalto() {
     	
-        if(saltando){
+         if(saltando){
             if(contadorSalto>=0&&contadorSalto<5) {
                 ejeY += 20;
             }
@@ -188,33 +238,33 @@ public class GameEngineLVL1 implements KeyListener {
                 ejeY+=1;
             }
             else if(contadorSalto==15){
-                prevY=720-ejeY-35;
+                prevY=720-ejeY-70;
             }
             else if(contadorSalto>15) {
 	            if(!panel.isGround(ejeX, ejeY, prevY,prevX)) {
 	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
 	                if(contadorSalto>15&&contadorSalto<20){
-	                    prevY=720-ejeY-35;
+	                    prevY=720-ejeY-70;
 	                    ejeY-=5;
 	                }
 	                else if(contadorSalto>19&&contadorSalto<25){
-	                    prevY=720-ejeY-35;
+	                    prevY=720-ejeY-70;
 	                    ejeY-=10;
 	                }
 	                else if(contadorSalto>24&&contadorSalto<30){
-	                    prevY=720-ejeY-35;
+	                    prevY=720-ejeY-70;
 	                    ejeY-=20;
 	                }
 	                else if(contadorSalto>29&&contadorSalto<36){
-	                    prevY=720-ejeY-35;
+	                    prevY=720-ejeY-70;
 	                    ejeY-=25;
 	                }
 	                else if(contadorSalto>35&&contadorSalto<42){
-	                    prevY=720-ejeY-35;
+	                    prevY=720-ejeY-70;
 	                    ejeY-=30;
 	                }
 	                else if(contadorSalto>41){
-	                    prevY=720-ejeY-35;
+	                    prevY=720-ejeY-70;
 	                    ejeY-=35;
 	                }
 	            }
