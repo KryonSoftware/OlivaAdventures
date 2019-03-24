@@ -1,7 +1,8 @@
 package olivaAdventures;
 
 public enum Tipo{
-	
-	PLATFORM,TUBE,BOTH,GROUND;
-	
+	PLATFORM,
+	TUBE,
+	BOTH,
+	GROUND
 }

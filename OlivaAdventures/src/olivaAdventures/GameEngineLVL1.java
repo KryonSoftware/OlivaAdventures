@@ -61,24 +61,15 @@ public class GameEngineLVL1 implements KeyListener {
         switch(keyEvent.getKeyCode()){
 
             case KeyEvent.VK_D:
-
                 derecha=true;
-
                 break;
             case KeyEvent.VK_A:
-
                 izquierda=true;
-
                 break;
-
             case KeyEvent.VK_W:
-
                 arriba=true;
-                
                 break;
-                
                 //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
-
             default:;
         }
 
@@ -91,31 +82,18 @@ public class GameEngineLVL1 implements KeyListener {
     public void keyReleased(KeyEvent keyEvent) {
 
     	switch(keyEvent.getKeyCode()){
-
         case KeyEvent.VK_D:
-
             derecha=false;
-
             break;
         case KeyEvent.VK_A:
-
             izquierda=false;
-
             break;
-
         case KeyEvent.VK_W:
-
             arriba=false;
-            
             break;
-            
             //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
-
-
         default:;
-    }
-
-    	
+        }
     }
     
     /**
@@ -129,84 +107,56 @@ public class GameEngineLVL1 implements KeyListener {
     	
     	//Cuando la tecla arriba esté presionada:
     	if(arriba) {
-    		
     		//Si no está saltando ya:
     		 if(!saltando) {
-
                  ejeY+=40;
                  saltar();
-
              }
-    		
     	}
     	//Si la tecla izquierda está presionada:
     	if(izquierda) {
-    		
     		if(!saltando) {
-    			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX-=-panel.isWall(-10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
-                
             }
     		else {
-            	
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
-            		
             		ejeX-=(-panel.isWall(-26))-contadorSalto;
-            		
             	}
             	else if(contadorSalto>19) {
-            	
             		ejeX-=(-panel.isWall(-6));
-            	
             	}
             	else {
-            		
             		ejeX-=(-panel.isWall(-10));
-            		
             	}
-            	
             }
-    		
     	}
 	    if(derecha) {
 	    	
     		if(!saltando) {
-
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX+=panel.isWall(10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
-    			
             }
     		else {
-            	
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
-            		
             		ejeX+=panel.isWall(26)-contadorSalto;
-            		
             	}
             	else if(contadorSalto>19) {
-            	
             		ejeX+=panel.isWall(6);
-            	
             	}
             	else {
-            		
             		ejeX+=panel.isWall(10);
-            		
             	}
-            	
             }
-    		
     	}
-    	
     }
 
     /**
@@ -215,10 +165,8 @@ public class GameEngineLVL1 implements KeyListener {
      * en los suelos que desaparecen o como método también para comporbar si debería caerse. Posible cambio de nombre a gravedad.
      */
     private void saltar(){
-    	
         contadorSalto=0;
         saltando=true;
-        
     }
     
     /**
@@ -227,7 +175,6 @@ public class GameEngineLVL1 implements KeyListener {
     private void ejecutarSalto() {
     	
         if(saltando){
-
             if(contadorSalto>=0&&contadorSalto<5) {
                 ejeY += 20;
             }
@@ -238,71 +185,46 @@ public class GameEngineLVL1 implements KeyListener {
                 ejeY+=5;
             }
             else if(contadorSalto>11&&contadorSalto<15){
-
                 ejeY+=1;
-
             }
             else if(contadorSalto==15){
-
                 prevY=720-ejeY-35;
-
             }
             else if(contadorSalto>15) {
-            
 	            if(!panel.isGround(ejeX, ejeY, prevY,prevX)) {
-	            	
 	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
 	                if(contadorSalto>15&&contadorSalto<20){
-	
 	                    prevY=720-ejeY-35;
 	                    ejeY-=5;
-	
 	                }
 	                else if(contadorSalto>19&&contadorSalto<25){
-	
 	                    prevY=720-ejeY-35;
 	                    ejeY-=10;
-	
 	                }
 	                else if(contadorSalto>24&&contadorSalto<30){
-	
 	                    prevY=720-ejeY-35;
 	                    ejeY-=20;
-	
 	                }
 	                else if(contadorSalto>29&&contadorSalto<36){
-	
 	                    prevY=720-ejeY-35;
 	                    ejeY-=25;
-	
 	                }
 	                else if(contadorSalto>35&&contadorSalto<42){
-	
 	                    prevY=720-ejeY-35;
 	                    ejeY-=30;
-	
 	                }
 	                else if(contadorSalto>41){
-	
 	                    prevY=720-ejeY-35;
 	                    ejeY-=35;
-	
 	                }
-	            	
 	            }
 	            else{
-	
 	            	ejeY=720-panel.getEjeY();
 	                saltando=false;
-	
 	            }
-	            
             }
-	
-	            contadorSalto++;
-            
+            contadorSalto++;
         }
-    	
     }
 
     /**
@@ -311,7 +233,7 @@ public class GameEngineLVL1 implements KeyListener {
     private void fps(){
         
     	PJMove();
-  
+
     	ejecutarSalto();
         
         panel.setEjeX(ejeX);
@@ -327,29 +249,33 @@ public class GameEngineLVL1 implements KeyListener {
     public void arrancar(){
 
         boolean gameOver = false;
-        int puntuacion = 100;
+        int puntuacion = 360;
         
         while(!gameOver){
         	
         	if(contador%3==0) {
-        		
         		fps();
-        		
         	}
+
+        	/*
+        	 * ESTO SE DEJA COMENTADO A LA ESPERA DE LAS IMPLEMENTACIONES DEFINITIVAS DE ENERGÍAS Y CAMBIOS DE PUNTUACIÓN
+        	 * 
+        	 * if(puntuacion <= 0 || player.getEnergy() <= 0) gameOver = true;
+        	 * 
+        	 */
 
             try {
                 Thread.sleep(11);
             } catch (InterruptedException e) {
                 System.out.println("Error de interrupción del Thread.sleep en contador="+contador+". Error log: "+e);
             }
+
             //Test por consola reducción de puntuación basada en el tiempo transcurrido:
             if(contador%90==0){
                 puntuacion--;
                 System.out.println(puntuacion);
             }
-
             contador++;
         }
-
     }
 }

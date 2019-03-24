@@ -5,26 +5,30 @@ import java.awt.event.KeyEvent;
 public class Player {
 
     //ATTRIBUTES
-    private byte lives;
+    private int energy;
     private boolean dead;
 
     //CONSTRUCTOR
     public Player(){
-        this.lives = 3;
+        this.energy = 30;
         this.dead = false;
     }
 
     //GETTERS AND SETTERS
-    public byte getLives() {
-        return lives;
+    public int getEnergy() {
+        return energy;
     }
 
-    public void setLives(byte lives) {
-        this.lives = lives;
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     public boolean isDead() {
         return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 
     //FUNCTIONS
@@ -32,23 +36,19 @@ public class Player {
 
     }
 
-    public void getHurt(){
-
+    public void doDamge(Enemy enemy){
         try {
-            //Si recibe daño mientras esta muerto lanzará una exception
-            if (isDead()) throw new Exception();
-
-            //Cuando reciba daño se le restará una vida al jugador
-            setLives((byte) (getLives() - 1));
-            //Cuando llegue a 0 se le encenderá el boolean de que el jugador está muerto
-            if (getLives() <= 0){
-                this.dead = true;
+            if (enemy.isDead()) throw new Exception();
+            enemy.setLives((byte) (enemy.getLives() - 1));
+            if (enemy.getLives() <= 0) {
+                enemy.setDead(true);
+                setEnergy(getEnergy() + enemy.dropEnergyEnemy(enemy));
             }
 
         } catch (Exception e){
-            System.out.println("Ha petado en getHurt()");
-            e.printStackTrace();
+            System.out.println("Estas disparando a un muerto");
         }
+
     }
 
     //TO STRING
@@ -56,7 +56,7 @@ public class Player {
     public String toString() {
 
         return "Player{" +
-                "\nlives=" + lives +
+                "\nEnergy = " + energy +
                 "\nisDead = " + dead +
                 "\n}\n";
 

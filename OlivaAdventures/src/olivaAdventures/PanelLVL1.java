@@ -1,7 +1,11 @@
 package olivaAdventures;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +19,8 @@ public class PanelLVL1 extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 
+	private BufferedImage fondo,keko_stand,hud,barraVidaCompleta;
+	
     private int x,y;
 
     public void setEjeX(int x){this.x=x;}
@@ -24,8 +30,40 @@ public class PanelLVL1 extends JPanel {
     public int getEjeX() {return this.x;}
 
     public int getEjeY() {return this.y;}
-
+    
     /**
+     * Constructor del panel. Nos aseguramos de que cadda vez que sea
+     *  instanciado va a cargar los buffer de las imágenes que le pertoque.
+     */
+	public PanelLVL1() {
+			
+		cargarImagenes();
+	    	
+	}
+	
+	/**
+	 * Método para cargar las imágenes desde la carpeta de recursos.
+	 */
+	private void cargarImagenes() {
+		
+		try {    
+			
+			//Sacamos las imágenes desde nuestra carpeta de recursos
+			fondo = ImageIO.read(new File("resources/Mapa/Mapa_reajustado.png"));
+			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
+			keko_stand = ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer2.png"));
+			barraVidaCompleta = ImageIO.read(new File("resources/Hud/BarraExp/BarraExpTerminada/barraExpFull.png"));
+          
+       } catch (IOException e) {
+       
+    	   System.out.println("Error cargando las imágenes desde la carpeta de recursos. Comprueba los path, la carpeta de recuros y que no "+
+    	   "estén corruptos los datos. Error:"+e);
+    	   
+       }
+	
+	}
+
+	/**
      * Método para generar y añadir una nueva plataforma a la lista, que es borrada a cada repintado.
      * @param ejeX
      * @param ejeY
@@ -44,10 +82,15 @@ public class PanelLVL1 extends JPanel {
      * @param ejeY
      * @param prevY
      * @return false -> si sigue cayendo | true -> si se posado sobre una plataforma
-     * @TODO Arreglar las colisiones, a veces se pinta en mitad de la plataforma.
      */
     public boolean isGround(int ejeX,int ejeY,int prevY,int prevX){
 
+    	
+    	/*
+    	 * QUEDAN CAMBIOS POR HACER Y AJUSTAR. LUEGO HAY QUE COMENTARLO
+    	 */
+    	
+    	
     	boolean foundPlatform=false;
         int y,z,g,k;
         boolean colision=false;
@@ -138,6 +181,11 @@ public class PanelLVL1 extends JPanel {
 
     }
 
+    /**
+     * Método para comprobar si hay choque contra una pared y a qué distancia está.
+     * @param id
+     * @return Distancia que puedes mover sin colisionar.
+     */
     public int isWall(int id) {
     	
     	boolean foundPlatform=false;
@@ -153,7 +201,7 @@ public class PanelLVL1 extends JPanel {
 	            g=listaPlataformas.get(x).getAncho();
 	            k=listaPlataformas.get(x).getAlto();
 	
-	            if(350+15+s>=z&&350+s<=(z+g)) {
+	            if((350+15+s>=z&&350+s<=(z+g)) && (720-this.y>y&&720-this.y+34<(y+k))) {
 	            	
 	            	if(s>0) {
 	            		
@@ -183,9 +231,17 @@ public class PanelLVL1 extends JPanel {
     	//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
         listaPlataformas.clear();
 
-        //Fondo por ahora (se sustituirá con una imagen y se lo hará desplazarse también
+        //Fondo por ahora (se sustituirá con una imagen y se lo hará desplazarse también)
+		
         g.setColor(Color.gray);
         g.fillRect(0,0,1000,1000);
+		
+        //Imagen móvil de fondo
+		g.drawImage(fondo, -350-(x/2), 0,4000,720, this);
+		//Imagen provisional del hud
+		g.drawImage(hud,0,698,1010,350,this);
+		//Aquí habrá que programar las reproducciones las barras de vida
+		g.drawImage(barraVidaCompleta, 700,750,250,125,this);
 
         //Plataforma suelo
         g.setColor(Color.green);
@@ -216,8 +272,7 @@ public class PanelLVL1 extends JPanel {
         addPlatformToList(160-x,600,100,10,Tipo.PLATFORM);
 
         //Nuestro keko
-        g.setColor(Color.yellow);
-        g.fillRect(350,720-y-34,20,35);
+        g.drawImage(keko_stand,350,720-y-34,20,35,this);
 
     }
 }
