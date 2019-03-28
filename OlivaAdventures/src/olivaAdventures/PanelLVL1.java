@@ -19,13 +19,25 @@ public class PanelLVL1 extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 
-	private BufferedImage fondo,keko_right,keko_right2,keko_stand_right,keko_left,keko_left2,keko_stand_left,hud,barraVidaCompleta;
+	private BufferedImage fondo,keko_right,keko_right2,keko_right3,keko_right4,keko_stand_right,keko_stand_right2,keko_stand_right3,
+	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
+	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
+	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25;
 	
-	private BufferedImage[] animKeko = new BufferedImage[6];
+	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4];
 	
-    private int x,y,arrPosKeko;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0;
 
-    public int getArrPosKeko() {return arrPosKeko;}
+    public int getArrPosCor() {return arrPosCor;}
+
+	public void setArrPosCor(int arrPosCor) {this.arrPosCor = arrPosCor;}
+
+	public int getArrPosBarra() {return arrPosBarra;}
+
+	public void setArrPosBarra(int arrPosBarra) {this.arrPosBarra = arrPosBarra;}
+
+	public int getArrPosKeko() {return arrPosKeko;}
 
 	public void setArrPosKeko(int arrPosKeko) {this.arrPosKeko = arrPosKeko;}
 
@@ -38,13 +50,16 @@ public class PanelLVL1 extends JPanel {
     public int getEjeY() {return this.y;}
     
     /**
-     * Constructor del panel. Nos aseguramos de que cadda vez que sea
+     * Constructor del panel. Nos aseguramos de que cada vez que sea
      *  instanciado va a cargar los buffer de las imágenes que le pertoque.
      */
 	public PanelLVL1() {
 			
 		cargarImagenes();
 		cargarRaizImagenesKeko();
+		cargarRaizImagenesBarra();
+		cargarRaizImagenesCorazones();
+		cargarRaizImagenesMonstruo();
 	    	
 	}
 	
@@ -56,20 +71,71 @@ public class PanelLVL1 extends JPanel {
 		try {    
 			
 			//Sacamos las imágenes desde nuestra carpeta de recursos
-			fondo = ImageIO.read(new File("resources/Mapa/Mapa_reajustado.png"));
-			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
-			keko_right = ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer2.png"));
-			keko_right2 = ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer4.png"));
-			keko_stand_right= ImageIO.read(new File("resources/Personaje/pjDerecha/pjDer3.png"));
-			keko_left= ImageIO.read(new File("resources/Personaje/pjIzquierda/pjIzq2.png"));
-			keko_left2= ImageIO.read(new File("resources/Personaje/pjIzquierda/pjIzq4.png"));
-			keko_stand_left= ImageIO.read(new File("resources/Personaje/pjIzquierda/pjIzq3.png"));
-			barraVidaCompleta = ImageIO.read(new File("resources/Hud/BarraExp/BarraExpTerminada/barraExpFull.png"));
+			fondo = ImageIO.read(new File("resources/media/Mapa/fondo.jpg"));
+			hud = ImageIO.read(new File("resources/media/Hud/hud/proxy.duckduckgo.com.png"));
+			keko_right = ImageIO.read(new File("resources/media/Personaje/olivaWalkDer/olivaWalkDer1.png"));
+			keko_right2 = ImageIO.read(new File("resources/media/Personaje/olivaWalkDer/olivaWalkDer2.png"));
+			keko_right3 = ImageIO.read(new File("resources/media/Personaje/olivaWalkDer/olivaWalkDer3.png"));
+			keko_right4 = ImageIO.read(new File("resources/media/Personaje/olivaWalkDer/olivaWalkDer4.png"));
+			keko_left = ImageIO.read(new File("resources/media/Personaje/olivaWalkIzq/olivaWalkIzq1.png"));
+			keko_left2 = ImageIO.read(new File("resources/media/Personaje/olivaWalkIzq/olivaWalkIzq2.png"));
+			keko_left3 = ImageIO.read(new File("resources/media/Personaje/olivaWalkIzq/olivaWalkIzq3.png"));
+			keko_left4 = ImageIO.read(new File("resources/media/Personaje/olivaWalkIzq/olivaWalkIzq4.png"));
+			keko_stand_right= ImageIO.read(new File("resources/media/Personaje/olivaDer/oliva1.png"));
+			keko_stand_right2= ImageIO.read(new File("resources/media/Personaje/olivaDer/oliva2.png"));
+			keko_stand_right3= ImageIO.read(new File("resources/media/Personaje/olivaDer/oliva3.png"));
+			keko_stand_right4= ImageIO.read(new File("resources/media/Personaje/olivaDer/oliva4.png"));
+			keko_stand_left= ImageIO.read(new File("resources/media/Personaje/olivaIzq/olivaizq1.png"));
+			keko_stand_left2= ImageIO.read(new File("resources/media/Personaje/olivaIzq/olivaizq2.png"));
+			keko_stand_left3= ImageIO.read(new File("resources/media/Personaje/olivaIzq/olivaizq3.png"));
+			keko_stand_left4= ImageIO.read(new File("resources/media/Personaje/olivaIzq/olivaizq4.png"));
+			reloj0=ImageIO.read(new File("resources/media/contadorTiempo/reloj0.png"));
+			reloj1=ImageIO.read(new File("resources/media/contadorTiempo/reloj1.png"));
+			reloj2=ImageIO.read(new File("resources/media/contadorTiempo/reloj2.png"));
+			reloj3=ImageIO.read(new File("resources/media/contadorTiempo/reloj3.png"));
+			reloj4=ImageIO.read(new File("resources/media/contadorTiempo/reloj4.png"));
+			reloj5=ImageIO.read(new File("resources/media/contadorTiempo/reloj5.png"));
+			reloj6=ImageIO.read(new File("resources/media/contadorTiempo/reloj6.png"));
+			reloj7=ImageIO.read(new File("resources/media/contadorTiempo/reloj7.png"));
+			reloj8=ImageIO.read(new File("resources/media/contadorTiempo/reloj8.png"));
+			reloj9=ImageIO.read(new File("resources/media/contadorTiempo/reloj9.png"));
+			reloj10=ImageIO.read(new File("resources/media/contadorTiempo/reloj10.png"));
+			reloj11=ImageIO.read(new File("resources/media/contadorTiempo/reloj11.png"));
+			reloj12=ImageIO.read(new File("resources/media/contadorTiempo/reloj12.png"));
+			reloj13=ImageIO.read(new File("resources/media/contadorTiempo/reloj13.png"));
+			reloj14=ImageIO.read(new File("resources/media/contadorTiempo/reloj14.png"));
+			reloj15=ImageIO.read(new File("resources/media/contadorTiempo/reloj15.png"));
+			reloj16=ImageIO.read(new File("resources/media/contadorTiempo/reloj16.png"));
+			reloj17=ImageIO.read(new File("resources/media/contadorTiempo/reloj17.png"));
+			reloj18=ImageIO.read(new File("resources/media/contadorTiempo/reloj18.png"));
+			reloj19=ImageIO.read(new File("resources/media/contadorTiempo/reloj19.png"));
+			reloj20=ImageIO.read(new File("resources/media/contadorTiempo/reloj20.png"));
+			reloj21=ImageIO.read(new File("resources/media/contadorTiempo/reloj21.png"));
+			reloj22=ImageIO.read(new File("resources/media/contadorTiempo/reloj22.png"));
+			reloj23=ImageIO.read(new File("resources/media/contadorTiempo/reloj23.png"));
+			reloj24=ImageIO.read(new File("resources/media/contadorTiempo/reloj24.png"));
+			reloj25=ImageIO.read(new File("resources/media/contadorTiempo/reloj25.png"));
+			barraExp100 = ImageIO.read(new File("resources/media/Hud/BarraExp/barraExpFull.png"));
+			barraExp75 = ImageIO.read(new File("resources/media/Hud/BarraExp/barraExp75.png"));
+			barraExp50 = ImageIO.read(new File("resources/media/Hud/BarraExp/barraExp50.png"));
+			barraExp25 = ImageIO.read(new File("resources/media/Hud/BarraExp/barraExp25.png"));
+			barraExp0 = ImageIO.read(new File("resources/media/Hud/BarraExp/barraExpEmpty.png"));
+			vidas0=ImageIO.read(new File("resources/media/Hud/Salud/0vidas.png"));
+			vidas1=ImageIO.read(new File("resources/media/Hud/Salud/1vida.png"));
+			vidas2=ImageIO.read(new File("resources/media/Hud/Salud/2vidas.png"));
+			vidas3=ImageIO.read(new File("resources/media/Hud/Salud/3vidas.png"));
+			monstruo1=ImageIO.read(new File("resources/media/monstruo/monstruo1.png"));
+			monstruo2=ImageIO.read(new File("resources/media/monstruo/monstruo2.png"));
+			monstruo3=ImageIO.read(new File("resources/media/monstruo/monstruo3.png"));
+			monstruo4=ImageIO.read(new File("resources/media/monstruo/monstruo4.png"));
+			plataforma1=ImageIO.read(new File("resources/media/plataforma/plataformaGrande.png"));
+			plataforma2=ImageIO.read(new File("resources/media/plataforma/plataformaMediana.png"));
+			
           
        } catch (IOException e) {
        
     	   System.out.println("Error cargando las imágenes desde la carpeta de recursos. Comprueba los path, la carpeta de recuros y que no "+
-    	   "estén corruptos los datos. Error:"+e);
+    	   "estén corruptos los datos. Error:\n"+e);
     	   
        }
 	
@@ -79,10 +145,56 @@ public class PanelLVL1 extends JPanel {
 		
 		animKeko[0]=keko_right;
 		animKeko[1]=keko_right2;
-		animKeko[2]=keko_stand_right;
-		animKeko[3]=keko_left;
-		animKeko[4]=keko_left2;
-		animKeko[5]=keko_stand_left;
+		animKeko[2]=keko_right3;
+		animKeko[3]=keko_right4;
+		animKeko[4]=keko_left;
+		animKeko[5]=keko_left2;
+		animKeko[6]=keko_left3;
+		animKeko[7]=keko_left4;
+		animKeko[8]=keko_stand_right;
+		animKeko[9]=keko_stand_right2;
+		animKeko[10]=keko_stand_right3;
+		animKeko[11]=keko_stand_right4;
+		animKeko[12]=keko_stand_left;
+		animKeko[13]=keko_stand_left2;
+		animKeko[14]=keko_stand_left3;
+		animKeko[15]=keko_stand_left4;
+		
+	}
+	
+	private void cargarRaizImagenesMonstruo() {
+		
+		animMonstruo[0]=monstruo1;
+		animMonstruo[1]=monstruo2;
+		animMonstruo[2]=monstruo3;
+		animMonstruo[3]=monstruo4;
+		
+	}
+	
+	private void cargarRaizImagenesBarra() {
+		
+		animBarra[0]=barraExp0;
+		animBarra[1]=barraExp25;
+		animBarra[2]=barraExp50;
+		animBarra[3]=barraExp75;
+		animBarra[4]=barraExp100;
+		
+	}
+	
+	private void cargarRaizImagenesCorazones() {
+		
+		animCorazones[0]=vidas0;
+		animCorazones[1]=vidas1;
+		animCorazones[2]=vidas2;
+		animCorazones[3]=vidas3;
+		
+	}
+	
+	private void cargarRaizImagenesReloj() {
+		
+	}
+	
+	private void cargarRaizImagenesNumeros() {
 		
 	}
 	/**
@@ -167,7 +279,7 @@ public class PanelLVL1 extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.TUBE) {
 	            
         		z=listaPlataformas.get(x).getEjeX();
 	            y=listaPlataformas.get(x).getEjeY();
@@ -210,11 +322,16 @@ public class PanelLVL1 extends JPanel {
         g.fillRect(0,0,1000,1000);
 		
         //Imagen móvil de fondo
-		g.drawImage(fondo, -350-(x/2), 0,4000,720, this);
+        for(int x=-350,x<) {
+        	
+        }
+		g.drawImage(fondo, -350-(x/2), 0,750,720, this);
 		//Imagen provisional del hud
 		g.drawImage(hud,0,698,1010,350,this);
 		//Aquí habrá que programar las reproducciones las barras de vida
-		g.drawImage(barraVidaCompleta, 700,750,250,125,this);
+		g.drawImage(animBarra[arrPosBarra], 10,750,250,125,this);
+		//Aquí habrá que programar las reproducciones de los corazones
+		g.drawImage(animCorazones[arrPosCor], 10,875,250,75,this);
 
         //Plataforma suelo
         g.setColor(Color.green);
@@ -228,24 +345,21 @@ public class PanelLVL1 extends JPanel {
         addPlatformToList(1000-x,400,50,370,Tipo.BOTH);
 
         //Plataformas para saltar
-        g.setColor(Color.black);
-        g.fillRect(700-x,300,100,10);
-        addPlatformToList(700-x,300,100,10,Tipo.PLATFORM);
+        g.drawImage(plataforma1,700-x,300,100,35,this);
+        addPlatformToList(700-x,300,100,35,Tipo.PLATFORM);
 
-        g.setColor(Color.black);
-        g.fillRect(900-x,150,100,10);
-        addPlatformToList(900-x,150,100,10,Tipo.PLATFORM);
+        g.drawImage(plataforma1,900-x,150,100,35,this);
+        addPlatformToList(900-x,150,100,35,Tipo.PLATFORM);
 
-        g.setColor(Color.black);
-        g.fillRect(450-x,450,100,10);
-        addPlatformToList(450-x,450,100,10,Tipo.PLATFORM);
+        g.drawImage(plataforma1,450-x,450,100,35,this);
+        addPlatformToList(450-x,450,100,35,Tipo.PLATFORM);
 
-        g.setColor(Color.black);
-        g.fillRect(160-x,600,100,10);
-        addPlatformToList(160-x,600,100,10,Tipo.PLATFORM);
+        g.drawImage(plataforma1,160-x,600,100,35,this);
+        addPlatformToList(160-x,600,100,35,Tipo.PLATFORM);
 
         //Nuestro keko
-        g.drawImage(animKeko[arrPosKeko],350,720-y-69,40,70,this);
+        g.drawImage(animKeko[arrPosKeko],350,720-y-89,50,90,this);
+        
 
     }
 }

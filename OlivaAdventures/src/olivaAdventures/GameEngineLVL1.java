@@ -2,7 +2,7 @@ package olivaAdventures;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -14,7 +14,7 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0,prevX=0,cambio=0;
+    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0,prevX=0,cambio=0,respirando=0;
     private char lastSide='D';
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
@@ -104,14 +104,67 @@ public class GameEngineLVL1 implements KeyListener {
      */
     private void PJMove() {
     	
-    	if(!derecha && !izquierda) {
+    	if((!derecha && !izquierda) || (derecha && izquierda)) {
+    		
 	    	switch(lastSide) {
 	    	
 	    	case 'D':
-	    		panel.setArrPosKeko(2);
+	    		
+	    		if(!saltando) {
+	    			
+	    			if(respirando==0) {
+	    				
+	    				switch(panel.getArrPosKeko()) {
+	    				
+	    				case 8:
+	    					panel.setArrPosKeko(9);
+	    					break;
+	    				case 9:
+	    					panel.setArrPosKeko(10);
+	    					break;
+	    				case 10:
+	    					panel.setArrPosKeko(11);
+	    					break;
+	    				case 11:
+	    					panel.setArrPosKeko(8);
+	    					break;
+	    					default:
+	    						panel.setArrPosKeko(8);
+	    						
+	    				}
+	    				respirando++;
+	    			} else if(respirando==1){respirando=2;}
+	    			else {respirando=0;}
+	    		}
 	    		break;
 	    	case 'I':
-	    		panel.setArrPosKeko(5);
+	    		
+	    		if(!saltando) {
+	    			
+	    			if(respirando==0) {
+	    				
+	    				switch(panel.getArrPosKeko()) {
+	    				
+	    				case 12:
+	    					panel.setArrPosKeko(13);
+	    					break;
+	    				case 13:
+	    					panel.setArrPosKeko(14);
+	    					break;
+	    				case 14:
+	    					panel.setArrPosKeko(15);
+	    					break;
+	    				case 15:
+	    					panel.setArrPosKeko(12);
+	    					break;
+	    					default:
+	    						panel.setArrPosKeko(12);
+	    						
+	    				}
+	    				respirando++;
+	    			} else if(respirando==1){respirando=2;}
+	    			else {respirando=0;}
+	    		}
 	    		break;
 			default:;
 	    	}
@@ -134,20 +187,30 @@ public class GameEngineLVL1 implements KeyListener {
     		if(!saltando) {
     			
     			if(cambio==0) {
-	    			if(panel.getArrPosKeko()==3) {
-	                	panel.setArrPosKeko(5);
-	                }
-	    			else if(panel.getArrPosKeko()==5) {
-	    				panel.setArrPosKeko(4);
-	    			}
-	                else {
-	                	panel.setArrPosKeko(3);
-	                }
-	    			cambio=1;
-	    			lastSide='I';
-    			}
-    			else if(cambio==1){cambio=2;}
+    				
+    				switch(panel.getArrPosKeko()) {
+    				
+    				case 4:
+    					panel.setArrPosKeko(5);
+    					break;
+    				case 5:
+    					panel.setArrPosKeko(6);
+    					break;
+    				case 6:
+    					panel.setArrPosKeko(7);
+    					break;
+    				case 7:
+    					panel.setArrPosKeko(4);
+    					break;
+    					default:
+    						panel.setArrPosKeko(4);
+    						
+    				}
+    				cambio++;
+    			} else if(cambio==1){cambio=2;}
     			else {cambio=0;}
+    			
+    			lastSide='I';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX-=-panel.isWall(-10);
@@ -173,20 +236,30 @@ public class GameEngineLVL1 implements KeyListener {
     		if(!saltando) {
     			
     			if(cambio==0) {
-	    			if(panel.getArrPosKeko()==0) {
-	                	panel.setArrPosKeko(2);
-	                }
-	    			else if(panel.getArrPosKeko()==2) {
-	    				panel.setArrPosKeko(1);
-	    			}
-	                else {
-	                	panel.setArrPosKeko(0);
-	                }
-	    			cambio=1;
-	    			lastSide='D';
-    			}
-    			else if(cambio==1){cambio=2;}
+    				
+    				switch(panel.getArrPosKeko()) {
+    				
+    				case 0:
+    					panel.setArrPosKeko(1);
+    					break;
+    				case 1:
+    					panel.setArrPosKeko(2);
+    					break;
+    				case 2:
+    					panel.setArrPosKeko(3);
+    					break;
+    				case 3:
+    					panel.setArrPosKeko(0);
+    					break;
+    					default:
+    						panel.setArrPosKeko(0);
+    						
+    				}
+    				cambio++;
+    			} else if(cambio==1){cambio=2;}
     			else {cambio=0;}
+    			
+    			lastSide='D';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX+=panel.isWall(10);
@@ -305,8 +378,25 @@ public class GameEngineLVL1 implements KeyListener {
         	
         	if(contador%3==0) {
         		fps();
+        		
         	}
-
+        	
+        	if(contador%18==0) {
+        		//pruebas:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            	if(!(panel.getArrPosBarra()==4)) {
+            		panel.setArrPosBarra(panel.getArrPosBarra()+1);
+            	} else {
+            		panel.setArrPosBarra(0);
+            	}
+            	if(!(panel.getArrPosCor()==3)) {
+            		panel.setArrPosCor(panel.getArrPosCor()+1);
+            	} else {
+            		panel.setArrPosCor(0);
+            	}
+        	}
+        	
+        	
+        	
         	/*
         	 * ESTO SE DEJA COMENTADO A LA ESPERA DE LAS IMPLEMENTACIONES DEFINITIVAS DE ENERGÍAS Y CAMBIOS DE PUNTUACIÓN
         	 * 
