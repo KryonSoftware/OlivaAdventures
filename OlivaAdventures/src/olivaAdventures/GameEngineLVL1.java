@@ -393,6 +393,11 @@ public class GameEngineLVL1 implements KeyListener {
             	} else {
             		panel.setArrPosCor(0);
             	}
+            	if(!(panel.getArrPosReloj()==25)) {
+            		panel.setArrPosReloj(panel.getArrPosReloj()+1);
+            	} else {
+            		panel.setArrPosReloj(0);
+            	}
         	}
         	
         	

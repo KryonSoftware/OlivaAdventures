@@ -23,13 +23,18 @@ public class PanelLVL1 extends JPanel {
 	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
 	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
 	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
-	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25;
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2;
 	
-	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4];
+	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
+			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0;
 
-    public int getArrPosCor() {return arrPosCor;}
+    public int getArrPosReloj() {return arrPosReloj;}
+
+	public void setArrPosReloj(int arrPosReloj) {this.arrPosReloj = arrPosReloj;}
+
+	public int getArrPosCor() {return arrPosCor;}
 
 	public void setArrPosCor(int arrPosCor) {this.arrPosCor = arrPosCor;}
 
@@ -60,6 +65,7 @@ public class PanelLVL1 extends JPanel {
 		cargarRaizImagenesBarra();
 		cargarRaizImagenesCorazones();
 		cargarRaizImagenesMonstruo();
+		cargarRaizImagenesReloj();
 	    	
 	}
 	
@@ -130,6 +136,11 @@ public class PanelLVL1 extends JPanel {
 			monstruo4=ImageIO.read(new File("resources/media/monstruo/monstruo4.png"));
 			plataforma1=ImageIO.read(new File("resources/media/plataforma/plataformaGrande.png"));
 			plataforma2=ImageIO.read(new File("resources/media/plataforma/plataformaMediana.png"));
+			nube1=ImageIO.read(new File("resources/media/Mapa/Nubes/nubeGrande.png"));
+			nube2=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
+			//arbol1=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
+			//arbol2=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
+		//	arbusto=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
 			
           
        } catch (IOException e) {
@@ -191,6 +202,33 @@ public class PanelLVL1 extends JPanel {
 	}
 	
 	private void cargarRaizImagenesReloj() {
+		
+		animReloj[0]=reloj0;
+		animReloj[1]=reloj1;
+		animReloj[2]=reloj2;
+		animReloj[3]=reloj3;
+		animReloj[4]=reloj4;
+		animReloj[5]=reloj5;
+		animReloj[6]=reloj6;
+		animReloj[7]=reloj7;
+		animReloj[8]=reloj8;
+		animReloj[9]=reloj9;
+		animReloj[10]=reloj10;
+		animReloj[11]=reloj11;
+		animReloj[12]=reloj12;
+		animReloj[13]=reloj13;
+		animReloj[14]=reloj14;
+		animReloj[15]=reloj15;
+		animReloj[16]=reloj16;
+		animReloj[17]=reloj17;
+		animReloj[18]=reloj18;
+		animReloj[19]=reloj19;
+		animReloj[20]=reloj20;
+		animReloj[21]=reloj21;
+		animReloj[22]=reloj22;
+		animReloj[23]=reloj23;
+		animReloj[24]=reloj24;
+		animReloj[25]=reloj25;
 		
 	}
 	
@@ -322,24 +360,31 @@ public class PanelLVL1 extends JPanel {
         g.fillRect(0,0,1000,1000);
 		
         //Imagen móvil de fondo
-        for(int x=-350,x<) {
+        for(int ñ=-350;ñ<2975;ñ+=750) {
+        	
+        	g.drawImage(fondo, ñ-(x/4), 0,750,720, this);
         	
         }
-		g.drawImage(fondo, -350-(x/2), 0,750,720, this);
-		//Imagen provisional del hud
-		g.drawImage(hud,0,698,1010,350,this);
-		//Aquí habrá que programar las reproducciones las barras de vida
-		g.drawImage(animBarra[arrPosBarra], 10,750,250,125,this);
-		//Aquí habrá que programar las reproducciones de los corazones
-		g.drawImage(animCorazones[arrPosCor], 10,875,250,75,this);
+		//Imagen móvil de las nubes
+        g.drawImage(nube1,500-(x/2),200,100,50,this);
+        g.drawImage(nube2,700-(x/3),100,50,30,this);
+        g.drawImage(nube1,1200-(x/2),75,100,50,this);
+        g.drawImage(nube2,1500-(x/3),100,50,30,this);
+        g.drawImage(nube1,1800-(x/2),150,100,50,this);
+        g.drawImage(nube2,2500-(x/3),180,50,30,this);
+        g.drawImage(nube1,3230-(x/2),60,100,50,this);
+        g.drawImage(nube2,3950-(x/3),100,50,30,this);
+        g.drawImage(nube1,4500-(x/2),55,100,50,this);
+        g.drawImage(nube1,3800-(x/2),80,100,50,this);
+        g.drawImage(nube1,2000-(x/2),120,100,50,this);
 
         //Plataforma suelo
         g.setColor(Color.green);
         g.fillRect(0-x,400,50,370);
         addPlatformToList(0-x,400,50,370,Tipo.BOTH);
         g.setColor(Color.green);
-        g.fillRect(0-x, 720, 10000, 50);
-        addPlatformToList(0-x,720,10000,50,Tipo.GROUND);
+        g.fillRect(-350-x, 720, 10350, 50);
+        addPlatformToList(-350-x,720,10350,50,Tipo.GROUND);
         g.setColor(Color.green);
         g.fillRect(1000-x,400,50,370);
         addPlatformToList(1000-x,400,50,370,Tipo.BOTH);
@@ -348,8 +393,8 @@ public class PanelLVL1 extends JPanel {
         g.drawImage(plataforma1,700-x,300,100,35,this);
         addPlatformToList(700-x,300,100,35,Tipo.PLATFORM);
 
-        g.drawImage(plataforma1,900-x,150,100,35,this);
-        addPlatformToList(900-x,150,100,35,Tipo.PLATFORM);
+        g.drawImage(plataforma2,900-x,150,75,25,this);
+        addPlatformToList(900-x,150,75,25,Tipo.PLATFORM);
 
         g.drawImage(plataforma1,450-x,450,100,35,this);
         addPlatformToList(450-x,450,100,35,Tipo.PLATFORM);
@@ -360,6 +405,15 @@ public class PanelLVL1 extends JPanel {
         //Nuestro keko
         g.drawImage(animKeko[arrPosKeko],350,720-y-89,50,90,this);
         
+      //Imagen provisional del hud
+  		g.drawImage(hud,0,698,1010,350,this);
+  		//Aquí habrá que programar las reproducciones las barras de vida
+  		g.drawImage(animBarra[arrPosBarra], 10,790,300,160,this);
+  		//Aquí habrá que programar las reproducciones de los corazones
+  		g.drawImage(animCorazones[arrPosCor], 725,835,250,75,this);
+  		//Aquí habrá que programar las reproducciones de los corazones
+  		g.drawImage(animReloj[arrPosReloj],475,820,75,100,this);
+    
 
     }
 }
