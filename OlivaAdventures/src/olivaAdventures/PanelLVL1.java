@@ -266,37 +266,30 @@ public class PanelLVL1 extends JPanel {
         boolean colision=false;
 
         for(int x=0;x<listaPlataformas.size();x++){
-        	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.TUBE) {
 
-	        	
-	        	
+        	if(!foundPlatform) {
+
+        		z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
+        		y=listaPlataformas.get(x).getEjeY();
+        		g=listaPlataformas.get(x).getAncho();
+
+        		if(350+30>=z&&350+15<=(z+g)) {
+
+        			if(720-ejeY+35>=y&&prevY<y){
+
+        				colision=true;
+
+        				foundPlatform=true;
+
+        				this.y=y;
+
+        			}
+
+        		}
+
         	}
-        	else {
-        		
-        		if(!foundPlatform) {
-    	            
-	        		z=listaPlataformas.get(x).getEjeX();
-		            y=listaPlataformas.get(x).getEjeY();
-		            g=listaPlataformas.get(x).getAncho();
-		
-		            if(350+15>=z&&350+22<=(z+g)) {
-		
-		                if(720-ejeY+35>=y&&prevY<y){
-		
-		                    colision=true;
-		                    
-		                    foundPlatform=true;
-		
-		                    this.y=y;
-		
-		                }
-		
-		            }
-		            
-	        	}
-        		
-        	}
+
+
 
         }
 
@@ -311,29 +304,33 @@ public class PanelLVL1 extends JPanel {
      */
     public int isWall(int id) {
     	
-    	boolean foundPlatform=false;
+    	
+    	/*
+    	 *REVISAR COLISIONES EN CASOS ASILADOS!!!!!!!!!!!!!!!!!! 
+    	 */
+    	
         int y,z,g,k,s=id;
         int colision=id;
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.TUBE) {
+        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
 	            
         		z=listaPlataformas.get(x).getEjeX();
 	            y=listaPlataformas.get(x).getEjeY();
 	            g=listaPlataformas.get(x).getAncho();
 	            k=listaPlataformas.get(x).getAlto();
 	
-	            if((350+15+s>=z-5&&350+s<=(z+g-15)) && (720-this.y>y&&720-this.y+34<(y+k))) {
+	            if((350+30+s>=z-5&&350+s<=(z+g-15)) && (((720-this.y)>y)&&((720-this.y+34)<(y+k)))) {
 	            	
 	            	if(s>0) {
 	            		
-	            		 colision-=370-(z-s-5);
+	            		 colision-=380-(z-s-15);
 	            		
 	            	}
 	            	else {
 	            		
-	            		 colision-=350-(z+g-s-15);
+	            		 colision-=340-(z+g-s-15);
 	            		
 	            	}
 		            
@@ -380,11 +377,11 @@ public class PanelLVL1 extends JPanel {
 
         //Plataforma suelo
         g.setColor(Color.green);
-        g.fillRect(0-x,400,50,370);
-        addPlatformToList(0-x,400,50,370,Tipo.BOTH);
+        g.fillRect(0-x,200,50,370);
+        addPlatformToList(0-x,200,50,370,Tipo.BOTH);
         g.setColor(Color.green);
         g.fillRect(-350-x, 720, 10350, 50);
-        addPlatformToList(-350-x,720,10350,50,Tipo.GROUND);
+        addPlatformToList(-350-x,720,10350,50,Tipo.BOTH);
         g.setColor(Color.green);
         g.fillRect(1000-x,400,50,370);
         addPlatformToList(1000-x,400,50,370,Tipo.BOTH);

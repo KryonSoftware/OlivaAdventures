@@ -207,13 +207,16 @@ public class GameEngineLVL1 implements KeyListener {
     						
     				}
     				cambio++;
-    			} else if(cambio==1){cambio=2;}
+    			} else if(cambio==1){cambio=0;}
     			else {cambio=0;}
     			
     			lastSide='I';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX-=-panel.isWall(-10);
+            	if(panel.isGround(ejeX, ejeY, prevY,prevX)) {
+            		
+            	}
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
@@ -256,7 +259,7 @@ public class GameEngineLVL1 implements KeyListener {
     						
     				}
     				cambio++;
-    			} else if(cambio==1){cambio=2;}
+    			} else if(cambio==1){cambio=0;}
     			else {cambio=0;}
     			
     			lastSide='D';
@@ -311,38 +314,47 @@ public class GameEngineLVL1 implements KeyListener {
                 ejeY+=1;
             }
             else if(contadorSalto==15){
-                prevY=720-ejeY-70;
+                prevY=720-ejeY;
             }
             else if(contadorSalto>15) {
 	            if(!panel.isGround(ejeX, ejeY, prevY,prevX)) {
 	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
-	                if(contadorSalto>15&&contadorSalto<20){
-	                    prevY=720-ejeY-70;
+	                if(contadorSalto>15&&contadorSalto<18){
+	                    prevY=720-ejeY;
 	                    ejeY-=5;
 	                }
-	                else if(contadorSalto>19&&contadorSalto<25){
-	                    prevY=720-ejeY-70;
+	                else if(contadorSalto>17&&contadorSalto<20){
+	                    prevY=720-ejeY;
 	                    ejeY-=10;
 	                }
+	                else if(contadorSalto>19&&contadorSalto<25){
+	                    prevY=720-ejeY;
+	                    ejeY-=16;
+	                }
 	                else if(contadorSalto>24&&contadorSalto<30){
-	                    prevY=720-ejeY-70;
-	                    ejeY-=20;
+	                    prevY=720-ejeY;
+	                    ejeY-=21;
 	                }
-	                else if(contadorSalto>29&&contadorSalto<36){
-	                    prevY=720-ejeY-70;
-	                    ejeY-=25;
+	                else if(contadorSalto>29&&contadorSalto<41){
+	                    prevY=720-ejeY;
+	                    ejeY-=26;
 	                }
-	                else if(contadorSalto>35&&contadorSalto<42){
-	                    prevY=720-ejeY-70;
-	                    ejeY-=30;
+	                else if(contadorSalto>40&&contadorSalto<46){
+	                    prevY=720-ejeY;
+	                    ejeY-=28;
 	                }
-	                else if(contadorSalto>41){
-	                    prevY=720-ejeY-70;
+	                else if(contadorSalto>45&&contadorSalto<52){
+	                    prevY=720-ejeY;
+	                    ejeY-=32;
+	                }
+	                else if(contadorSalto>51){
+	                    prevY=720-ejeY;
 	                    ejeY-=35;
 	                }
 	            }
 	            else{
 	            	ejeY=720-panel.getEjeY();
+	            	//prevY=720-ejeY;
 	                saltando=false;
 	            }
             }
@@ -365,7 +377,33 @@ public class GameEngineLVL1 implements KeyListener {
 
     }
     
-    /**
+    /**for(int x=0;x<listaPlataformas.size();x++){
+       
+        	if(!foundPlatform) {
+
+	        		z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
+		            y=listaPlataformas.get(x).getEjeY();
+		            g=listaPlataformas.get(x).getAncho();
+
+		            if(350+30>=z&&350+15<=(z+g)) {
+
+		                if(720-ejeY+35>=y&&prevY<y){
+
+		                    colision=true;
+
+		                    foundPlatform=true;
+
+		                    this.y=y;
+
+		                }
+
+		            }
+
+	        	}
+
+
+        		
+        	}
      * Método de inicialización del nuevo nivel. Contiene un bucle (infinito por ahora) que se encarga de ordenar el repintado mediante el llamado
      *  al método fps() cada 11 milisegundos.
      */
