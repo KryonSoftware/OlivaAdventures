@@ -20,6 +20,8 @@ public class GameEngineLVL1 implements KeyListener {
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
     private Player player = new Player();
+    //La música que usaremos:
+	Musica musica = new Musica();
  
     /*
 

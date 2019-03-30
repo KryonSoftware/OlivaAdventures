@@ -2,10 +2,13 @@ package olivaAdventures;
 
 public class Energy {
 
+    /* ATTRIBUTES */
     private int quantityEnergy;
 
+    /* CONSTRUCTOR */
     public Energy() { }
 
+    /* GETTERS AND SETTERS */
     public int getQuantityEnergy() {
         return quantityEnergy;
     }
@@ -14,7 +17,8 @@ public class Energy {
         this.quantityEnergy = quantityEnergy;
     }
 
-    public static int dropEnergy(Enemy enemy){
+    /* FUNCTIONS */
+    static int dropEnergy(Enemy enemy){
         switch (enemy.getTypeEnemy()){
             case "1":
                 return 10;

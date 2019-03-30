@@ -19,18 +19,22 @@ public class Enemy {
     Enemy(typeEnemies typeEnemies){
         switch (typeEnemies){
             case type1:
-                setLives((byte) 2);
+                setLives((byte) 5);
                 setTypeEnemy(String.valueOf(1));
                 break;
             case type2:
-                setLives((byte) 3);
+                setLives((byte) 10);
                 setTypeEnemy(String.valueOf(2));
                 break;
             case boss:
-                setLives((byte) 10);
+                setLives((byte) 30);
                 setTypeEnemy("boss");
                 break;
         }
+        /*
+        Cuando instanciamos un enemigo directamente llamaremos al setter de energia, esta se encargará de darle el valor
+        adecuado de energia según el tipo de enemigo
+         */
         setEnergy();
     }
 
@@ -64,6 +68,7 @@ public class Enemy {
     }
 
     public void setEnergy(){
+        //Según el tipo de enemigo se le dará un valor determinado de energia
         switch (typeEnemy){
             case "1":
                 energy = 10; break;
@@ -75,14 +80,29 @@ public class Enemy {
     }
 
     //FUNCTIONS
-    public void getPosition(){
-        //getPositionPlayer();
+    public char getDecission(int posXEnemy, int posYEnemy, int posXPlayer, int posYPlayer){
+
+        if (posXEnemy > posXPlayer){
+            return 'D';
+        } else if (posXPlayer > posXEnemy) {
+            return 'A';
+        }
+
+        return '0';
     }
 
+    /*
+    Esta es la función a la que llamaremos cuando un enemigo muera y tenga de darle la energia al personaje, viene
+    heredada de Energy
+     */
     public int dropEnergyEnemy(Enemy enemy){
         return Energy.dropEnergy(enemy);
     }
 
+    /*
+    Esta función lo que hará será restar al personaje una cantidad determinada de energía, dependiendo del tipo que sea
+    el enemigo, cuando el personaje tenga 0 o menos de energia significará que el personaje está muerto
+     */
     public void doDamge(Player player, Enemy enemy){
 
         try {
@@ -92,11 +112,11 @@ public class Enemy {
             int playerEnergy = player.getEnergy();
             switch (enemy.typeEnemy){
                 case "1":
-                    player.setEnergy(playerEnergy - 10); break;
-                case "2":
-                    player.setEnergy(playerEnergy - 15); break;
-                case "boss":
                     player.setEnergy(playerEnergy - 20); break;
+                case "2":
+                    player.setEnergy(playerEnergy - 40); break;
+                case "boss":
+                    player.setEnergy(playerEnergy - 50); break;
             }
 
             if (player.getEnergy() <= 0){
