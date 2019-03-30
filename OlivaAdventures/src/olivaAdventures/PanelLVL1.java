@@ -152,6 +152,9 @@ public class PanelLVL1 extends JPanel {
 	
 	}
 
+	/**
+	 * Método encargado de rellenar la raíz de movimientos del keko.
+	 */
 	private void cargarRaizImagenesKeko() {
 		
 		animKeko[0]=keko_right;
@@ -173,6 +176,9 @@ public class PanelLVL1 extends JPanel {
 		
 	}
 	
+	/**
+	 * Método encargado de rellenar la raíz de movimientos del monstruo POW.
+	 */
 	private void cargarRaizImagenesMonstruo() {
 		
 		animMonstruo[0]=monstruo1;
@@ -182,6 +188,9 @@ public class PanelLVL1 extends JPanel {
 		
 	}
 	
+	/**
+	 * Método encargado de rellenar la raíz de animaciones de la barra-estrella.
+	 */
 	private void cargarRaizImagenesBarra() {
 		
 		animBarra[0]=barraExp0;
@@ -192,6 +201,9 @@ public class PanelLVL1 extends JPanel {
 		
 	}
 	
+	/**
+	 * Método relleno raíz animaciones corazones.
+	 */
 	private void cargarRaizImagenesCorazones() {
 		
 		animCorazones[0]=vidas0;
@@ -201,6 +213,9 @@ public class PanelLVL1 extends JPanel {
 		
 	}
 	
+	/**
+	 * Método relleno imágenes reloj.
+	 */
 	private void cargarRaizImagenesReloj() {
 		
 		animReloj[0]=reloj0;
@@ -232,6 +247,9 @@ public class PanelLVL1 extends JPanel {
 		
 	}
 	
+	/**
+	 * Método relleno imágenes números y letras.
+	 */
 	private void cargarRaizImagenesNumeros() {
 		
 	}
@@ -304,11 +322,6 @@ public class PanelLVL1 extends JPanel {
      */
     public int isWall(int id) {
     	
-    	
-    	/*
-    	 *REVISAR COLISIONES EN CASOS ASILADOS!!!!!!!!!!!!!!!!!! 
-    	 */
-    	
         int y,z,g,k,s=id;
         int colision=id;
 
@@ -348,6 +361,14 @@ public class PanelLVL1 extends JPanel {
     	
     }
     
+    /**
+     * Método para comprobar las colisiones hacia arriba (cuando se salta y se golpea con la cabeza).
+     * @param newCabezaPos
+     * @param prevY
+     * @param ejeX
+     * @param prevX
+     * @return Distancia que puedes mover en vertical sin golpearte contra nada.
+     */
     public int isTop(int newCabezaPos,int prevY,int ejeX,int prevX) {
     	
     	int y,z,g,k;

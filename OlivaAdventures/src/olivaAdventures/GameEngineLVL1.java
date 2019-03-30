@@ -20,7 +20,36 @@ public class GameEngineLVL1 implements KeyListener {
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
     private Player player = new Player();
+ 
+    /*
 
+     * Código de David NO FUNCIONAL, A LA ESPERA DE BUGFIXING
+     * 
+     *     private PlantillaVentana plantillaVentana;
+
+     *
+     * //Constructor de nuestro nivel 1. Establece autoáticamente el Frame. CAMBIAR PARA LE FUTURO: TODO FRAME EN CLASE APARTE.
+     *
+    public GameEngineLVL1(JFrame frame, PlantillaVentana plantillaVentana){
+		this.plantillaVentana = plantillaVentana;
+
+    	
+        frame.setSize(1000,1000);
+        frame.setResizable(false);
+        frame.addKeyListener(this);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+
+        //Añadimos el panel que instanciamos antes:
+        frame.add(panel);
+
+        //Dejamos el frame visible al final para evitar problemas:
+        frame.setVisible(true);
+
+    }
+     */
+
+    
     /**
      * Constructor de nuestro nivel 1. Establece automáticamente el Frame. CAMBIAR PARA LE FUTURO: TODO FRAME EN CLASE APARTE.
      */
@@ -104,6 +133,7 @@ public class GameEngineLVL1 implements KeyListener {
      */
     private void PJMove() {
     	
+    	//Si no pulsa nada o lo pulsa todo a la vez:
     	if((!derecha && !izquierda) || (derecha && izquierda)) {
     		
 	    	switch(lastSide) {
@@ -111,7 +141,7 @@ public class GameEngineLVL1 implements KeyListener {
 	    	case 'D':
 	    		
 	    		if(!saltando) {
-	    			
+	    			//Creamos secuencia de la animación de la respiración teniendo en cuenta el último lado hacia el que miraba
 	    			if(respirando==0) {
 	    				
 	    				switch(panel.getArrPosKeko()) {
@@ -133,8 +163,8 @@ public class GameEngineLVL1 implements KeyListener {
 	    						
 	    				}
 	    				respirando++;
-	    			} else if(respirando==1){respirando=2;}
-	    			else if(respirando==2){respirando=3;}
+	    			} else if(respirando==1){respirando=2;} //Lo que hacemos es hacer girar un contador al paso de las iteraciones 
+	    			else if(respirando==2){respirando=3;} //para dar un tiempo extra entre cada imagen de la animación
 	    			else {respirando=0;}
 	    		}
 	    		break;
@@ -303,9 +333,14 @@ public class GameEngineLVL1 implements KeyListener {
     private void ejecutarSalto() {
     	
          if(saltando){
+        	 
+        	 
+        	 //La secuencia de salto consiste en llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
+        	  
             if(contadorSalto>=0&&contadorSalto<5) {
             	compruebaDistanciaSalto=panel.isTop(20,ejeY,ejeX,prevX);
                 ejeY += compruebaDistanciaSalto;
+                //Y si su respuesta es menor a la petición, sabemos que hemos chocado, por lo que pasamos el contador al punto de comenzar a acelerar hacia abajo
                 if(!(compruebaDistanciaSalto==20)) {
                 	contadorSalto=16;
                 }
@@ -439,6 +474,7 @@ public class GameEngineLVL1 implements KeyListener {
         	 */
 
             try {
+            	//Ésto nos permite detener el hilo y darnos el control sobre cuántas veces iteramos por segundo (aproximadamente)
                 Thread.sleep(11);
             } catch (InterruptedException e) {
                 System.out.println("Error de interrupción del Thread.sleep en contador="+contador+". Error log: "+e);
