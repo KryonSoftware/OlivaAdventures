@@ -14,7 +14,7 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=0,prevX=0,cambio=0,respirando=0;
+    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0;
     private char lastSide='D';
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
@@ -134,6 +134,7 @@ public class GameEngineLVL1 implements KeyListener {
 	    				}
 	    				respirando++;
 	    			} else if(respirando==1){respirando=2;}
+	    			else if(respirando==2){respirando=3;}
 	    			else {respirando=0;}
 	    		}
 	    		break;
@@ -163,6 +164,7 @@ public class GameEngineLVL1 implements KeyListener {
 	    				}
 	    				respirando++;
 	    			} else if(respirando==1){respirando=2;}
+	    			else if(respirando==2){respirando=3;}
 	    			else {respirando=0;}
 	    		}
 	    		break;
@@ -203,7 +205,7 @@ public class GameEngineLVL1 implements KeyListener {
     					panel.setArrPosKeko(4);
     					break;
     					default:
-    						panel.setArrPosKeko(4);
+    						panel.setArrPosKeko(5);
     						
     				}
     				cambio++;
@@ -255,7 +257,7 @@ public class GameEngineLVL1 implements KeyListener {
     					panel.setArrPosKeko(0);
     					break;
     					default:
-    						panel.setArrPosKeko(0);
+    						panel.setArrPosKeko(1);
     						
     				}
     				cambio++;
@@ -302,16 +304,32 @@ public class GameEngineLVL1 implements KeyListener {
     	
          if(saltando){
             if(contadorSalto>=0&&contadorSalto<5) {
-                ejeY += 20;
+            	compruebaDistanciaSalto=panel.isTop(20,ejeY,ejeX,prevX);
+                ejeY += compruebaDistanciaSalto;
+                if(!(compruebaDistanciaSalto==20)) {
+                	contadorSalto=16;
+                }
             }
             else if(contadorSalto>4&&contadorSalto<8){
-                ejeY+=10;
+            	compruebaDistanciaSalto=panel.isTop(10,ejeY,ejeX,prevX);
+                ejeY+=compruebaDistanciaSalto;
+                if(!(compruebaDistanciaSalto==10)) {
+                	contadorSalto=16;
+                }
             }
             else if(contadorSalto>7&&contadorSalto<12){
-                ejeY+=5;
+            	compruebaDistanciaSalto=panel.isTop(5,ejeY,ejeX,prevX);
+                ejeY+=compruebaDistanciaSalto;
+                if(!(compruebaDistanciaSalto==5)) {
+                	contadorSalto=16;
+                }
             }
             else if(contadorSalto>11&&contadorSalto<15){
-                ejeY+=1;
+            	compruebaDistanciaSalto=panel.isTop(1,ejeY,ejeX,prevX);
+                ejeY+=compruebaDistanciaSalto;
+                if(!(compruebaDistanciaSalto==1)) {
+                	contadorSalto=16;
+                }
             }
             else if(contadorSalto==15){
                 prevY=720-ejeY;
@@ -354,7 +372,6 @@ public class GameEngineLVL1 implements KeyListener {
 	            }
 	            else{
 	            	ejeY=720-panel.getEjeY();
-	            	//prevY=720-ejeY;
 	                saltando=false;
 	            }
             }
@@ -377,33 +394,7 @@ public class GameEngineLVL1 implements KeyListener {
 
     }
     
-    /**for(int x=0;x<listaPlataformas.size();x++){
-       
-        	if(!foundPlatform) {
-
-	        		z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
-		            y=listaPlataformas.get(x).getEjeY();
-		            g=listaPlataformas.get(x).getAncho();
-
-		            if(350+30>=z&&350+15<=(z+g)) {
-
-		                if(720-ejeY+35>=y&&prevY<y){
-
-		                    colision=true;
-
-		                    foundPlatform=true;
-
-		                    this.y=y;
-
-		                }
-
-		            }
-
-	        	}
-
-
-        		
-        	}
+    /**
      * Método de inicialización del nuevo nivel. Contiene un bucle (infinito por ahora) que se encarga de ordenar el repintado mediante el llamado
      *  al método fps() cada 11 milisegundos.
      */

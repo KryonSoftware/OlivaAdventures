@@ -275,7 +275,7 @@ public class PanelLVL1 extends JPanel {
 
         		if(350+30>=z&&350+15<=(z+g)) {
 
-        			if(720-ejeY+35>=y&&prevY<y){
+        			if(720-ejeY+30>=y&&prevY<y){
 
         				colision=true;
 
@@ -321,17 +321,21 @@ public class PanelLVL1 extends JPanel {
 	            g=listaPlataformas.get(x).getAncho();
 	            k=listaPlataformas.get(x).getAlto();
 	
-	            if((350+30+s>=z-5&&350+s<=(z+g-15)) && (((720-this.y)>y)&&((720-this.y+34)<(y+k)))) {
+	            if((350+30+s>=z-5&&350+s<=(z+g-15))) {
 	            	
-	            	if(s>0) {
-	            		
-	            		 colision-=380-(z-s-15);
-	            		
-	            	}
-	            	else {
-	            		
-	            		 colision-=340-(z+g-s-15);
-	            		
+	            	if(((720-this.y)>y)&&((720-this.y-89)<(y+k))){
+	            	
+		            	if(s>0) {
+		            		
+		            		 colision-=380-(z-s-15);
+		            		
+		            	}
+		            	else {
+		            		
+		            		 colision-=340-(z+g-s-15);
+		            		
+		            	}
+	            	
 	            	}
 		            
 	        	}
@@ -343,6 +347,34 @@ public class PanelLVL1 extends JPanel {
         return colision;
     	
     }
+    
+    public int isTop(int newCabezaPos,int prevY,int ejeX,int prevX) {
+    	
+    	int y,z,g,k;
+        int colision=newCabezaPos;
+
+        for(int x=0;x<listaPlataformas.size();x++){
+
+        	z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
+        	y=listaPlataformas.get(x).getEjeY();
+        	g=listaPlataformas.get(x).getAncho();
+        	k=listaPlataformas.get(x).getAlto();
+
+        	if(350+30>=z&&350+15<=(z+g)) {
+
+        		if(720-prevY-89>=y+k&&720-prevY-newCabezaPos-89<y+k){
+
+        			colision=(720-prevY-89)-(y+k);
+
+        		}
+
+        	}
+
+        }
+        
+        return colision;
+    }
+    
     /**
      * Método para pintar nuestro panel
      */
@@ -389,6 +421,9 @@ public class PanelLVL1 extends JPanel {
         //Plataformas para saltar
         g.drawImage(plataforma1,700-x,300,100,35,this);
         addPlatformToList(700-x,300,100,35,Tipo.PLATFORM);
+        
+        g.drawImage(plataforma1,700-x,650,100,35,this);
+        addPlatformToList(700-x,650,100,35,Tipo.PLATFORM);
 
         g.drawImage(plataforma2,900-x,150,75,25,this);
         addPlatformToList(900-x,150,75,25,Tipo.PLATFORM);
