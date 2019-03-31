@@ -19,6 +19,7 @@ public class Main {
 		
 		GameEngineLVL1 ge=new GameEngineLVL1();
 		ge.arrancar();
+		
 	}
 
 }

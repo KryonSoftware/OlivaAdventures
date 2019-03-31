@@ -23,14 +23,22 @@ public class PanelLVL1 extends JPanel {
 	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
 	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
 	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
-	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2;
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1;
 	
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m1=0;
 
-    public int getArrPosReloj() {return arrPosReloj;}
+    public int getM1() {return m1;}
+
+	public void setM1(int m1) {this.m1 = m1;}
+
+	public int getArrPosMonstruo() {return arrPosMonstruo;}
+
+	public void setArrPosMonstruo(int arrPosMonstruo) {this.arrPosMonstruo = arrPosMonstruo;}
+
+	public int getArrPosReloj() {return arrPosReloj;}
 
 	public void setArrPosReloj(int arrPosReloj) {this.arrPosReloj = arrPosReloj;}
 
@@ -141,6 +149,7 @@ public class PanelLVL1 extends JPanel {
 			//arbol1=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
 			//arbol2=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
 		//	arbusto=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
+			suelo1=ImageIO.read(new File("resources/media/Suelos/cuadrado1.png"));
 			
           
        } catch (IOException e) {
@@ -375,20 +384,24 @@ public class PanelLVL1 extends JPanel {
         int colision=newCabezaPos;
 
         for(int x=0;x<listaPlataformas.size();x++){
-
-        	z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
-        	y=listaPlataformas.get(x).getEjeY();
-        	g=listaPlataformas.get(x).getAncho();
-        	k=listaPlataformas.get(x).getAlto();
-
-        	if(350+30>=z&&350+15<=(z+g)) {
-
-        		if(720-prevY-89>=y+k&&720-prevY-newCabezaPos-89<y+k){
-
-        			colision=(720-prevY-89)-(y+k);
-
-        		}
-
+        	
+	    	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+	
+	    	z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
+	    	y=listaPlataformas.get(x).getEjeY();
+	    	g=listaPlataformas.get(x).getAncho();
+	    	k=listaPlataformas.get(x).getAlto();
+		
+		    	if(350+30>=z&&350+15<=(z+g)) {
+		
+		    		if(720-prevY-89>=y+k&&720-prevY-newCabezaPos-89<y+k){
+		
+		    			colision=(720-prevY-89)-(y+k);
+		
+		    		}
+		
+		    	}
+        	
         	}
 
         }
@@ -412,7 +425,7 @@ public class PanelLVL1 extends JPanel {
         //Imagen móvil de fondo
         for(int ñ=-350;ñ<2975;ñ+=750) {
         	
-        	g.drawImage(fondo, ñ-(x/4), 0,750,720, this);
+        	g.drawImage(fondo, ñ-(x/4), 0,750,770, this);
         	
         }
 		//Imagen móvil de las nubes
@@ -432,8 +445,13 @@ public class PanelLVL1 extends JPanel {
         g.setColor(Color.green);
         g.fillRect(0-x,200,50,370);
         addPlatformToList(0-x,200,50,370,Tipo.BOTH);
-        g.setColor(Color.green);
-        g.fillRect(-350-x, 720, 10350, 50);
+        
+        //Nuestros bloques de suelo
+        for(int o=-350;o<10350;o+=90) {
+        	g.drawImage(suelo1,o-x,710,90,92,this);
+        }
+    //    g.setColor(Color.green);
+    //    g.fillRect(-350-x, 720, 10350, 50);
         addPlatformToList(-350-x,720,10350,50,Tipo.BOTH);
         g.setColor(Color.green);
         g.fillRect(1000-x,400,50,370);
@@ -454,6 +472,11 @@ public class PanelLVL1 extends JPanel {
 
         g.drawImage(plataforma1,160-x,600,100,35,this);
         addPlatformToList(160-x,600,100,35,Tipo.PLATFORM);
+        
+        //PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        g.drawImage(animMonstruo[arrPosMonstruo],700-x+m1,670,70,50,this);
+        //g.drawImage(animMonstruo[arrPosMonstruo],600-x,670,70,50,this);
+        //g.drawImage(animMonstruo[arrPosMonstruo],500-x,670,70,50,this);
 
         //Nuestro keko
         g.drawImage(animKeko[arrPosKeko],350,720-y-89,50,90,this);

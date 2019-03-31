@@ -6,6 +6,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
+import olivaAdventures.Enemy.typeEnemies;
+
 /**
  * Clase de motor del juego. Físicas. Lvl 1.
  * 
@@ -14,12 +16,15 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0;
+    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,
+    		movM1=5;
     private char lastSide='D';
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
     private Player player = new Player();
+    //Instanciamos los monstruos (EN PRUEBAS):
+    private Enemy mon1=new Enemy(typeEnemies.type1);
     //La música que usaremos:
 	Musica musica = new Musica();
  
@@ -415,12 +420,79 @@ public class GameEngineLVL1 implements KeyListener {
             contadorSalto++;
         }
     }
+    
+    private void animacionesOtros() {
+    	
+    	
+    	if(animacionesDe8==0) {
+    		switch(anMons) {
+        	case 0:
+        		panel.setArrPosMonstruo(anMons);
+        		anMons++;
+        		break;
+        	case 1:
+        		panel.setArrPosMonstruo(anMons);
+        		anMons++;
+        		break;
+        	case 2:
+        		panel.setArrPosMonstruo(anMons);
+        		anMons++;
+        		break;
+        	case 3:
+        		panel.setArrPosMonstruo(anMons);
+        		anMons++;
+        		break;
+        	case 4:
+        		panel.setArrPosMonstruo(anMons-2);
+        		anMons++;
+        		break;
+        	case 5:
+        		panel.setArrPosMonstruo(anMons-4);
+        		anMons++;
+        		break;
+        	case 6:
+        		panel.setArrPosMonstruo(anMons-6);
+        		anMons=0;
+        		break;
+        	default:;
+        	}
+    		animacionesDe8++;
+    	}
+    	else if(animacionesDe8==2) {
+    		animacionesDe8=0;
+    	}
+    	else {
+    		animacionesDe8++;
+    	}
+    	
+    }
 
+    private void movimientosMonstruos() {
+    	
+    	switch (mon1.getDecission(700-ejeX+panel.getM1(),670,350,720-ejeY-89)) {
+    	case 'D':
+    			panel.setM1(movM1);
+        		movM1+=5;
+    		break;
+    	case 'I':
+    			panel.setM1(movM1);
+        		movM1-=5;
+    		break;
+    		default:
+    			System.out.println("tontoooooo");
+    	}
+    	
+    }
+    
     /**
      * Método que ejecuta los demás métodos importantes y se encarga de decirle al panel las posiciones X e Y y ordenarle el repintado.
      */
     private void fps(){
-        
+    	
+    	movimientosMonstruos();
+    	
+        animacionesOtros();
+    	
     	PJMove();
 
     	ejecutarSalto();
@@ -439,6 +511,8 @@ public class GameEngineLVL1 implements KeyListener {
 
         boolean gameOver = false;
         int puntuacion = 360;
+        
+        musica.cargarMusicaFondo();
         
         while(!gameOver){
         	
@@ -464,6 +538,7 @@ public class GameEngineLVL1 implements KeyListener {
             	} else {
             		panel.setArrPosReloj(0);
             	}
+            	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         	}
         	
         	
