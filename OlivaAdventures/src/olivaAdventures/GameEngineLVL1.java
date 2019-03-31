@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 
-import olivaAdventures.Enemy.typeEnemies;
+//import olivaAdventures.Enemy.typeEnemies;
 
 /**
  * Clase de motor del juego. Físicas. Lvl 1.
@@ -24,7 +24,7 @@ public class GameEngineLVL1 implements KeyListener {
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
     private Player player = new Player();
     //Instanciamos los monstruos (EN PRUEBAS):
-    private Enemy mon1=new Enemy(typeEnemies.type1);
+    private Enemy mon1=new Enemy(Enemy.typeEnemies.type1);
     //La música que usaremos:
 	Musica musica = new Musica();
  

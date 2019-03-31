@@ -23,7 +23,7 @@ public class PanelLVL1 extends JPanel {
 	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
 	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
 	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
-	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1;
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2;
 	
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
@@ -150,6 +150,7 @@ public class PanelLVL1 extends JPanel {
 			//arbol2=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
 		//	arbusto=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
 			suelo1=ImageIO.read(new File("resources/media/Suelos/cuadrado1.png"));
+			suelo2=ImageIO.read(new File("resources/media/Suelos/cuadrado2.png"));
 			
           
        } catch (IOException e) {
@@ -448,7 +449,12 @@ public class PanelLVL1 extends JPanel {
         
         //Nuestros bloques de suelo
         for(int o=-350;o<10350;o+=90) {
-        	g.drawImage(suelo1,o-x,710,90,92,this);
+        	if(o%20==0) {
+        		g.drawImage(suelo2,o-x,710,90,92,this);
+        	}
+        	else {
+        		g.drawImage(suelo1,o-x,710,90,92,this);
+        	}
         }
     //    g.setColor(Color.green);
     //    g.fillRect(-350-x, 720, 10350, 50);

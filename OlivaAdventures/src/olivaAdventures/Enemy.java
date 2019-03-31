@@ -82,9 +82,9 @@ public class Enemy {
     //FUNCTIONS
     public char getDecission(int posXEnemy, int posYEnemy, int posXPlayer, int posYPlayer){
 
-        if (posXEnemy > posXPlayer){
+        if (posXEnemy > posXPlayer+5){
             return 'I';
-        } else if (posXPlayer > posXEnemy) {
+        } else if (posXPlayer-5 > posXEnemy) {
             return 'D';
         }
 
