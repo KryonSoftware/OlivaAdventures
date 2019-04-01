@@ -11,6 +11,7 @@ public class Enemy {
         /* Type of enemies */
     enum typeEnemies{
         type1,
+        typeTrap,
         type2,
         boss
     }
@@ -21,6 +22,10 @@ public class Enemy {
             case type1:
                 setLives((byte) 5);
                 setTypeEnemy(String.valueOf(1));
+                break;
+            case typeTrap:
+                setLives((byte) 120);
+                setTypeEnemy("typeTrap");
                 break;
             case type2:
                 setLives((byte) 10);
@@ -72,6 +77,8 @@ public class Enemy {
         switch (typeEnemy){
             case "1":
                 energy = 10; break;
+            case "typeTrap":
+                energy = 80000000; break;
             case "2":
                 energy = 20; break;
             case "boss":
@@ -139,5 +146,7 @@ public class Enemy {
                 "\nEnergy = " + getEnergy() +
                 "\n}\n";
     }
+
+
 
 }

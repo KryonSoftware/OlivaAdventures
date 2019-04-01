@@ -42,7 +42,7 @@ public class Musica {
         try {
 
             muscia.abrirFichero("resources/media/sonido/musica_fondo/" +
-                    "panama_8_bit.mp3");
+                    "welcome_to_the_jungle_8_bit.mp3");
             muscia.play();
 
         } catch (Exception e) {

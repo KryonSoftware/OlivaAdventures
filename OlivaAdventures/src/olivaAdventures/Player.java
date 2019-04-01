@@ -13,7 +13,7 @@ public class Player {
     //CONSTRUCTOR
     public Player(){
         this.lives = 3;
-        this.energy = 30;
+        this.energy = 50;
         this.dead = false;
     }
 

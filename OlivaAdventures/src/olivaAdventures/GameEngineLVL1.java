@@ -17,15 +17,17 @@ public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
     private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,
-    		movM1=5;
+    		movM11=5,movM12=5;
     private char lastSide='D';
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
     private Player player = new Player();
     //Instanciamos los monstruos (EN PRUEBAS):
-    private Enemy mon1=new Enemy(Enemy.typeEnemies.type1);
-    //La música que usaremos:
+    //private Enemy enemyType1_1 = new Enemy(Enemy.typeEnemies.type1);
+    private Enemies_lvl1 enemies = new Enemies_lvl1();
+
+	//La música que usaremos:
 	Musica musica = new Musica();
  
     /*
@@ -106,7 +108,7 @@ public class GameEngineLVL1 implements KeyListener {
             case KeyEvent.VK_W:
                 arriba=true;
                 break;
-                //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
+                //Implementar enemyType1_1 el futuro los casos de las teclas de activación de golpe CaC y/o disparo
             default:;
         }
 
@@ -128,15 +130,18 @@ public class GameEngineLVL1 implements KeyListener {
         case KeyEvent.VK_W:
             arriba=false;
             break;
-            //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
+        case KeyEvent.VK_SPACE:
+        	musica.cargarSonidoPistola();
+        	break;
+            //Implementar enemyType1_1 el futuro los casos de las teclas de activación de golpe CaC y/o disparo
         default:;
         }
     	cambio=0;
     }
     
     /**
-     * Método para leer las booleanas y en función de su estado, alterar los movimientos de nuestro personaje 
-     * (sus coordenadas de colocación) ANTES de repintarlo en la pantalla.
+     * Método para leer las booleanas y enemyType1_1 función de su estado, alterar los movimientos de nuestro personaje
+     * (sus coordenadas de colocación) ANTES de repintarlo enemyType1_1 la pantalla.
      */
     private void PJMove() {
     	
@@ -148,7 +153,7 @@ public class GameEngineLVL1 implements KeyListener {
 	    	case 'D':
 	    		
 	    		if(!saltando) {
-	    			//Creamos secuencia de la animación de la respiración teniendo en cuenta el último lado hacia el que miraba
+	    			//Creamos secuencia de la animación de la respiración teniendo enemyType1_1 cuenta el último lado hacia el que miraba
 	    			if(respirando==0) {
 	    				
 	    				switch(panel.getArrPosKeko()) {
@@ -251,7 +256,7 @@ public class GameEngineLVL1 implements KeyListener {
     			
     			lastSide='I';
     			
-    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
+    			//Nos desplazamos enemyType1_1 el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX-=-panel.isWall(-10);
             	if(panel.isGround(ejeX, ejeY, prevY,prevX)) {
             		
@@ -303,7 +308,7 @@ public class GameEngineLVL1 implements KeyListener {
     			
     			lastSide='D';
     			
-    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
+    			//Nos desplazamos enemyType1_1 el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX+=panel.isWall(10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
@@ -327,7 +332,7 @@ public class GameEngineLVL1 implements KeyListener {
     /**
      * Método simple que nos reinicializa a cero el contador de Salto y activa el saltando. 
      * @TODO Habrá que modificarlo y pasarle un parámetro para reutilizarlo
-     * en los suelos que desaparecen o como método también para comporbar si debería caerse. Posible cambio de nombre a gravedad.
+     * enemyType1_1 los suelos que desaparecen o como método también para comporbar si debería caerse. Posible cambio de nombre a gravedad.
      */
     private void saltar(){
         contadorSalto=0;
@@ -342,7 +347,7 @@ public class GameEngineLVL1 implements KeyListener {
          if(saltando){
         	 
         	 
-        	 //La secuencia de salto consiste en llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
+        	 //La secuencia de salto consiste enemyType1_1 llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
         	  
             if(contadorSalto>=0&&contadorSalto<5) {
             	compruebaDistanciaSalto=panel.isTop(20,ejeY,ejeX,prevX);
@@ -468,21 +473,42 @@ public class GameEngineLVL1 implements KeyListener {
     }
 
     private void movimientosMonstruos() {
-    	
-    	switch (mon1.getDecission(700-ejeX+panel.getM1(),670,350,720-ejeY-89)) {
-    	case 'D':
-    			panel.setM1(movM1);
-        		movM1+=5;
-    		break;
-    	case 'I':
-    			panel.setM1(movM1);
-        		movM1-=5;
-    		break;
-    		default:
-    			System.out.println("tontoooooo");
-    	}
-    	
+
+    	if (!Enemies_lvl1.enemies.get(0).isDead()){
+			switch (Enemies_lvl1.enemies.get(0).getDecission(panel.getPosIniEnemy1_1()-ejeX+panel.getM11(),670,350,720-ejeY-89)) {
+				case 'D':
+					movM11+=5;
+					panel.setM11(movM11);
+					break;
+				case 'I':
+					movM11-=5;
+					panel.setM11(movM11);
+					break;
+				default:
+					player.doDamge(Enemies_lvl1.enemies.get(0));
+					//System.out.println(Enemies_lvl1.enemies.get(0).toString());
+			}
+		}
+    	if (!Enemies_lvl1.enemies.get(1).isDead()){
+			switch (Enemies_lvl1.enemies.get(1).getDecission(panel.getPosIniEnemy1_2()-ejeX+panel.getM12(),670,350,720-ejeY-89)) {
+				case 'D':
+					movM12+=5;
+					panel.setM12(movM12);
+					break;
+				case 'I':
+					movM12-=5;
+					panel.setM12(movM12);
+					break;
+				default:
+					player.doDamge(Enemies_lvl1.enemies.get(1));
+					//System.out.println(Enemies_lvl1.enemies.get(1).toString());
+			}
+		}
+
     }
+
+
+
     
     /**
      * Método que ejecuta los demás métodos importantes y se encarga de decirle al panel las posiciones X e Y y ordenarle el repintado.
@@ -540,29 +566,25 @@ public class GameEngineLVL1 implements KeyListener {
             	}
             	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         	}
-        	
-        	
-        	
-        	/*
-        	 * ESTO SE DEJA COMENTADO A LA ESPERA DE LAS IMPLEMENTACIONES DEFINITIVAS DE ENERGÍAS Y CAMBIOS DE PUNTUACIÓN
-        	 * 
-        	 * if(puntuacion <= 0 || player.getEnergy() <= 0) gameOver = true;
-        	 * 
-        	 */
+
+        	if(puntuacion <= 0 || player.getEnergy() <= 0) gameOver = true;
+
 
             try {
             	//Ésto nos permite detener el hilo y darnos el control sobre cuántas veces iteramos por segundo (aproximadamente)
                 Thread.sleep(11);
             } catch (InterruptedException e) {
-                System.out.println("Error de interrupción del Thread.sleep en contador="+contador+". Error log: "+e);
+                System.out.println("Error de interrupción del Thread.sleep enemyType1_1 contador="+contador+". Error log: "+e);
             }
 
-            //Test por consola reducción de puntuación basada en el tiempo transcurrido:
+            //Test por consola reducción de puntuación basada enemyType1_1 el tiempo transcurrido:
             if(contador%90==0){
                 puntuacion--;
                 System.out.println(puntuacion);
             }
             contador++;
         }
+
+		System.out.println("HAS MUERTO");
     }
 }

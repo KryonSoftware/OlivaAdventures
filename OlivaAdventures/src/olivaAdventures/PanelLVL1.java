@@ -28,11 +28,29 @@ public class PanelLVL1 extends JPanel {
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m1=0;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m11=0,m12=0,posIniKeko=720-89,posIniEnemy1_1=700,posIniEnemy1_2=1700;
+    
+    public int getPosIniEnemy1_2() {return posIniEnemy1_2;}
 
-    public int getM1() {return m1;}
+	public void setPosIniEnemy1_2(int posIniEnemy1_2) {this.posIniEnemy1_2 = posIniEnemy1_2;}
 
-	public void setM1(int m1) {this.m1 = m1;}
+	private Enemies_lvl1 enemies=new Enemies_lvl1();
+
+    public int getM12() {return m12;}
+
+	public void setM12(int m12) {this.m12 = m12;}
+
+	public int getPosIniKeko() {return posIniKeko;}
+
+	public void setPosIniKeko(int posIniKeko) {this.posIniKeko = posIniKeko;}
+
+	public int getPosIniEnemy1_1() {return posIniEnemy1_1;}
+
+	public void setPosIniEnemy1_1(int posIniEnemy1_1) {this.posIniEnemy1_1 = posIniEnemy1_1;}
+
+	public int getM11() {return m11;}
+
+	public void setM11(int m1) {this.m11 = m1;}
 
 	public int getArrPosMonstruo() {return arrPosMonstruo;}
 
@@ -346,7 +364,7 @@ public class PanelLVL1 extends JPanel {
 	
 	            if((350+30+s>=z-5&&350+s<=(z+g-15))) {
 	            	
-	            	if(((720-this.y)>y)&&((720-this.y-89)<(y+k))){
+	            	if(((720-this.y)>y)&&((posIniKeko-this.y)<(y+k))){
 	            	
 		            	if(s>0) {
 		            		
@@ -395,9 +413,9 @@ public class PanelLVL1 extends JPanel {
 		
 		    	if(350+30>=z&&350+15<=(z+g)) {
 		
-		    		if(720-prevY-89>=y+k&&720-prevY-newCabezaPos-89<y+k){
+		    		if(posIniKeko-prevY>=y+k&&posIniKeko-prevY-newCabezaPos<y+k){
 		
-		    			colision=(720-prevY-89)-(y+k);
+		    			colision=(posIniKeko-prevY)-(y+k);
 		
 		    		}
 		
@@ -415,87 +433,89 @@ public class PanelLVL1 extends JPanel {
      */
     public void paint(Graphics g) {
 
-    	//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
-        listaPlataformas.clear();
+		//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
+		listaPlataformas.clear();
 
-        //Fondo por ahora (se sustituirá con una imagen y se lo hará desplazarse también)
-		
-        g.setColor(Color.gray);
-        g.fillRect(0,0,1000,1000);
-		
-        //Imagen móvil de fondo
-        for(int ñ=-350;ñ<2975;ñ+=750) {
-        	
-        	g.drawImage(fondo, ñ-(x/4), 0,750,770, this);
-        	
-        }
+		//Fondo por ahora (se sustituirá con una imagen y se lo hará desplazarse también)
+
+		g.setColor(Color.gray);
+		g.fillRect(0, 0, 1000, 1000);
+
+		//Imagen móvil de fondo
+		for (int ñ = -350; ñ < 2975; ñ += 750) {
+
+			g.drawImage(fondo, ñ - (x / 4), 0, 750, 770, this);
+
+		}
 		//Imagen móvil de las nubes
-        g.drawImage(nube1,500-(x/2),200,100,50,this);
-        g.drawImage(nube2,700-(x/3),100,50,30,this);
-        g.drawImage(nube1,1200-(x/2),75,100,50,this);
-        g.drawImage(nube2,1500-(x/3),100,50,30,this);
-        g.drawImage(nube1,1800-(x/2),150,100,50,this);
-        g.drawImage(nube2,2500-(x/3),180,50,30,this);
-        g.drawImage(nube1,3230-(x/2),60,100,50,this);
-        g.drawImage(nube2,3950-(x/3),100,50,30,this);
-        g.drawImage(nube1,4500-(x/2),55,100,50,this);
-        g.drawImage(nube1,3800-(x/2),80,100,50,this);
-        g.drawImage(nube1,2000-(x/2),120,100,50,this);
+		g.drawImage(nube1, 500 - (x / 2), 200, 100, 50, this);
+		g.drawImage(nube2, 700 - (x / 3), 100, 50, 30, this);
+		g.drawImage(nube1, 1200 - (x / 2), 75, 100, 50, this);
+		g.drawImage(nube2, 1500 - (x / 3), 100, 50, 30, this);
+		g.drawImage(nube1, 1800 - (x / 2), 150, 100, 50, this);
+		g.drawImage(nube2, 2500 - (x / 3), 180, 50, 30, this);
+		g.drawImage(nube1, 3230 - (x / 2), 60, 100, 50, this);
+		g.drawImage(nube2, 3950 - (x / 3), 100, 50, 30, this);
+		g.drawImage(nube1, 4500 - (x / 2), 55, 100, 50, this);
+		g.drawImage(nube1, 3800 - (x / 2), 80, 100, 50, this);
+		g.drawImage(nube1, 2000 - (x / 2), 120, 100, 50, this);
 
-        //Plataforma suelo
-        g.setColor(Color.green);
-        g.fillRect(0-x,200,50,370);
-        addPlatformToList(0-x,200,50,370,Tipo.BOTH);
-        
-        //Nuestros bloques de suelo
-        for(int o=-350;o<10350;o+=90) {
-        	if(o%20==0) {
-        		g.drawImage(suelo2,o-x,710,90,92,this);
-        	}
-        	else {
-        		g.drawImage(suelo1,o-x,710,90,92,this);
-        	}
-        }
-    //    g.setColor(Color.green);
-    //    g.fillRect(-350-x, 720, 10350, 50);
-        addPlatformToList(-350-x,720,10350,50,Tipo.BOTH);
-        g.setColor(Color.green);
-        g.fillRect(1000-x,400,50,370);
-        addPlatformToList(1000-x,400,50,370,Tipo.BOTH);
+		//Plataforma suelo
+		g.setColor(Color.green);
+		g.fillRect(0 - x, 200, 50, 370);
+		addPlatformToList(0 - x, 200, 50, 370, Tipo.BOTH);
 
-        //Plataformas para saltar
-        g.drawImage(plataforma1,700-x,300,100,35,this);
-        addPlatformToList(700-x,300,100,35,Tipo.PLATFORM);
-        
-        g.drawImage(plataforma1,700-x,650,100,35,this);
-        addPlatformToList(700-x,650,100,35,Tipo.PLATFORM);
+		//Nuestros bloques de suelo
+		for (int o = -350; o < 10350; o += 90) {
+			if (o % 20 == 0) {
+				g.drawImage(suelo2, o - x, 710, 90, 92, this);
+			} else {
+				g.drawImage(suelo1, o - x, 710, 90, 92, this);
+			}
+		}
+		//    g.setColor(Color.green);
+		//    g.fillRect(-350-x, 720, 10350, 50);
+		addPlatformToList(-350 - x, 720, 10350, 50, Tipo.BOTH);
+		g.setColor(Color.green);
+		g.fillRect(1000 - x, 400, 50, 370);
+		addPlatformToList(1000 - x, 400, 50, 370, Tipo.BOTH);
 
-        g.drawImage(plataforma2,900-x,150,75,25,this);
-        addPlatformToList(900-x,150,75,25,Tipo.PLATFORM);
+		//Plataformas para saltar
+		g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
+		addPlatformToList(700 - x, 300, 100, 35, Tipo.PLATFORM);
 
-        g.drawImage(plataforma1,450-x,450,100,35,this);
-        addPlatformToList(450-x,450,100,35,Tipo.PLATFORM);
+		g.drawImage(plataforma1, 700 - x, 650, 100, 35, this);
+		addPlatformToList(700 - x, 650, 100, 35, Tipo.PLATFORM);
 
-        g.drawImage(plataforma1,160-x,600,100,35,this);
-        addPlatformToList(160-x,600,100,35,Tipo.PLATFORM);
-        
-        //PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        g.drawImage(animMonstruo[arrPosMonstruo],700-x+m1,670,70,50,this);
-        //g.drawImage(animMonstruo[arrPosMonstruo],600-x,670,70,50,this);
-        //g.drawImage(animMonstruo[arrPosMonstruo],500-x,670,70,50,this);
+		g.drawImage(plataforma2, 900 - x, 150, 75, 25, this);
+		addPlatformToList(900 - x, 150, 75, 25, Tipo.PLATFORM);
 
-        //Nuestro keko
-        g.drawImage(animKeko[arrPosKeko],350,720-y-89,50,90,this);
-        
-      //Imagen provisional del hud
-  		g.drawImage(hud,0,698,1010,350,this);
-  		//Aquí habrá que programar las reproducciones las barras de vida
-  		g.drawImage(animBarra[arrPosBarra], 10,790,300,160,this);
-  		//Aquí habrá que programar las reproducciones de los corazones
-  		g.drawImage(animCorazones[arrPosCor], 725,835,250,75,this);
-  		//Aquí habrá que programar las reproducciones de los corazones
-  		g.drawImage(animReloj[arrPosReloj],475,820,75,100,this);
-    
+		g.drawImage(plataforma1, 450 - x, 450, 100, 35, this);
+		addPlatformToList(450 - x, 450, 100, 35, Tipo.PLATFORM);
 
-    }
+		g.drawImage(plataforma1, 160 - x, 600, 100, 35, this);
+		addPlatformToList(160 - x, 600, 100, 35, Tipo.PLATFORM);
+
+		//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		//Pom 1:
+		if(!Enemies_lvl1.enemies.get(0).isDead()) {
+			g.drawImage(animMonstruo[arrPosMonstruo], posIniEnemy1_1 - x + m11, 670, 70, 50, this);
+		}
+		//Pom 2:
+		if(!Enemies_lvl1.enemies.get(1).isDead()) {
+			g.drawImage(animMonstruo[arrPosMonstruo], posIniEnemy1_2 - x + m12, 670, 70, 50, this);
+		}
+		//Nuestro keko
+		g.drawImage(animKeko[arrPosKeko], 350, posIniKeko-y, 50, 90, this);
+
+		//Imagen provisional del hud
+		g.drawImage(hud, 0, 698, 1010, 350, this);
+		//Aquí habrá que programar las reproducciones las barras de vida
+		g.drawImage(animBarra[arrPosBarra], 10, 790, 300, 160, this);
+		//Aquí habrá que programar las reproducciones de los corazones
+		g.drawImage(animCorazones[arrPosCor], 725, 835, 250, 75, this);
+		//Aquí habrá que programar las reproducciones de los corazones
+		g.drawImage(animReloj[arrPosReloj], 475, 820, 75, 100, this);
+	}
+
 }
