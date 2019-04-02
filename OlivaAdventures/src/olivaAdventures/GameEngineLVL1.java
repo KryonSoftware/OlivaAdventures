@@ -2,8 +2,6 @@ package olivaAdventures;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-//import java.util.ArrayList;
-
 import javax.swing.*;
 
 //import olivaAdventures.Enemy.typeEnemies;
@@ -15,17 +13,15 @@ import javax.swing.*;
  */
 public class GameEngineLVL1 implements KeyListener {
 
-    private boolean saltando=false,arriba=false,derecha=false,izquierda=false;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false;
     private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,
     		movM11=5,movM12=5;
     private char lastSide='D';
+    
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
     //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
     private Player player = new Player();
-    //Instanciamos los monstruos (EN PRUEBAS):
-    //private Enemy enemyType1_1 = new Enemy(Enemy.typeEnemies.type1);
-    private Enemies_lvl1 enemies = new Enemies_lvl1();
 
 	//La música que usaremos:
 	Musica musica = new Musica();
@@ -108,8 +104,15 @@ public class GameEngineLVL1 implements KeyListener {
             case KeyEvent.VK_W:
                 arriba=true;
                 break;
-                //Implementar enemyType1_1 el futuro los casos de las teclas de activación de golpe CaC y/o disparo
-            default:;
+            case KeyEvent.VK_ESCAPE:
+            	if(pausa) {
+            		pausa=false;
+            	}
+            	else {
+            		pausa=true;
+            	}
+            	break;
+            default://Implementar enemyType1_1 el futuro los casos de las teclas de activación de golpe CaC y/o disparo;
         }
 
     }
@@ -486,7 +489,6 @@ public class GameEngineLVL1 implements KeyListener {
 					break;
 				default:
 					player.doDamge(Enemies_lvl1.enemies.get(0));
-					//System.out.println(Enemies_lvl1.enemies.get(0).toString());
 			}
 		}
     	if (!Enemies_lvl1.enemies.get(1).isDead()){
@@ -501,13 +503,26 @@ public class GameEngineLVL1 implements KeyListener {
 					break;
 				default:
 					player.doDamge(Enemies_lvl1.enemies.get(1));
-					//System.out.println(Enemies_lvl1.enemies.get(1).toString());
 			}
 		}
 
     }
 
-
+    private void pausa() {
+   
+    	if(pausa) {
+    		panel.setPause(true);
+    		panel.repaint();
+    	}
+    	while(pausa) {
+    		System.out.println("pausa");
+    	}
+    	if(!pausa) {
+    		panel.setPause(false);
+    		panel.repaint();
+    	}
+    	
+    }
 
     
     /**
@@ -525,7 +540,7 @@ public class GameEngineLVL1 implements KeyListener {
         
         panel.setEjeX(ejeX);
         panel.setEjeY(ejeY);
-        panel.repaint();
+        pausa();
 
     }
     
@@ -567,24 +582,23 @@ public class GameEngineLVL1 implements KeyListener {
             	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         	}
 
-        	if(puntuacion <= 0 || player.getEnergy() <= 0) gameOver = true;
-
+        	if(puntuacion <= 0 || player.getEnergy() <= 0) {gameOver = true;}
 
             try {
             	//Ésto nos permite detener el hilo y darnos el control sobre cuántas veces iteramos por segundo (aproximadamente)
                 Thread.sleep(11);
             } catch (InterruptedException e) {
-                System.out.println("Error de interrupción del Thread.sleep enemyType1_1 contador="+contador+". Error log: "+e);
+                System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
             }
 
-            //Test por consola reducción de puntuación basada enemyType1_1 el tiempo transcurrido:
+            //Test por consola reducción de puntuación basada el tiempo transcurrido:
             if(contador%90==0){
                 puntuacion--;
                 System.out.println(puntuacion);
             }
             contador++;
         }
-
-		System.out.println("HAS MUERTO");
+        
     }
+    
 }

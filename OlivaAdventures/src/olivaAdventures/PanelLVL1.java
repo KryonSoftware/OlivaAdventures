@@ -23,26 +23,34 @@ public class PanelLVL1 extends JPanel {
 	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
 	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
 	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
-	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2;
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,arbol1,arbol2,arbusto,pausa;
 	
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m11=0,m12=0,posIniKeko=720-89,posIniEnemy1_1=700,posIniEnemy1_2=1700;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m11=0,m12=0,posYIniKeko=720-89,posXIniKeko=350,posIniEnemy1_1=700,posIniEnemy1_2=1700;
     
-    public int getPosIniEnemy1_2() {return posIniEnemy1_2;}
+    private boolean pause=false;
+    
+    public boolean isPause() {return pause;}
+
+	public void setPause(boolean pause) {this.pause = pause;}
+
+	public int getPosXIniKeko() {return posXIniKeko;}
+
+	public void setPosXIniKeko(int posXIniKeko) {this.posXIniKeko = posXIniKeko;}
+
+	public int getPosIniEnemy1_2() {return posIniEnemy1_2;}
 
 	public void setPosIniEnemy1_2(int posIniEnemy1_2) {this.posIniEnemy1_2 = posIniEnemy1_2;}
-
-	private Enemies_lvl1 enemies=new Enemies_lvl1();
 
     public int getM12() {return m12;}
 
 	public void setM12(int m12) {this.m12 = m12;}
 
-	public int getPosIniKeko() {return posIniKeko;}
+	public int getPosYIniKeko() {return posYIniKeko;}
 
-	public void setPosIniKeko(int posIniKeko) {this.posIniKeko = posIniKeko;}
+	public void setPosYIniKeko(int posIniKeko) {this.posYIniKeko = posIniKeko;}
 
 	public int getPosIniEnemy1_1() {return posIniEnemy1_1;}
 
@@ -164,11 +172,12 @@ public class PanelLVL1 extends JPanel {
 			plataforma2=ImageIO.read(new File("resources/media/plataforma/plataformaMediana.png"));
 			nube1=ImageIO.read(new File("resources/media/Mapa/Nubes/nubeGrande.png"));
 			nube2=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
-			//arbol1=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
-			//arbol2=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
-		//	arbusto=ImageIO.read(new File("resources/media/Mapa/Nubes/nubePeque.png"));
+			arbol1=ImageIO.read(new File("resources/media/Mapa/Arboles/arbolGrande.png"));
+			arbol2=ImageIO.read(new File("resources/media/Mapa/Arboles/arbolMediano.png"));
+			arbusto=ImageIO.read(new File("resources/media/Mapa/Arboles/arbustito.png"));
 			suelo1=ImageIO.read(new File("resources/media/Suelos/cuadrado1.png"));
 			suelo2=ImageIO.read(new File("resources/media/Suelos/cuadrado2.png"));
+			pausa=ImageIO.read(new File("resources/media/Hud/pausa.png"));
 			
           
        } catch (IOException e) {
@@ -335,8 +344,6 @@ public class PanelLVL1 extends JPanel {
 
         	}
 
-
-
         }
 
         return colision;
@@ -364,7 +371,7 @@ public class PanelLVL1 extends JPanel {
 	
 	            if((350+30+s>=z-5&&350+s<=(z+g-15))) {
 	            	
-	            	if(((720-this.y)>y)&&((posIniKeko-this.y)<(y+k))){
+	            	if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
 	            	
 		            	if(s>0) {
 		            		
@@ -413,9 +420,9 @@ public class PanelLVL1 extends JPanel {
 		
 		    	if(350+30>=z&&350+15<=(z+g)) {
 		
-		    		if(posIniKeko-prevY>=y+k&&posIniKeko-prevY-newCabezaPos<y+k){
+		    		if(posYIniKeko-prevY>=y+k&&posYIniKeko-prevY-newCabezaPos<y+k){
 		
-		    			colision=(posIniKeko-prevY)-(y+k);
+		    			colision=(posYIniKeko-prevY)-(y+k);
 		
 		    		}
 		
@@ -473,12 +480,8 @@ public class PanelLVL1 extends JPanel {
 				g.drawImage(suelo1, o - x, 710, 90, 92, this);
 			}
 		}
-		//    g.setColor(Color.green);
-		//    g.fillRect(-350-x, 720, 10350, 50);
+		//Colisión del suelo:
 		addPlatformToList(-350 - x, 720, 10350, 50, Tipo.BOTH);
-		g.setColor(Color.green);
-		g.fillRect(1000 - x, 400, 50, 370);
-		addPlatformToList(1000 - x, 400, 50, 370, Tipo.BOTH);
 
 		//Plataformas para saltar
 		g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
@@ -506,9 +509,16 @@ public class PanelLVL1 extends JPanel {
 			g.drawImage(animMonstruo[arrPosMonstruo], posIniEnemy1_2 - x + m12, 670, 70, 50, this);
 		}
 		//Nuestro keko
-		g.drawImage(animKeko[arrPosKeko], 350, posIniKeko-y, 50, 90, this);
+		g.drawImage(animKeko[arrPosKeko], posXIniKeko, posYIniKeko-y, 50, 90, this);
+		
+		//Árboles colisionables:
+		g.drawImage(arbol1,918-x,355,200,370,this);
+		addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
+		
+		//Árboles no colisionables:
+		g.drawImage(arbusto,500-x,660,70,70,this);
 
-		//Imagen provisional del hud
+		//Imagen del hud
 		g.drawImage(hud, 0, 698, 1010, 350, this);
 		//Aquí habrá que programar las reproducciones las barras de vida
 		g.drawImage(animBarra[arrPosBarra], 10, 790, 300, 160, this);
@@ -516,6 +526,11 @@ public class PanelLVL1 extends JPanel {
 		g.drawImage(animCorazones[arrPosCor], 725, 835, 250, 75, this);
 		//Aquí habrá que programar las reproducciones de los corazones
 		g.drawImage(animReloj[arrPosReloj], 475, 820, 75, 100, this);
+		
+		//Pantalla de pausa
+		if(pause) {
+			g.drawImage(pausa,0,0,1000,1000,this);
+		}
 	}
 
 }
