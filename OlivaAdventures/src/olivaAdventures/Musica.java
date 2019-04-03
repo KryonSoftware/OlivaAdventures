@@ -8,6 +8,7 @@ public class Musica {
 
     /* ATTRIBUTES */
     private BasicPlayer player;
+    //Musica fondo = new Musica();
 
     /* CONSTRUCTOR */
     public Musica() {
@@ -38,12 +39,11 @@ public class Musica {
     /* FUNCTIONS */
     public void cargarMusicaFondo(){
 
-        Musica muscia = new Musica();
         try {
 
-            muscia.abrirFichero("resources/media/sonido/musica_fondo/" +
-                    "welcome_to_the_jungle_8_bit.mp3");
-            muscia.play();
+        	player.open(new File("resources/media/sonido/musica_fondo/" +
+                    "welcome_to_the_jungle_8_bit.mp3"));
+            player.play();
 
         } catch (Exception e) {
             e.printStackTrace();
