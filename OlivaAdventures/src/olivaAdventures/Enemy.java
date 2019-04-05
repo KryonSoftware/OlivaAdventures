@@ -8,6 +8,20 @@ public class Enemy {
     private boolean dead = false;
     private int energy;
 
+    //Movimientos de los enemigos para sus IAs
+    private int posXEnemy;
+    private int posYEnemy;
+    private int moveEnemy;
+    private boolean jumping=false;
+    private int contJumping;
+    private int prevYEnemy;
+
+    private boolean wakeUp;
+    private int contador;
+
+    private int entidad;
+
+
         /* Type of enemies */
     enum typeEnemies{
         type1,
@@ -17,7 +31,7 @@ public class Enemy {
     }
 
     //CONSTRUCTOR
-    Enemy(typeEnemies typeEnemies){
+    Enemy(typeEnemies typeEnemies, int posX, int posY){
         switch (typeEnemies){
             case type1:
                 setLives((byte) 5);
@@ -37,42 +51,90 @@ public class Enemy {
                 break;
         }
         /*
-        Cuando instanciamos un enemigo directamente llamaremos al setter de energia, esta se encargará de darle el valor
+        Cuando instanciamos un enemigo directamente llamaremos al setter de energia, posiciones y su entidad esta se encargará de darle el valor
         adecuado de energia según el tipo de enemigo
          */
+        this.posXEnemy = posX;
+        this.posYEnemy = posY;
         setEnergy();
+        setEntidad();
     }
 
     //GETTERS AND SETTERS
-    public byte getLives() {
+    byte getLives() {
         return lives;
     }
 
-    public void setLives(byte lives) {
+    void setLives(byte lives) {
         this.lives = lives;
     }
 
-    public String getTypeEnemy() {
+    String getTypeEnemy() {
         return typeEnemy;
     }
 
-    public void setTypeEnemy(String typeEnemy) {
+    private void setTypeEnemy(String typeEnemy) {
         this.typeEnemy = typeEnemy;
     }
 
-    public boolean isDead() {
+    boolean isDead() {
         return dead;
     }
 
-    public void setDead(boolean dead) {
+    void setDead(boolean dead) {
         this.dead = dead;
     }
 
-    public int getEnergy() {
+    private int getEnergy() {
         return energy;
     }
 
-    public void setEnergy(){
+    public int getPosXEnemy() { return posXEnemy; }
+
+    public void setPosXEnemy(int posXEnemy) { this.posXEnemy = posXEnemy; }
+
+    public int getPosYEnemy() { return posYEnemy; }
+
+    public void setPosYEnemy(int posYEnemy) { this.posYEnemy = posYEnemy; }
+
+    public int getMoveEnemy() { return moveEnemy; }
+
+    public void setMoveEnemy(int moveEnemy) { this.moveEnemy = moveEnemy; }
+
+    public boolean isJumping() { return jumping; }
+
+    public void setJumping(boolean jumping) { this.jumping = jumping; }
+
+    public int getContJumping() { return contJumping; }
+
+    public void setContJumping(int contJumping) { this.contJumping = contJumping; }
+
+    public boolean isWakeUp() { return wakeUp; }
+
+    public void setWakeUp(boolean wakeUp) { this.wakeUp = wakeUp; }
+
+    public int getEntidad() { return entidad; }
+
+    public int getPrevYEnemy() { return prevYEnemy; }
+
+    public void setPrevYEnemy(int prevYEnemy) { this.prevYEnemy = prevYEnemy; }
+
+    public void setEntidad() {
+
+        switch (typeEnemy){
+            case "1":
+                this.entidad = 2; break;
+            case "2":
+                this.entidad = 3; break;
+            case "boss":
+                this.entidad = 4; break;
+            case "typeTrap":
+                this.entidad = 5; break;
+        }
+
+    }
+
+    private void setEnergy(){
         //Según el tipo de enemigo se le dará un valor determinado de energia
         switch (typeEnemy){
             case "1":
@@ -86,14 +148,22 @@ public class Enemy {
         }
     }
 
-    //FUNCTIONS
+    //FUNCTIONS//
+
     public char getDecission(int posXEnemy, int posYEnemy, int posXPlayer, int posYPlayer){
 
-        if (posXEnemy > posXPlayer+5){
-            return 'I';
-        } else if (posXPlayer-5 > posXEnemy) {
-            return 'D';
+        if (/*contador % 150 == 0 && */this.typeEnemy.equals("boss")){
+            generarEnemigo();
+        } else {
+
+            if (posXEnemy > posXPlayer+5){
+                return 'I';
+            } else if (posXPlayer-5 > posXEnemy) {
+                return 'D';
+            }
+
         }
+        contador++;
 
         return '0';
     }
@@ -136,6 +206,15 @@ public class Enemy {
 
     }
 
+    /* Esta función se encargará de que el boss pueda generar enemigos */
+    private void generarEnemigo(){
+
+        if (isWakeUp()){
+            Entities.enemies.add(new Enemy(typeEnemies.type1, this.posXEnemy, this.posYEnemy));
+        }
+
+    }
+
     //TO STRING
     @Override
     public String toString() {
@@ -146,7 +225,5 @@ public class Enemy {
                 "\nEnergy = " + getEnergy() +
                 "\n}\n";
     }
-
-
 
 }

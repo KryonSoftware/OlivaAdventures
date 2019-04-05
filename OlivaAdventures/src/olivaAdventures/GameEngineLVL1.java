@@ -12,14 +12,11 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,
-    		movM11=5,movM12=5;
+    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
     private char lastSide='D';
     
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
-    //Instanciamos el player (NO USADO ACTUALMENTE, TODO PARA EL FUTURO):
-    private Player player = new Player();
 
 	//La música que usaremos:
 	Musica musica = new Musica();
@@ -147,7 +144,7 @@ public class GameEngineLVL1 implements KeyListener {
     private void PJMove() {
     	
     	//Si no pulsa nada o lo pulsa todo a la vez:
-    	if((!derecha && !izquierda) || (derecha && izquierda)) {
+    	if(((!derecha && !izquierda) || (derecha && izquierda)) && !arriba) {
     		
 	    	switch(lastSide) {
 	    	
@@ -213,6 +210,10 @@ public class GameEngineLVL1 implements KeyListener {
 	    		break;
 			default:;
 	    	}
+	    	if(!saltando) {
+	    		saltando=true;
+	    		contadorSalto=16;
+	    	}
     	}
     	
     	//Guardamos su posición lateral antes de volver a moverse
@@ -258,8 +259,8 @@ public class GameEngineLVL1 implements KeyListener {
     			lastSide='I';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX-=-panel.isWall(-10,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
-            	if(panel.isGround(1,ejeX, ejeY, prevY,prevX)) {
+            	ejeX-=-panel.isWall(-10,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
+            	if(panel.isGround(1,0,ejeX, ejeY, prevY,prevX)) {
             		
             	}
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
@@ -269,13 +270,13 @@ public class GameEngineLVL1 implements KeyListener {
     		else {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
-            		ejeX-=(-panel.isWall(-26,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10))-contadorSalto;
+            		ejeX-=(-panel.isWall(-26,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10))-contadorSalto;
             	}
             	else if(contadorSalto>19) {
-            		ejeX-=(-panel.isWall(-6,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10));
+            		ejeX-=(-panel.isWall(-6,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10));
             	}
             	else {
-            		ejeX-=(-panel.isWall(-10,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10));
+            		ejeX-=(-panel.isWall(-10,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10));
             	}
             }
     	}
@@ -310,7 +311,7 @@ public class GameEngineLVL1 implements KeyListener {
     			lastSide='D';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX+=panel.isWall(10,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
+            	ejeX+=panel.isWall(10,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
@@ -318,16 +319,17 @@ public class GameEngineLVL1 implements KeyListener {
     		else {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
-            		ejeX+=panel.isWall(26,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10)-contadorSalto;
+            		ejeX+=panel.isWall(26,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10)-contadorSalto;
             	}
             	else if(contadorSalto>19) {
-            		ejeX+=panel.isWall(6,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
+            		ejeX+=panel.isWall(6,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
             	}
             	else {
-            		ejeX+=panel.isWall(10,350,panel.getPosYIniKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
+            		ejeX+=panel.isWall(10,350,panel.getPosYKeko()-panel.getEjeY(),720-panel.getEjeY(),30,10);
             	}
             }
     	}
+	    
     }
 
     /**
@@ -383,7 +385,7 @@ public class GameEngineLVL1 implements KeyListener {
                 prevY=720-ejeY;
             }
             else if(contadorSalto>15) {
-	            if(!panel.isGround(1,ejeX, ejeY, prevY,prevX)) {
+	            if(!panel.isGround(1,0,ejeX, ejeY, prevY,prevX)) {
 	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
 	                if(contadorSalto>15&&contadorSalto<18){
 	                    prevY=720-ejeY;
@@ -472,131 +474,128 @@ public class GameEngineLVL1 implements KeyListener {
     	}
     	
     }
-    
-   private void saltoMonstruos(/*monstruo que tiene que mirar*/) {
-	
-	   /*
-       if ( monstruo que pertoque . boolean saltando ) {
+ 
+    /**
+     * Método hecho para llamarse dentro de un for, donde a cada iteración le pasamos un enemigo nuevo de los que hay dentro de la array correspondiente.
+     * @param enemigo
+     */
+   private void saltoMonstruos(Enemy enemigo,int posLista) {
+	   
+       if ( enemigo.isJumping() ) {
        
-      	 
-      	 
       	 //La secuencia de salto consiste en llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
       	  
-          if(contadorSaltoMonstruo>=0&&contadorSaltoMonstruo<5) {
+          if(enemigo.getContJumping()>=0&&enemigo.getContJumping()<5) {
+        	  
+        	  //HAY QUE ARREGLAR EL ISTOP*************************************************************************
           	compruebaDistanciaSalto=panel.isTop(20,ejeY,ejeX,prevX);
-              ejeYPaneldeEseMonstruo += compruebaDistanciaSalto;
+          	//HAY QUE ARREGLAR EL ISTOP*************************************************************************
+          	
+              enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               //Y si su respuesta es menor a la petición, sabemos que hemos chocado, por lo que pasamos el contador al punto de comenzar a acelerar hacia abajo
               if(!(compruebaDistanciaSalto==20)) {
-              	contadorSaltoMonstruo=16;
+              	enemigo.setContJumping(16);
               }
           }
-          else if(contadorSalto>4&&contadorSalto<8){
+          else if(enemigo.getContJumping()>4&&enemigo.getContJumping()<8){
           	compruebaDistanciaSalto=panel.isTop(10,ejeY,ejeX,prevX);
-              ejeY+=compruebaDistanciaSalto;
+          	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==10)) {
               	contadorSalto=16;
               }
           }
-          else if(contadorSalto>7&&contadorSalto<12){
+          else if(enemigo.getContJumping()>7&&enemigo.getContJumping()<12){
           	compruebaDistanciaSalto=panel.isTop(5,ejeY,ejeX,prevX);
-              ejeY+=compruebaDistanciaSalto;
+          	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==5)) {
               	contadorSalto=16;
               }
           }
-          else if(contadorSalto>11&&contadorSalto<15){
+          else if(enemigo.getContJumping()>11&&enemigo.getContJumping()<15){
           	compruebaDistanciaSalto=panel.isTop(1,ejeY,ejeX,prevX);
-              ejeY+=compruebaDistanciaSalto;
+          	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==1)) {
               	contadorSalto=16;
               }
           }
-          else if(contadorSalto==15){
-              prevY=720-ejeY;
+          else if(enemigo.getContJumping()==15) {
+              enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
           }
-          else if(contadorSalto>15) {
+          else if(enemigo.getContJumping()>15) {
           
           //*******************SUPERCOMENTARIO DE COMENTARIO************************************************
           
           	//LE PASAMOS LOS DATOS DE ESTE MONSTRUO EN CONCRETO
           	 
-	            if(!panel.isGround(ejeX, ejeY, prevY,prevX)) {
+	            if(!panel.isGround(enemigo.getEntidad(),posLista,enemigo.getPosXEnemy(), enemigo.getPosYEnemy(), enemigo.getPrevYEnemy(),enemigo.getPosXEnemy())) {
 	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
-	                if(contadorSaltoMonstruo>15&&contadorSaltoMonstruo<18){
-	                    prevY=720-ejeY;
-	                    ejeY-=5;
+	                if(enemigo.getContJumping()>15&&enemigo.getContJumping()<18){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+5);
 	                }
-	                else if(contadorSalto>17&&contadorSalto<20){
-	                    prevY=720-ejeY;
-	                    ejeY-=10;
+	                else if(enemigo.getContJumping()>17&&enemigo.getContJumping()<20){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+10);
 	                }
-	                else if(contadorSalto>19&&contadorSalto<25){
-	                    prevY=720-ejeY;
-	                    ejeY-=16;
+	                else if(enemigo.getContJumping()>19&&enemigo.getContJumping()<25){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+16);
 	                }
-	                else if(contadorSalto>24&&contadorSalto<30){
-	                    prevY=720-ejeY;
-	                    ejeY-=21;
+	                else if(enemigo.getContJumping()>24&&enemigo.getContJumping()<30){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+21);
 	                }
-	                else if(contadorSalto>29&&contadorSalto<41){
-	                    prevY=720-ejeY;
-	                    ejeY-=26;
+	                else if(enemigo.getContJumping()>29&&enemigo.getContJumping()<41){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+26);
 	                }
-	                else if(contadorSalto>40&&contadorSalto<46){
-	                    prevY=720-ejeY;
-	                    ejeY-=28;
+	                else if(enemigo.getContJumping()>40&&enemigo.getContJumping()<46){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+28);
 	                }
-	                else if(contadorSalto>45&&contadorSalto<52){
-	                    prevY=720-ejeY;
-	                    ejeY-=32;
+	                else if(enemigo.getContJumping()>45&&enemigo.getContJumping()<52){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+32);
 	                }
-	                else if(contadorSalto>51){
-	                    prevY=720-ejeY;
-	                    ejeY-=35;
+	                else if(enemigo.getContJumping()>51){
+	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
+	                    enemigo.setPosYEnemy(enemigo.getPosYEnemy()+35);
 	                }
 	            }
 	            else{
-	            	ejeY=720-panel.getEjeY();
-	                saltando=false;
+	            	enemigo.setPosYEnemy(panel.getTempY());
+	                enemigo.setJumping(false);
 	            }
           }
-          contadorSalto++;
+          enemigo.setContJumping(enemigo.getContJumping()+1);
       }
-      
-      */
 	   
    }
+   
 
     private void movimientosMonstruos() {
+    	
+    	//ÑAPAS PARA PRUEBAS:
+    	
+    	for(int x=0;x<Enemies_lvl1.enemies.size();x++) {
+    		
+    		saltoMonstruos(Enemies_lvl1.enemies.get(x),x);
 
-    	if (!Enemies_lvl1.enemies.get(0).isDead()){
-			switch (Enemies_lvl1.enemies.get(0).getDecission(panel.getPosXIniEnemy1_1()-ejeX+panel.getM11(),670,350,720-ejeY-89)) {
-				case 'D':
-					movM11+=5;
-					panel.setM11(movM11);
-					break;
-				case 'I':
-					movM11-=5;
-					panel.setM11(movM11);
-					break;
-				default:
-					player.doDamge(Enemies_lvl1.enemies.get(0));
+	    	if (!Enemies_lvl1.enemies.get(x).isDead() /*&& Enemies_lvl1.enemies.get(x).getContJumping()<15*/){
+				switch (Enemies_lvl1.enemies.get(x).getDecission(Enemies_lvl1.enemies.get(x).getPosXEnemy()-ejeX+Enemies_lvl1.enemies.get(x).getMoveEnemy(),Enemies_lvl1.enemies.get(x).getPosYEnemy(),
+						panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
+					case 'D':
+						Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+5);
+						break;
+					case 'I':
+						Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()-5);
+						break;
+					default:
+						panel.keko.doDamge(Enemies_lvl1.enemies.get(x));
+				}
 			}
-		}
-    	if (!Enemies_lvl1.enemies.get(1).isDead()){
-			switch (Enemies_lvl1.enemies.get(1).getDecission(panel.getPosXIniEnemy1_2()-ejeX+panel.getM12(),670,350,720-ejeY-89)) {
-				case 'D':
-					movM12+=5;
-					panel.setM12(movM12);
-					break;
-				case 'I':
-					movM12-=5;
-					panel.setM12(movM12);
-					break;
-				default:
-					player.doDamge(Enemies_lvl1.enemies.get(1));
-			}
-		}
+    	
+    	}
 
     }
 
@@ -676,7 +675,7 @@ public class GameEngineLVL1 implements KeyListener {
             	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         	}
 
-        	if(puntuacion <= 0 || player.getEnergy() <= 0) {gameOver = true;}
+        	if(puntuacion <= 0 || panel.keko.getEnergy() <= 0) {gameOver = true;}
 
             try {
             	//Ésto nos permite detener el hilo y darnos el control sobre cuántas veces iteramos por segundo (aproximadamente)

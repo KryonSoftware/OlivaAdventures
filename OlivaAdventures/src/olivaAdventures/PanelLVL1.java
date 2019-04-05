@@ -28,34 +28,28 @@ public class PanelLVL1 extends JPanel {
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m11=0,m12=0,posYIniKeko=720-89,posXIniKeko=350,posXIniEnemy1_1=700,
-    		posXIniEnemy1_2=1700,posYIniEnemy1_1=670,posYIniEnemy1_2=670;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0,m11=0,m12=0,tempY;
     
     private boolean pause=false;
+    
+    //Instanciamos el player:
+    public Player keko = new Player(350,720-89);
     
     public boolean isPause() {return pause;}
 
 	public void setPause(boolean pause) {this.pause = pause;}
 
-	public int getPosXIniKeko() {return posXIniKeko;}
+	public int getPosXKeko() {return keko.getPosXPlayer();}
 
-	public void setPosXIniKeko(int posXIniKeko) {this.posXIniKeko = posXIniKeko;}
-
-	public int getPosXIniEnemy1_2() {return posXIniEnemy1_2;}
-
-	public void setPosXIniEnemy1_2(int posIniEnemy1_2) {this.posXIniEnemy1_2 = posIniEnemy1_2;}
+	public void setPosXKeko(int posXIniKeko) {this.keko.setPosXPlayer(posXIniKeko);}
 
     public int getM12() {return m12;}
 
 	public void setM12(int m12) {this.m12 = m12;}
 
-	public int getPosYIniKeko() {return posYIniKeko;}
+	public int getPosYKeko() {return keko.getPosYPlayer();}
 
-	public void setPosYIniKeko(int posIniKeko) {this.posYIniKeko = posIniKeko;}
-
-	public int getPosXIniEnemy1_1() {return posXIniEnemy1_1;}
-
-	public void setPosXIniEnemy1_1(int posIniEnemy1_1) {this.posXIniEnemy1_1 = posIniEnemy1_1;}
+	public void setPosYKeko(int posIniKeko) {this.keko.setPosYPlayer(posIniKeko);}
 
 	public int getM11() {return m11;}
 
@@ -312,7 +306,7 @@ public class PanelLVL1 extends JPanel {
      * @param prevY
      * @return false -> si sigue cayendo | true -> si se ha posado sobre una plataforma
      */
-    public boolean isGround(int entidad,int ejeX,int ejeY,int prevY,int prevX){
+    public boolean isGround(int entidad,int posLista,int ejeX,int ejeY,int prevY,int prevX){
 
     	/*
     	 * QUEDAN CAMBIOS POR HACER Y AJUSTAR. LUEGO HAY QUE COMENTARLO
@@ -350,7 +344,7 @@ public class PanelLVL1 extends JPanel {
         			
        			break;
         			
-        		case 2://Los pom:
+        		case 2://Los pow:
         			
         			if(ejeX+35>=z&&ejeX+20<=(z+g)) {
 
@@ -359,12 +353,14 @@ public class PanelLVL1 extends JPanel {
             				colision=true;
 
             				foundPlatform=true;
-
-            				this.y=y;
+            				
+            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
+            				Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y);
 
             			}
 
             		}
+        			//SIGUIENTES MONSTRUOS POR IMPLEMENTAR
         			
         			default:;
         			
@@ -392,7 +388,15 @@ public class PanelLVL1 extends JPanel {
 
     }
 
-    /**
+    public int getTempY() {
+		return tempY;
+	}
+
+	public void setTempY(int tempY) {
+		this.tempY = tempY;
+	}
+
+	/**
      * Método para comprobar si hay choque contra una pared y a qué distancia está.
      * @param id
      * @return Distancia que puedes mover sin colisionar.
@@ -463,9 +467,9 @@ public class PanelLVL1 extends JPanel {
 		
 		    	if(350+30>=z&&350+15<=(z+g)) {
 		
-		    		if(posYIniKeko-prevY>=y+k&&posYIniKeko-prevY-newCabezaPos<y+k){
+		    		if(keko.getPosYPlayer()-prevY>=y+k&&keko.getPosYPlayer()-prevY-newCabezaPos<y+k){
 		
-		    			colision=(posYIniKeko-prevY)-(y+k);
+		    			colision=(keko.getPosYPlayer()-prevY)-(y+k);
 		
 		    		}
 		
@@ -543,16 +547,20 @@ public class PanelLVL1 extends JPanel {
 		addPlatformToList(160 - x, 600, 100, 35, Tipo.PLATFORM);
 
 		//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		//Pom 1:
-		if(!Enemies_lvl1.enemies.get(0).isDead()) {
-			g.drawImage(animMonstruo[arrPosMonstruo], posXIniEnemy1_1 - x + m11, posYIniEnemy1_1, 70, 50, this);
+		//Pows:
+		
+		for(int x=0;x<Enemies_lvl1.enemies.size();x++) {
+		
+			if(!Enemies_lvl1.enemies.get(x).isDead()) {
+				g.drawImage(animMonstruo[arrPosMonstruo], Enemies_lvl1.enemies.get(x).getPosXEnemy() -this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
+						Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, this);
+				addPlatformToList(Enemies_lvl1.enemies.get(x).getPosXEnemy() - this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.PLATFORM);
+			}
+			
 		}
-		//Pom 2:
-		if(!Enemies_lvl1.enemies.get(1).isDead()) {
-			g.drawImage(animMonstruo[arrPosMonstruo], posXIniEnemy1_2 - x + m12, posYIniEnemy1_2, 70, 50, this);
-		}
+		
 		//Nuestro keko
-		g.drawImage(animKeko[arrPosKeko], posXIniKeko, posYIniKeko-y, 50, 90, this);
+		g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
 
 		
 		//Árboles colisionables:

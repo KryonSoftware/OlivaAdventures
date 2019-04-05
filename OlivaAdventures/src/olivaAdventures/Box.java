@@ -20,7 +20,7 @@ public class Box {
     }
 
     private void setEnergy() {
-        this.energy = (int) ((Math.random() * 70) + 30);
+        this.energy = (int) ((Math.random() * 30) + 30);
     }
 
     public void setEnergy(int energy) {

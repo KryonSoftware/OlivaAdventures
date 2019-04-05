@@ -1,8 +1,5 @@
 package olivaAdventures;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 public class Player {
 
     //ATTRIBUTES
@@ -10,37 +7,68 @@ public class Player {
     private int energy;
     private boolean dead;
 
+    //TODO ARREGLAR ESTA MIERDA
+    private int posXPlayer;
+    private int posYPlayer;
+    private int movePlayer;
+    private boolean jumpingPlayer;
+    private int contJumpingPlayer;
+    private int prevYEnemyPlayer;
+
+
     //CONSTRUCTOR
-    public Player(){
+    public Player(int posX, int posY){
         this.lives = 3;
         this.energy = 50;
         this.dead = false;
+        this.posXPlayer = posX;
+        this.posYPlayer = posY;
     }
 
     //GETTERS AND SETTERS
-    public int getEnergy() {
+    int getEnergy() {
         return energy;
     }
 
-    public void setEnergy(int energy) {
+    void setEnergy(int energy) {
         this.energy = energy;
     }
 
-    public boolean isDead() {
+    boolean isDead() {
         return dead;
     }
 
-    public void setDead(boolean dead) {
+    void setDead(boolean dead) {
         this.dead = dead;
     }
 
-    public int getLives() {
-        return lives;
-    }
+    public int getLives() { return lives; }
 
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
+    public void setLives(int lives) { this.lives = lives; }
+
+    public int getPosXPlayer() { return posXPlayer; }
+
+    public void setPosXPlayer(int posXPlayer) { this.posXPlayer = posXPlayer; }
+
+    public int getPosYPlayer() { return posYPlayer; }
+
+    public void setPosYPlayer(int posYPlayer) { this.posYPlayer = posYPlayer; }
+
+    public int getMovePlayer() { return movePlayer; }
+
+    public void setMovePlayer(int movePlayer) { this.movePlayer = movePlayer; }
+
+    public boolean isJumpingPlayer() { return jumpingPlayer; }
+
+    public void setJumpingPlayer(boolean jumpingPlayer) { this.jumpingPlayer = jumpingPlayer; }
+
+    public int getContJumpingPlayer() { return contJumpingPlayer; }
+
+    public void setContJumpingPlayer(int contJumpingPlayer) { this.contJumpingPlayer = contJumpingPlayer; }
+
+    public int getPrevYEnemyPlayer() { return prevYEnemyPlayer; }
+
+    public void setPrevYEnemyPlayer(int prevYEnemyPlayer) { this.prevYEnemyPlayer = prevYEnemyPlayer; }
 
     //FUNCTIONS
     public char shot(){
