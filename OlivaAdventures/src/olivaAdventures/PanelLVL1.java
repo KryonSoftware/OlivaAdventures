@@ -301,54 +301,75 @@ public class PanelLVL1 extends JPanel {
         boolean colision=false;
 
         for(int x=0;x<listaPlataformas.size();x++){
+        	
+        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM || listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
 
-        	if(!foundPlatform) {
-
-        		z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
-        		y=listaPlataformas.get(x).getEjeY();
-        		g=listaPlataformas.get(x).getAncho();
-        		
-        		switch(entidad) {
-        		
-        		case 1://Nuestro keko:
-        			
-        			if(350+30>=z&&350+15<=(z+g)) {
-
-            			if(720-ejeY+30>=y&&prevY<y){
-
-            				colision=true;
-
-            				foundPlatform=true;
-
-            				this.y=y;
-
-            			}
-
-            		}
-        			
-       			break;
-        			
-        		case 2://Los pow:
-        			
-        			if(ejeX+50>=z&&ejeX+20<=(z+g)) {
-
-            			if(ejeY+49>=y&&prevY<y){
-
-            				colision=true;
-
-            				foundPlatform=true;
-            				
-            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
-            				Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-49);
-
-            			}
-
-            		}
-        			//SIGUIENTES MONSTRUOS POR IMPLEMENTAR
-        			
-        			default:;
-        			
-        		}
+	        	if(!foundPlatform) {
+	
+	        		z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
+	        		y=listaPlataformas.get(x).getEjeY();
+	        		g=listaPlataformas.get(x).getAncho();
+	        		
+	        		switch(entidad) {
+	        		
+	        		case 1://Nuestro keko:
+	        			
+	        			if(350+30>=z&&350+15<=(z+g)) {
+	
+	            			if(720-ejeY+30>=y&&prevY<y){
+	
+	            				colision=true;
+	
+	            				foundPlatform=true;
+	
+	            				this.y=y;
+	
+	            			}
+	
+	            		}
+	        			
+	       			break;
+	        			
+	        		case 2://Los pow:
+	        			
+	        			if(!(z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+	        				
+	        				if(!(y==ejeY-49) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+	        				
+			    				if(ejeX+50>=z&&ejeX+20<=(z+g)) {
+			
+			            			if(ejeY+49>=y&&prevY<y){
+			
+			            				colision=true;
+			
+			            				foundPlatform=true;
+			            				
+			            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
+			            				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+			            					Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-51);
+			            					Enemies_lvl1.enemies.get(posLista).setConga(true);
+			            				}
+			            				else {
+			            					Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-49);
+			            					Enemies_lvl1.enemies.get(posLista).setConga(false);
+			            				}
+			
+			            			}
+			
+			    				}
+			    				
+	        				}
+		    				
+	        			}
+					break;
+	        			
+	        			//SIGUIENTES MONSTRUOS POR IMPLEMENTAR
+	        			
+	        			default:;
+	        			
+	        		}
+	        		
+	        	}
 
         	}
 
@@ -377,48 +398,110 @@ public class PanelLVL1 extends JPanel {
      * @param id
      * @return Distancia que puedes mover sin colisionar.
      */
-    public int isWall(int intentoMovimiento,int ejeX,int ejeYCabeza,int ejeYPies,int anchoDerecha,int anchoIzquierda) {
+    public int isWall(int entidad,int posLista,int intentoMovimiento,int ejeX,int ejeYCabeza,int ejeYPies,int anchoDerecha,int anchoIzquierda) {
     	
-        int y,z,g,k,s=intentoMovimiento;
-        int colision=intentoMovimiento;
+    	int y,z,g,k,s=intentoMovimiento;
+    	int colision=intentoMovimiento;
 
-        for(int x=0;x<listaPlataformas.size();x++){
-        	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
-	            
-        		z=listaPlataformas.get(x).getEjeX();
-	            y=listaPlataformas.get(x).getEjeY();
-	            g=listaPlataformas.get(x).getAncho();
-	            k=listaPlataformas.get(x).getAlto();
-	
-	            if((ejeX+anchoDerecha+s>=z-5&&ejeX+s<=(z+g-15))) {
-	            	
-	            	//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
-            		if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
-	            	
-		            	if(s>0) {
-		            		
-		            		 colision-=ejeX+anchoDerecha-(z-s-15);
-		            		
-		            	}
-		            	else {
-		            		
-		            		 colision-=ejeX-anchoIzquierda-(z+g-s-15);
-		            		
-		            	}
-	            	
-	            	}
-		            
-	        	}
-        		
-        	}
-        	
-        }
-        
-        return colision;
-    	
+    	for(int x=0;x<listaPlataformas.size();x++){
+
+    		if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+
+    			z=listaPlataformas.get(x).getEjeX();
+    			y=listaPlataformas.get(x).getEjeY();
+    			g=listaPlataformas.get(x).getAncho();
+    			k=listaPlataformas.get(x).getAlto();
+    			
+    			switch(entidad) {
+    			
+    			case 1:
+
+    				if(!(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+
+    					if((ejeX+anchoDerecha+s>=z-5&&ejeX+s<=(z+g-15))) {
+
+    						//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
+    						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
+
+    							if(s>0) {
+
+    								colision-=ejeX+anchoDerecha-(z-s-15);
+    								//Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-51);
+
+    							}
+    							else {
+
+    								colision-=ejeX-anchoIzquierda-(z+g-s-15);
+
+    							}
+
+    						}
+
+    					}
+
+    				}
+    				
+    				break;
+    				
+    			case 2:
+    				
+    				if(!(z==ejeX) ||  !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+
+        				if(!(y==ejeYCabeza && z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+
+        					if((ejeX+anchoDerecha+s>=z-5&&ejeX+s<=(z+g-15))) {
+
+        						//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
+        						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
+
+        							if(s>0) {
+        								
+        								if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+        									colision-=ejeX+anchoDerecha-(z-s-10);
+        									//Enemies_lvl1.enemies.get(posLista).setConga(true);
+        									//Enemies_lvl1.enemies.get(posLista).setPosYEnemy(ejeYCabeza-100);
+        									
+        								}
+        								else {
+        									colision-=ejeX+anchoDerecha-(z-s-10);
+        								}
+
+
+        							}
+        							else {
+        								
+        								if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+        									colision-=ejeX-anchoIzquierda-(z+g-s-30);
+        									//Enemies_lvl1.enemies.get(posLista).setConga(true);
+        									//Enemies_lvl1.enemies.get(posLista).setPosYEnemy(ejeYCabeza-100);
+        									
+        								}
+        								else {
+        									colision-=ejeX-anchoIzquierda-(z+g-s-30);
+        								}
+
+        							}
+
+        						}
+
+        					}
+
+        				}
+
+        			}
+    				
+    				break;
+    			
+    			}
+
+    		}
+
+    	}
+
+    	return colision;
+
     }
-    
+
     /**
      * Método para comprobar las colisiones hacia arriba (cuando se salta y se golpea con la cabeza).
      * @param newCabezaPos
@@ -456,7 +539,7 @@ public class PanelLVL1 extends JPanel {
 			
 			    	if(keko.getPosXPlayer()+30>=z&&keko.getPosXPlayer()+15<=(z+g)) {
 			
-			    		if(keko.getPosYPlayer()-prevY>=y+k&&keko.getPosYPlayer()-prevY-newCabezaPos<y+k){
+			    		if(keko.getPosYPlayer()-this.y>=y+k&&keko.getPosYPlayer()-prevY-newCabezaPos<y+k){
 			
 			    			colision=(keko.getPosYPlayer()-prevY)-(y+k);
 			
@@ -537,6 +620,8 @@ public class PanelLVL1 extends JPanel {
 		}
 		//Colisión del suelo:
 		addPlatformToList(-350 - x, 720, 10700, 50, Tipo.BOTH);
+		//Tope provisional de caídas:
+		addPlatformToList(-10000 - x, 780, 30000, 50, Tipo.BOTH);
 
 		//Plataformas para saltar
 		g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
@@ -562,14 +647,15 @@ public class PanelLVL1 extends JPanel {
 			if(!Enemies_lvl1.enemies.get(x).isDead()) {
 				g.drawImage(animMonstruo[arrPosMonstruo], Enemies_lvl1.enemies.get(x).getPosXEnemy() -this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
 						Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, this);
-				//addPlatformToList(Enemies_lvl1.enemies.get(x).getPosXEnemy() - this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-				//		Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.PLATFORM);
+				addPlatformToList(Enemies_lvl1.enemies.get(x).getPosXEnemy() - this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
+						Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
 			}
 			
 		}
 		
 		//Nuestro keko
 		g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
+		addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
 
 		
 		//Árboles colisionables:

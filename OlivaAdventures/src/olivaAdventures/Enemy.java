@@ -12,8 +12,16 @@ public class Enemy {
     private int posXEnemy;
     private int posYEnemy;
     private int moveEnemy;
-    private boolean jumping=false;
-    private int contJumping;
+    private boolean jumping=false,conga=false;
+    public boolean isConga() {
+		return conga;
+	}
+
+	public void setConga(boolean conga) {
+		this.conga = conga;
+	}
+
+	private int contJumping;
     private int prevYEnemy;
 
     private boolean wakeUp;

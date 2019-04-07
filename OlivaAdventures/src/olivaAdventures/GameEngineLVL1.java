@@ -259,7 +259,7 @@ public class GameEngineLVL1 implements KeyListener {
     			lastSide='I';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX+=panel.isWall(-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+            	ejeX+=panel.isWall(1,1,-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
@@ -267,13 +267,13 @@ public class GameEngineLVL1 implements KeyListener {
     		else {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
-            		ejeX-=-panel.isWall(-26,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10)-contadorSalto;
+            		ejeX-=-panel.isWall(1,1,-26,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10)-contadorSalto;
             	}
             	else if(contadorSalto>19) {
-            		ejeX-=-panel.isWall(-6,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+            		ejeX-=-panel.isWall(1,1,-6,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	}
             	else {
-            		ejeX-=-panel.isWall(-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+            		ejeX-=-panel.isWall(1,1,-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	}
             }
     	}
@@ -308,7 +308,7 @@ public class GameEngineLVL1 implements KeyListener {
     			lastSide='D';
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX+=panel.isWall(10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+            	ejeX+=panel.isWall(1,1,10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
                 contadorSalto = 16;
                 saltando = true;
@@ -316,13 +316,13 @@ public class GameEngineLVL1 implements KeyListener {
     		else {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
             	if(contadorSalto>17 && contadorSalto<20) {
-            		ejeX+=panel.isWall(26,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10)-contadorSalto;
+            		ejeX+=panel.isWall(1,1,26,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10)-contadorSalto;
             	}
             	else if(contadorSalto>19) {
-            		ejeX+=panel.isWall(6,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+            		ejeX+=panel.isWall(1,1,6,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	}
             	else {
-            		ejeX+=panel.isWall(10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+            		ejeX+=panel.isWall(1,1,10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	}
             }
     	}
@@ -588,41 +588,48 @@ public class GameEngineLVL1 implements KeyListener {
 					   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
 					   case 'D':
 						   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(5,
+							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
 									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
 									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
-							   Enemies_lvl1.enemies.get(x).setJumping(true);
-							   Enemies_lvl1.enemies.get(x).setContJumping(16);
+							   if(!Enemies_lvl1.enemies.get(x).isConga()) {
+								   Enemies_lvl1.enemies.get(x).setJumping(true);
+								   Enemies_lvl1.enemies.get(x).setContJumping(16);
+							   }
 						   }
 						   else {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(3,
+							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
 									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
 									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
 						   }
 						   break;
 					   case 'I':
 						   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(-5,
+							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
 									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
 									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
-							   Enemies_lvl1.enemies.get(x).setJumping(true);
-							   Enemies_lvl1.enemies.get(x).setContJumping(16);
+							   if(!Enemies_lvl1.enemies.get(x).isConga()) {
+								   Enemies_lvl1.enemies.get(x).setJumping(true);
+								   Enemies_lvl1.enemies.get(x).setContJumping(16);
+							   }
 						   }
 						   else {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(-3,
+							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-3,
 									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
 									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
 						   }
 						   break;
 					   default:
 						   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-							   Enemies_lvl1.enemies.get(x).setJumping(true);
-							   Enemies_lvl1.enemies.get(x).setContJumping(16);
+							   if(!Enemies_lvl1.enemies.get(x).isConga()) {
+								   Enemies_lvl1.enemies.get(x).setJumping(true);
+								   Enemies_lvl1.enemies.get(x).setContJumping(16);
+							   }
 						   }
 						   //	panel.keko.doDamge(Enemies_lvl1.enemies.get(x));
 			   }
+			   
 		   }
-
+		   
 	   }
 
     }
