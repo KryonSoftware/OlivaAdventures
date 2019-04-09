@@ -571,11 +571,11 @@ public class GameEngineLVL1 implements KeyListener {
 
 	   //ÑAPAS PARA PRUEBAS:
 
-	   for(int x=0;x<Enemies_lvl1.enemies.size();x++) {
+	   for(int x=0;x<Entities.enemies.size();x++) {
 
-		   saltoMonstruos(Enemies_lvl1.enemies.get(x),x);
+		   saltoMonstruos(Entities.enemies.get(x),x);
 		   
-/*		   ESTO ES PARA HACERLOS SALTAR SIN PARAR************************************************************************
+/*		   //ESTO ES PARA HACERLOS SALTAR SIN PARAR************************************************************************
 		   
 		   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
 				   Enemies_lvl1.enemies.get(x).setJumping(true);
@@ -583,47 +583,63 @@ public class GameEngineLVL1 implements KeyListener {
 			   }
 */
 		   
-		   if (!Enemies_lvl1.enemies.get(x).isDead()){
-			   switch (Enemies_lvl1.enemies.get(x).getDecission(Enemies_lvl1.enemies.get(x).getPosXEnemy()-ejeX+Enemies_lvl1.enemies.get(x).getMoveEnemy(),Enemies_lvl1.enemies.get(x).getPosYEnemy(),
+		   if (!Entities.enemies.get(x).isDead()){
+			   switch (Entities.enemies.get(x).getDecission(Entities.enemies.get(x).getPosXEnemy()-ejeX+Entities.enemies.get(x).getMoveEnemy(),Entities.enemies.get(x).getPosYEnemy(),
 					   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
 					   case 'D':
-						   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
-									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
-							   if(!Enemies_lvl1.enemies.get(x).isConga()) {
-								   Enemies_lvl1.enemies.get(x).setJumping(true);
-								   Enemies_lvl1.enemies.get(x).setContJumping(16);
+						   if(!Entities.enemies.get(x).isJumping()) {
+							   if(Entities.enemies.get(x).isSuicida()) {
+								   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
+										   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
+										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
 							   }
+							   else {
+								   if(panel.isGround(Entities.enemies.get(x).getEntidad(),x,Entities.enemies.get(x).getPosXEnemy()+5-ejeX + Entities.enemies.get(x).getMoveEnemy(),
+										   Entities.enemies.get(x).getPosYEnemy()+49,Entities.enemies.get(x).getPrevYEnemy()+49,
+										   Entities.enemies.get(x).getPosXEnemy()-ejeX + Entities.enemies.get(x).getMoveEnemy())) {
+									   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
+											   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
+											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+								   }
+							   }
+							   Entities.enemies.get(x).setJumping(true);
+							   Entities.enemies.get(x).setContJumping(16);
 						   }
 						   else {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
-									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
+							   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
+									   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
+									   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
 						   }
 						   break;
 					   case 'I':
-						   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
-									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
-							   if(!Enemies_lvl1.enemies.get(x).isConga()) {
-								   Enemies_lvl1.enemies.get(x).setJumping(true);
-								   Enemies_lvl1.enemies.get(x).setContJumping(16);
+						   if(!Entities.enemies.get(x).isJumping()) {
+							   if(Entities.enemies.get(x).isSuicida()) {
+								   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
+										   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
+										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
 							   }
+							   else {
+								   if(panel.isGround(Entities.enemies.get(x).getEntidad(),x,Entities.enemies.get(x).getPosXEnemy()-5-ejeX + Entities.enemies.get(x).getMoveEnemy(),
+										   Entities.enemies.get(x).getPosYEnemy()+49,Entities.enemies.get(x).getPrevYEnemy()+49,
+										   Entities.enemies.get(x).getPosXEnemy()-ejeX + Entities.enemies.get(x).getMoveEnemy())) {
+									   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
+											   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
+											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+								   }
+							   }
+							   Entities.enemies.get(x).setJumping(true);
+							   Entities.enemies.get(x).setContJumping(16);
 						   }
 						   else {
-							   Enemies_lvl1.enemies.get(x).setMoveEnemy(Enemies_lvl1.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-3,
-									   Enemies_lvl1.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-									   Enemies_lvl1.enemies.get(x).getPosYEnemy(), Enemies_lvl1.enemies.get(x).getPosYEnemy()+49,50,20));
+							   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-3,
+									   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
+									   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
 						   }
 						   break;
 					   default:
-						   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-							   if(!Enemies_lvl1.enemies.get(x).isConga()) {
-								   Enemies_lvl1.enemies.get(x).setJumping(true);
-								   Enemies_lvl1.enemies.get(x).setContJumping(16);
-							   }
+						   if(!Entities.enemies.get(x).isJumping()) {
+							   Entities.enemies.get(x).setJumping(true);
+							   Entities.enemies.get(x).setContJumping(16);
 						   }
 						   //	panel.keko.doDamge(Enemies_lvl1.enemies.get(x));
 			   }
@@ -658,6 +674,10 @@ public class GameEngineLVL1 implements KeyListener {
      */
     private void fps(){
     	
+    	if(panel.keko.getPosYPlayer()-panel.getEjeY()>900) {
+    		panel.keko.setDead(true);
+    	}
+    	
     	movimientosMonstruos();
     	
         animacionesOtros();
@@ -686,8 +706,7 @@ public class GameEngineLVL1 implements KeyListener {
         while(!gameOver){
         	
         	if(contador%3==0) {
-        		fps();
-        		
+        		fps();	
         	}
         	
         	if(contador%18==0) {
@@ -697,11 +716,6 @@ public class GameEngineLVL1 implements KeyListener {
             	} else {
             		panel.setArrPosBarra(0);
             	}
-            	if(!(panel.getArrPosCor()==3)) {
-            		panel.setArrPosCor(panel.getArrPosCor()+1);
-            	} else {
-            		panel.setArrPosCor(0);
-            	}
             	if(!(panel.getArrPosReloj()==25)) {
             		panel.setArrPosReloj(panel.getArrPosReloj()+1);
             	} else {
@@ -710,7 +724,9 @@ public class GameEngineLVL1 implements KeyListener {
             	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         	}
 
-        	if(puntuacion <= 0 || panel.keko.getEnergy() <= 0) {gameOver = true;}
+        	if(puntuacion < 0 || panel.keko.getEnergy() < 0 || panel.keko.isDead()) {
+        		gameOver = true;
+        		}
 
             try {
             	//Ésto nos permite detener el hilo y darnos el control sobre cuántas veces iteramos por segundo (aproximadamente)
@@ -726,6 +742,13 @@ public class GameEngineLVL1 implements KeyListener {
             }
             contador++;
         }
+        
+        try {
+			musica.stop();
+			System.exit(1000);
+		} catch (Exception e) {
+			System.out.println("Error deteniendo la reproducciónd e la música. Log: "+e);
+		}
         
     }
     

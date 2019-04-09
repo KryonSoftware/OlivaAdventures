@@ -28,7 +28,7 @@ public class PanelLVL1 extends JPanel {
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosCor=0,arrPosReloj=0,arrPosMonstruo=0;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0;
     
     private boolean pause=false;
     
@@ -46,10 +46,6 @@ public class PanelLVL1 extends JPanel {
 	public int getArrPosReloj() {return arrPosReloj;}
 
 	public void setArrPosReloj(int arrPosReloj) {this.arrPosReloj = arrPosReloj;}
-
-	public int getArrPosCor() {return arrPosCor;}
-
-	public void setArrPosCor(int arrPosCor) {this.arrPosCor = arrPosCor;}
 
 	public int getArrPosBarra() {return arrPosBarra;}
 
@@ -302,7 +298,7 @@ public class PanelLVL1 extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM || listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
 
 	        	if(!foundPlatform) {
 	
@@ -346,12 +342,10 @@ public class PanelLVL1 extends JPanel {
 			            				
 			            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
 			            				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
-			            					Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-51);
-			            					Enemies_lvl1.enemies.get(posLista).setConga(true);
+			            					Entities.enemies.get(posLista).setPosYEnemy(y-51);
 			            				}
 			            				else {
-			            					Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-49);
-			            					Enemies_lvl1.enemies.get(posLista).setConga(false);
+			            					Entities.enemies.get(posLista).setPosYEnemy(y-49);
 			            				}
 			
 			            			}
@@ -423,17 +417,7 @@ public class PanelLVL1 extends JPanel {
     						//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
     						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
 
-    							if(s>0) {
-
-    								colision-=ejeX+anchoDerecha-(z-s-15);
-    								//Enemies_lvl1.enemies.get(posLista).setPosYEnemy(y-51);
-
-    							}
-    							else {
-
-    								colision-=ejeX-anchoIzquierda-(z+g-s-15);
-
-    							}
+    							colision-= s>0 ? ejeX+anchoDerecha-(z-s-15) : ejeX-anchoIzquierda-(z+g-s-15);
 
     						}
 
@@ -454,33 +438,7 @@ public class PanelLVL1 extends JPanel {
         						//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
         						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
 
-        							if(s>0) {
-        								
-        								if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
-        									colision-=ejeX+anchoDerecha-(z-s-10);
-        									//Enemies_lvl1.enemies.get(posLista).setConga(true);
-        									//Enemies_lvl1.enemies.get(posLista).setPosYEnemy(ejeYCabeza-100);
-        									
-        								}
-        								else {
-        									colision-=ejeX+anchoDerecha-(z-s-10);
-        								}
-
-
-        							}
-        							else {
-        								
-        								if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
-        									colision-=ejeX-anchoIzquierda-(z+g-s-30);
-        									//Enemies_lvl1.enemies.get(posLista).setConga(true);
-        									//Enemies_lvl1.enemies.get(posLista).setPosYEnemy(ejeYCabeza-100);
-        									
-        								}
-        								else {
-        									colision-=ejeX-anchoIzquierda-(z+g-s-30);
-        								}
-
-        							}
+    								colision-= s>0 ? ejeX+anchoDerecha-(z-s-10) : ejeX-anchoIzquierda-(z+g-s-30);
 
         						}
 
@@ -551,7 +509,7 @@ public class PanelLVL1 extends JPanel {
 			    	
 		    	case 2:
 		    		
-		    		if(Enemies_lvl1.enemies.get(posLista).getPosXEnemy()-this.x + Enemies_lvl1.enemies.get(posLista).getMoveEnemy()+50>=z&&Enemies_lvl1.enemies.get(posLista).getPosXEnemy()-this.x + Enemies_lvl1.enemies.get(posLista).getMoveEnemy()+20<=(z+g)) {
+		    		if(Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+50>=z&&Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+20<=(z+g)) {
 		    			
 			    		if(prevY>=y+k&&newCabezaPos<=y+k){
 			
@@ -621,7 +579,7 @@ public class PanelLVL1 extends JPanel {
 		//Colisión del suelo:
 		addPlatformToList(-350 - x, 720, 10700, 50, Tipo.BOTH);
 		//Tope provisional de caídas:
-		addPlatformToList(-10000 - x, 780, 30000, 50, Tipo.BOTH);
+		//addPlatformToList(-10000 - x, 1000, 30000, 50, Tipo.BOTH);
 
 		//Plataformas para saltar
 		g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
@@ -642,13 +600,13 @@ public class PanelLVL1 extends JPanel {
 		//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		//Pows:
 		
-		for(int x=0;x<Enemies_lvl1.enemies.size();x++) {
+		for(int x=0;x<Entities.enemies.size();x++) {
 		
-			if(!Enemies_lvl1.enemies.get(x).isDead()) {
-				g.drawImage(animMonstruo[arrPosMonstruo], Enemies_lvl1.enemies.get(x).getPosXEnemy() -this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-						Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, this);
-				addPlatformToList(Enemies_lvl1.enemies.get(x).getPosXEnemy() - this.x + Enemies_lvl1.enemies.get(x).getMoveEnemy(),
-						Enemies_lvl1.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
+			if(!Entities.enemies.get(x).isDead()) {
+				g.drawImage(animMonstruo[arrPosMonstruo], Entities.enemies.get(x).getPosXEnemy() -this.x + Entities.enemies.get(x).getMoveEnemy(),
+						Entities.enemies.get(x).getPosYEnemy(), 70, 50, this);
+				addPlatformToList(Entities.enemies.get(x).getPosXEnemy() - this.x + Entities.enemies.get(x).getMoveEnemy(),
+						Entities.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
 			}
 			
 		}
@@ -670,7 +628,7 @@ public class PanelLVL1 extends JPanel {
 		//Aquí habrá que programar las reproducciones las barras de vida
 		g.drawImage(animBarra[arrPosBarra], 10, 790, 300, 160, this);
 		//Aquí habrá que programar las reproducciones de los corazones
-		g.drawImage(animCorazones[arrPosCor], 725, 835, 250, 75, this);
+		g.drawImage(animCorazones[keko.getLives()], 725, 835, 250, 75, this);
 		//Aquí habrá que programar las reproducciones de los corazones
 		g.drawImage(animReloj[arrPosReloj], 475, 820, 75, 100, this);
 		

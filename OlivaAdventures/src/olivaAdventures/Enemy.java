@@ -12,14 +12,8 @@ public class Enemy {
     private int posXEnemy;
     private int posYEnemy;
     private int moveEnemy;
-    private boolean jumping=false,conga=false;
-    public boolean isConga() {
-		return conga;
-	}
-
-	public void setConga(boolean conga) {
-		this.conga = conga;
-	}
+    private boolean jumping=false;
+    private boolean suicida=false;
 
 	private int contJumping;
     private int prevYEnemy;
@@ -39,23 +33,27 @@ public class Enemy {
     }
 
     //CONSTRUCTOR
-    Enemy(typeEnemies typeEnemies, int posX, int posY){
+    Enemy(typeEnemies typeEnemies, int posX, int posY, boolean suicida){
         switch (typeEnemies){
             case type1:
                 setLives((byte) 5);
                 setTypeEnemy(String.valueOf(1));
+                this.suicida=suicida;
                 break;
             case typeTrap:
                 setLives((byte) 120);
                 setTypeEnemy("typeTrap");
+                this.suicida=suicida;
                 break;
             case type2:
                 setLives((byte) 10);
                 setTypeEnemy(String.valueOf(2));
+                this.suicida=suicida;
                 break;
             case boss:
                 setLives((byte) 30);
                 setTypeEnemy("boss");
+                this.suicida=suicida;
                 break;
         }
         /*
@@ -105,7 +103,15 @@ public class Enemy {
 
     public void setPosYEnemy(int posYEnemy) { this.posYEnemy = posYEnemy; }
 
-    public int getMoveEnemy() { return moveEnemy; }
+    public boolean isSuicida() {
+		return suicida;
+	}
+
+	public void setSuicida(boolean suicida) {
+		this.suicida = suicida;
+	}
+
+	public int getMoveEnemy() { return moveEnemy; }
 
     public void setMoveEnemy(int moveEnemy) { this.moveEnemy = moveEnemy; }
 
@@ -218,7 +224,7 @@ public class Enemy {
     private void generarEnemigo(){
 
         if (isWakeUp()){
-            Entities.enemies.add(new Enemy(typeEnemies.type1, this.posXEnemy, this.posYEnemy));
+            Entities.enemies.add(new Enemy(typeEnemies.type1, this.posXEnemy, this.posYEnemy, true));
         }
 
     }
