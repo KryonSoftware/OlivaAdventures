@@ -12,8 +12,9 @@ import javax.swing.*;
 public class GameEngineLVL1 implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false;
-    private int contador=0,ejeX=0,ejeY=0,contadorSalto=0,prevY=720-89,prevX=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
-    private char lastSide='D';
+    private long contador=0,contadorDisparo=0;
+    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0;
+	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
     
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
@@ -98,7 +99,17 @@ public class GameEngineLVL1 implements KeyListener {
                 break;
             case KeyEvent.VK_W:
                 arriba=true;
-                break;
+                break;               
+            case KeyEvent.VK_SPACE:
+            	if(!panel.isDisparo()) {
+                	if(!pausa) {
+                		musica.cargarSonidoPistola();
+                		panel.setMomentoDisparo(this.contador);
+                		panel.setDisparado(false);
+                		panel.setDisparo(true);
+                	}
+            	}
+            	break;
             case KeyEvent.VK_ESCAPE:
             	if(pausa) {
             		pausa=false;
@@ -107,7 +118,7 @@ public class GameEngineLVL1 implements KeyListener {
             		pausa=true;
             	}
             	break;
-            default://Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo;
+            default:;
         }
 
     }
@@ -129,9 +140,7 @@ public class GameEngineLVL1 implements KeyListener {
             arriba=false;
             break;
         case KeyEvent.VK_SPACE:
-        	musica.cargarSonidoPistola();
         	break;
-            //Implementar en el futuro los casos de las teclas de activación de golpe CaC y/o disparo
         default:;
         }
     	cambio=0;
@@ -146,7 +155,7 @@ public class GameEngineLVL1 implements KeyListener {
     	//Si no pulsa nada o lo pulsa todo a la vez:
     	if(((!derecha && !izquierda) || (derecha && izquierda)) && !arriba) {
     		
-	    	switch(lastSide) {
+	    	switch(panel.keko.getLastSide()) {
 	    	
 	    	case 'D':
 	    		
@@ -256,7 +265,7 @@ public class GameEngineLVL1 implements KeyListener {
     			} else if(cambio==1){cambio=0;}
     			else {cambio=0;}
     			
-    			lastSide='I';
+    			panel.keko.setLastSide('I');
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX+=panel.isWall(1,1,-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
@@ -305,7 +314,7 @@ public class GameEngineLVL1 implements KeyListener {
     			} else if(cambio==1){cambio=0;}
     			else {cambio=0;}
     			
-    			lastSide='D';
+    			panel.keko.setLastSide('D');
     			
     			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
             	ejeX+=panel.isWall(1,1,10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
@@ -350,7 +359,7 @@ public class GameEngineLVL1 implements KeyListener {
         	 //La secuencia de salto consiste en llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
         	  
             if(contadorSalto>=0&&contadorSalto<5) {
-            	compruebaDistanciaSalto=panel.isTop(1,1,20,ejeY,ejeX,prevX);
+            	compruebaDistanciaSalto=(byte) panel.isTop(1,1,20,ejeY,ejeX,prevX);
                 ejeY += compruebaDistanciaSalto;
                 //Y si su respuesta es menor a la petición, sabemos que hemos chocado, por lo que pasamos el contador al punto de comenzar a acelerar hacia abajo
                 if(!(compruebaDistanciaSalto==20)) {
@@ -358,21 +367,21 @@ public class GameEngineLVL1 implements KeyListener {
                 }
             }
             else if(contadorSalto>4&&contadorSalto<8){
-            	compruebaDistanciaSalto=panel.isTop(1,1,10,ejeY,ejeX,prevX);
+            	compruebaDistanciaSalto=(byte) panel.isTop(1,1,10,ejeY,ejeX,prevX);
                 ejeY+=compruebaDistanciaSalto;
                 if(!(compruebaDistanciaSalto==10)) {
                 	contadorSalto=16;
                 }
             }
             else if(contadorSalto>7&&contadorSalto<12){
-            	compruebaDistanciaSalto=panel.isTop(1,1,5,ejeY,ejeX,prevX);
+            	compruebaDistanciaSalto=(byte) panel.isTop(1,1,5,ejeY,ejeX,prevX);
                 ejeY+=compruebaDistanciaSalto;
                 if(!(compruebaDistanciaSalto==5)) {
                 	contadorSalto=16;
                 }
             }
             else if(contadorSalto>11&&contadorSalto<15){
-            	compruebaDistanciaSalto=panel.isTop(1,1,1,ejeY,ejeX,prevX);
+            	compruebaDistanciaSalto=(byte) panel.isTop(1,1,1,ejeY,ejeX,prevX);
                 ejeY+=compruebaDistanciaSalto;
                 if(!(compruebaDistanciaSalto==1)) {
                 	contadorSalto=16;
@@ -424,6 +433,23 @@ public class GameEngineLVL1 implements KeyListener {
             }
             contadorSalto++;
         }
+    }
+    
+    private void disparar() {
+    	
+    	/*
+		 * Cuando disparo sea true, lanzamos una bala en la dirección que estemos mirando. La bala se meterá en la lista de
+		 * plataformas y se la hará colisionable contra ENEMY y BOTH
+		 */   	
+    	
+    	if(panel.isDisparo()) {
+    	
+    		if(contador>=panel.getMomentoDisparo()+150) {
+    			panel.setDisparo(false);
+    		}
+    		
+    	}
+    	
     }
     
     private void animacionesOtros() {
@@ -485,7 +511,7 @@ public class GameEngineLVL1 implements KeyListener {
           if(enemigo.getContJumping()>=0&&enemigo.getContJumping()<5) {
         	  
         	  //HAY QUE ARREGLAR EL ISTOP*************************************************************************
-          	compruebaDistanciaSalto=panel.isTop(2,posLista,enemigo.getPosYEnemy()-20,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-20,enemigo.getPosYEnemy(),ejeX,prevX);
           	//HAY QUE ARREGLAR EL ISTOP*************************************************************************
           	
               enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
@@ -495,21 +521,21 @@ public class GameEngineLVL1 implements KeyListener {
               }
           }
           else if(enemigo.getContJumping()>4&&enemigo.getContJumping()<8){
-          	compruebaDistanciaSalto=panel.isTop(2,posLista,enemigo.getPosYEnemy()-10,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-10,enemigo.getPosYEnemy(),ejeX,prevX);
           	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==10)) {
               	contadorSalto=16;
               }
           }
           else if(enemigo.getContJumping()>7&&enemigo.getContJumping()<12){
-          	compruebaDistanciaSalto=panel.isTop(2,posLista,enemigo.getPosYEnemy()-5,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-5,enemigo.getPosYEnemy(),ejeX,prevX);
           	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==5)) {
               	contadorSalto=16;
               }
           }
           else if(enemigo.getContJumping()>11&&enemigo.getContJumping()<15){
-          	compruebaDistanciaSalto=panel.isTop(2,posLista,enemigo.getPosYEnemy()-1,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-1,enemigo.getPosYEnemy(),ejeX,prevX);
           	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==1)) {
               	contadorSalto=16;
@@ -650,7 +676,8 @@ public class GameEngineLVL1 implements KeyListener {
 
     }
 
-    private void pausa() {
+   
+   private void pausa() {
    
     	if(pausa) {
     		panel.setPause(true);
@@ -685,6 +712,8 @@ public class GameEngineLVL1 implements KeyListener {
     	PJMove();
 
     	ejecutarSalto();
+    	
+    	disparar();
         
         panel.setEjeX(ejeX);
         panel.setEjeY(ejeY);

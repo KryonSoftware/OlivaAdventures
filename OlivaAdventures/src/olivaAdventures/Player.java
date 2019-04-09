@@ -14,6 +14,7 @@ public class Player {
     private boolean jumpingPlayer;
     private int contJumpingPlayer;
     private int prevYEnemyPlayer;
+    private char lastSide='D';
 
 
     //CONSTRUCTOR
@@ -46,7 +47,15 @@ public class Player {
 
     public void setLives(int lives) { this.lives = lives; }
 
-    public int getPosXPlayer() { return posXPlayer; }
+    public char getLastSide() {
+		return lastSide;
+	}
+
+	public void setLastSide(char lastSide) {
+		this.lastSide = lastSide;
+	}
+
+	public int getPosXPlayer() { return posXPlayer; }
 
     public void setPosXPlayer(int posXPlayer) { this.posXPlayer = posXPlayer; }
 

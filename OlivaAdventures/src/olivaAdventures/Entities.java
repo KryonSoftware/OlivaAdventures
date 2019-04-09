@@ -6,13 +6,13 @@ public class Entities {
 
     public static ArrayList<Enemy> enemies =  loadEnemies();
 
-    public static ArrayList<Enemy> loadEnemies(){
+    private static ArrayList<Enemy> loadEnemies(){
 
         ArrayList<Enemy> enemies = new ArrayList<>();
 
-        Enemy enemy = new Enemy(Enemy.typeEnemies.type1, 600, 0,false);
-        Enemy enemy1 = new Enemy(Enemy.typeEnemies.type1, 950, 0,true);
-        Enemy enemy2 = new Enemy(Enemy.typeEnemies.type1, 390, 450,false);
+        Enemy enemy = new Enemy(Enemy.typeEnemies.type1, 600, 0,true);
+        Enemy enemy1 = new Enemy(Enemy.typeEnemies.type1, 950, 0,false);
+        Enemy enemy2 = new Enemy(Enemy.typeEnemies.type1, 410, 450,false);
         Enemy enemy3 = new Enemy(Enemy.typeEnemies.type1, 250, 0,true);
 
 

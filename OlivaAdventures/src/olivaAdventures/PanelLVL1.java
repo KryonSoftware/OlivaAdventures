@@ -28,9 +28,13 @@ public class PanelLVL1 extends JPanel {
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo;
     
-    private boolean pause=false;
+    private char direccionDisparo='D';
+    
+    private long momentoDisparo=0;
+    
+    private boolean pause=false,disparo,disparado=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -38,6 +42,14 @@ public class PanelLVL1 extends JPanel {
     public boolean isPause() {return pause;}
 
 	public void setPause(boolean pause) {this.pause = pause;}
+
+	public boolean isDisparo() {return disparo;}
+
+	public void setDisparo(boolean disparo) {this.disparo = disparo;}
+
+	public long getMomentoDisparo() {return momentoDisparo;}
+
+	public void setMomentoDisparo(long contador) {this.momentoDisparo = contador;}
 
 	public int getArrPosMonstruo() {return arrPosMonstruo;}
 
@@ -59,7 +71,11 @@ public class PanelLVL1 extends JPanel {
 
     public void setEjeY(int y){this.y=y;}
     
-    public int getEjeX() {return this.x;}
+    public boolean isDisparado() {return disparado;}
+
+	public void setDisparado(boolean disparado) {this.disparado = disparado;}
+
+	public int getEjeX() {return this.x;}
 
     public int getEjeY() {return this.y;}
     
@@ -272,7 +288,7 @@ public class PanelLVL1 extends JPanel {
      * @param ancho
      * @param alto
      */
-    private void addPlatformToList(int ejeX,int ejeY,int ancho,int alto,Tipo tipo){
+    public void addPlatformToList(int ejeX,int ejeY,int ancho,int alto,Tipo tipo){
 
         listaPlataformas.add(new Platform(ejeX,ejeY,ancho,alto,tipo));
 
@@ -332,7 +348,7 @@ public class PanelLVL1 extends JPanel {
 	        				
 	        				if(!(y==ejeY-49) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
 	        				
-			    				if(ejeX+50>=z&&ejeX+20<=(z+g)) {
+			    				if(ejeX+20>=z&&ejeX+50<=(z+g)) {
 			
 			            			if(ejeY+49>=y&&prevY<y){
 			
@@ -449,6 +465,12 @@ public class PanelLVL1 extends JPanel {
         			}
     				
     				break;
+    				
+    			case 42:
+    				
+    				
+    				
+    				break;
     			
     			}
 
@@ -531,6 +553,53 @@ public class PanelLVL1 extends JPanel {
         return colision;
     }
     
+    private void movimientoBala(Graphics g,boolean disparo,int x) {
+    	
+    	if(disparo) {
+    		
+    		if(!disparado) {
+	    		 // Aquí hay que sustituir el cuadrado rojo por la array de imágenes de la bala
+	    		switch(keko.getLastSide()) {
+	    		
+	    		case 'D':
+	    			g.setColor(Color.red);
+	        		g.fillRect(keko.getPosXPlayer()+30,keko.getPosYPlayer()+30-y,10,10);
+	        		direccionDisparo='D';
+	    			break;
+	    		case 'I':
+	    			g.setColor(Color.red);
+	        		g.fillRect(keko.getPosXPlayer()-10,keko.getPosYPlayer()+30-y,10,10);
+	        		direccionDisparo='I';
+	    			break;
+	    			default:;
+	    		
+	    		}
+	    		alturaDisparo=y;
+	    		avanceDisparo=0;
+	    		disparado=true;
+    		}
+    		else {
+    			
+    			switch(direccionDisparo) {
+    			
+    			case 'D':
+    				g.setColor(Color.red);
+	        		g.fillRect(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+30-alturaDisparo,10,10);
+    				break;
+    			case'I':
+    				g.setColor(Color.red);
+	        		g.fillRect(keko.getPosXPlayer()-20-avanceDisparo,keko.getPosYPlayer()+30-alturaDisparo,10,10);
+    				break;
+    			
+    			}
+    			
+    		}
+    		
+    		avanceDisparo+=30;
+    		
+    	}
+    	
+    }
     /**
      * Método para pintar nuestro panel
      */
@@ -539,7 +608,7 @@ public class PanelLVL1 extends JPanel {
 		//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
 		listaPlataformas.clear();
 
-		//Fondo por ahora (se sustituirá con una imagen y se lo hará desplazarse también)
+		//Fondo por ahora de por si las moscas
 
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, 1000, 1000);
@@ -614,7 +683,8 @@ public class PanelLVL1 extends JPanel {
 		//Nuestro keko
 		g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
 		addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
-
+		
+		movimientoBala(g, disparo,x);
 		
 		//Árboles colisionables:
 		g.drawImage(arbol1,918-x,355,200,370,this);

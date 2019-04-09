@@ -4,5 +4,6 @@ public enum Tipo{
 	PLATFORM,
 	BOTH,
 	ENEMY,
-	PLAYER
+	PLAYER,
+	BALA
 }
