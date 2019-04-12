@@ -18,7 +18,9 @@ public class Main {
 		 */
 		
 		GameEngineLVL1 ge=new GameEngineLVL1();
-		ge.arrancar();
+		int puntuacionFinal=ge.runGame();
+		System.out.println(puntuacionFinal+"eoeoeoeoe");
+		System.exit(1);
 		
 	}
 

@@ -5,14 +5,14 @@ import java.awt.event.KeyListener;
 import javax.swing.*;
 
 /**
- * Clase de motor del juego. Físicas. Lvl 1.
+ * Clase de motor del juego. Físicas.
  * 
  * @author kryon
  */
 public class GameEngineLVL1 implements KeyListener {
 
-    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false;
-    private long contador=0,contadorDisparo=0;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false;
+    private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
     
@@ -20,42 +20,17 @@ public class GameEngineLVL1 implements KeyListener {
     private PanelLVL1 panel = new PanelLVL1();
 
 	//La música que usaremos:
-	Musica musica = new Musica();
- 
-    /*
-
-     * Código de David NO FUNCIONAL, A LA ESPERA DE BUGFIXING
-     * 
-     *     private PlantillaVentana plantillaVentana;
-
-     *
-     * //Constructor de nuestro nivel 1. Establece autoáticamente el Frame. CAMBIAR PARA LE FUTURO: TODO FRAME EN CLASE APARTE.
-     *
-    public GameEngineLVL1(JFrame frame, PlantillaVentana plantillaVentana){
-		this.plantillaVentana = plantillaVentana;
-
-    	
-        frame.setSize(1000,1000);
-        frame.setResizable(false);
-        frame.addKeyListener(this);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-
-        //Añadimos el panel que instanciamos antes:
-        frame.add(panel);
-
-        //Dejamos el frame visible al final para evitar problemas:
-        frame.setVisible(true);
-
-    }
-     */
-
+	private Musica musica= new Musica();
     
-    /**
-     * Constructor de nuestro nivel 1. Establece automáticamente el Frame. CAMBIAR PARA LE FUTURO: TODO FRAME EN CLASE APARTE.
-     */
+   /**
+    * Constructor de la clase. Le pasamos el JFrame que deberá usar el juego.
+    * El constructor simplemente se encarga de meter el panel en el frame que se le ha pasado y cargar sus listeners.
+    * @param frame  JFrame del menú que usará el juego.
+    */
     public GameEngineLVL1(){
 
+    	/*    METER CÓDIGO DAVID      */
+    	
     	//Creamos e instanciamos el Frame:
         JFrame frame = new JFrame("Oliva Adventures");
         //Valores del frame:
@@ -84,7 +59,8 @@ public class GameEngineLVL1 implements KeyListener {
     }
 
     /**
-     * Estos eventos los usamos para activar las booleanas de presión de tecla. Gracias a esto podemos tener varias teclas pulsadas a la vez.
+     * Estos eventos los usamos para activar las booleanas de presión de tecla. Gracias a esto podemos tener varias teclas pulsadas a la vez y controlamos
+     *  el efecto "pulso hasta el día del alzamiento de Skynet"
      */
     @Override
     public void keyPressed(KeyEvent keyEvent) {
@@ -100,15 +76,8 @@ public class GameEngineLVL1 implements KeyListener {
             case KeyEvent.VK_W:
                 arriba=true;
                 break;               
-            case KeyEvent.VK_SPACE:
-            	if(!panel.isDisparo()) {
-                	if(!pausa) {
-                		musica.cargarSonidoPistola();
-                		panel.setMomentoDisparo(this.contador);
-                		panel.setDisparado(false);
-                		panel.setDisparo(true);
-                	}
-            	}
+            case KeyEvent.VK_SPACE: //Caso de disparar
+            	gatillo=true;
             	break;
             case KeyEvent.VK_ESCAPE:
             	if(pausa) {
@@ -140,7 +109,7 @@ public class GameEngineLVL1 implements KeyListener {
             arriba=false;
             break;
         case KeyEvent.VK_SPACE:
-        	break;
+        	gatillo=false;
         default:;
         }
     	cambio=0;
@@ -437,24 +406,40 @@ public class GameEngineLVL1 implements KeyListener {
     
     private void disparar() {
     	
-    	/*
-		 * Cuando disparo sea true, lanzamos una bala en la dirección que estemos mirando. La bala se meterá en la lista de
-		 * plataformas y se la hará colisionable contra ENEMY y BOTH
-		 */   	
-    	
+    	//Si está apretando la tecla disparo
+    	if(gatillo) {
+    		//Si no estamos en proceso de disparo ya
+    		if(!panel.isDisparo()) {
+    			//Si no intenta disparar durante la pausa
+	        	if(!pausa) {
+	        		//Sonido disparo
+	        		musica.cargarSonidoPistola();
+	        		//Le indicamos cuándo efectuamos el disparo.Necesitamos saberlo porque limitamos la capacidad de disparar en el tiempo
+	        		panel.setMomentoDisparo(this.contador);
+	        		//Variables de control internas
+	        		panel.setDisparado(false);
+	        		panel.setDisparo(true);
+	        	}
+	    	}
+    	}
+    	//Si estamos en proceso de disparo
     	if(panel.isDisparo()) {
-    	
-    		if(contador>=panel.getMomentoDisparo()+150) {
+    		//Limitamos el tiempo entre disparos
+    		if(contador>=panel.getMomentoDisparo()+60) {
     			panel.setDisparo(false);
+    			panel.setDisparado(false);
     		}
     		
     	}
     	
     }
     
+    /**
+     * Animaciones de mosntruos, fuegos, hierbas, trampas,...
+     */
     private void animacionesOtros() {
     	
-    	
+    	//Animaciones respiraciones pow
     	if(animacionesDe8==0) {
     		switch(anMons) {
         	case 0:
@@ -499,26 +484,28 @@ public class GameEngineLVL1 implements KeyListener {
     }
  
     /**
-     * Método hecho para llamarse dentro de un for, donde a cada iteración le pasamos un enemigo nuevo de los que hay dentro de la array correspondiente.
-     * @param enemigo
+     * Método de saltos enemigos. Hecho para llamarse dentro de un for, donde a cada iteración le pasamos
+     *  un enemigo nuevo de los que hay dentro de la array correspondiente.
+     * @param enemigo El enemigo en cuestión
+     * @param posLista La posición que tiene dentro de la array de enemigos
      */
    private void saltoMonstruos(Enemy enemigo,int posLista) {
 	   
-       if ( enemigo.isJumping() ) {
+	   //Si está saltando
+       if(enemigo.isJumping()) {
        
       	 //La secuencia de salto consiste en llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
       	  
           if(enemigo.getContJumping()>=0&&enemigo.getContJumping()<5) {
         	  
-        	  //HAY QUE ARREGLAR EL ISTOP*************************************************************************
-          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-20,enemigo.getPosYEnemy(),ejeX,prevX);
-          	//HAY QUE ARREGLAR EL ISTOP*************************************************************************
-          	
-              enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
-              //Y si su respuesta es menor a la petición, sabemos que hemos chocado, por lo que pasamos el contador al punto de comenzar a acelerar hacia abajo
-              if(!(compruebaDistanciaSalto==20)) {
-              	enemigo.setContJumping(16);
-              }
+        	  //isTop nos devuelve cuánto puede moverse en vertical hasta chocar contra algo
+        	  compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-20,enemigo.getPosYEnemy(),ejeX,prevX);
+        	  
+	          enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
+	          //Y si su respuesta es menor a la petición, sabemos que hemos chocado, por lo que pasamos el contador al punto de comenzar a acelerar hacia abajo
+	          if(!(compruebaDistanciaSalto==20)) {
+	          	enemigo.setContJumping(16);
+	          }
           }
           else if(enemigo.getContJumping()>4&&enemigo.getContJumping()<8){
           	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-10,enemigo.getPosYEnemy(),ejeX,prevX);
@@ -584,6 +571,7 @@ public class GameEngineLVL1 implements KeyListener {
 	                }
 	            }
 	            else{
+	            	//Si ya está sobre suelo firme
 	                enemigo.setJumping(false);
 	            }
           }
@@ -592,49 +580,65 @@ public class GameEngineLVL1 implements KeyListener {
 	   
    }
    
-
+   /**
+    * Método que se encarga de mover a los monstruos y de comprobar sus caídas.
+    */
    private void movimientosMonstruos() {
 
-	   //ÑAPAS PARA PRUEBAS:
-
 	   for(int x=0;x<Entities.enemies.size();x++) {
+		   
+		   //Comprobamos si se ha caído por un precipicio. Si es así, lo matamos
+		   if(Entities.enemies.get(x).getPosYEnemy()>780) {
+			   Entities.enemies.get(x).setDead(true);
+		   }
+			   
+	/*		   //ESTO ES PARA HACERLOS SALTAR SIN PARAR******************SE APLICARÁ A LOS SALTARINES******************************************************
+			   
+			   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
+					   Enemies_lvl1.enemies.get(x).setJumping(true);
+					   Enemies_lvl1.enemies.get(x).setContJumping(0);
+				   }
+	*/
 
-		   saltoMonstruos(Entities.enemies.get(x),x);
-		   
-/*		   //ESTO ES PARA HACERLOS SALTAR SIN PARAR************************************************************************
-		   
-		   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-				   Enemies_lvl1.enemies.get(x).setJumping(true);
-				   Enemies_lvl1.enemies.get(x).setContJumping(0);
-			   }
-*/
-		   
 		   if (!Entities.enemies.get(x).isDead()){
-			   switch (Entities.enemies.get(x).getDecission(Entities.enemies.get(x).getPosXEnemy()-ejeX+Entities.enemies.get(x).getMoveEnemy(),Entities.enemies.get(x).getPosYEnemy(),
-					   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
+			   
+			   //Llamamos al método que comprueba/ejecuta las caídas de éstos
+			   saltoMonstruos(Entities.enemies.get(x),x);
+
+			   //Sólo actúa si está en el radio de acción
+			   if(Entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ Entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
+					   && Entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ Entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
+
+				   //Llamamos a su método para tomar decisión, que nos devolverá un char diciéndonos a dónde quiere ir
+				   switch (Entities.enemies.get(x).getDecission(Entities.enemies.get(x).getPosXEnemy()-ejeX+Entities.enemies.get(x).getMoveEnemy(),Entities.enemies.get(x).getPosYEnemy(),
+						   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
 					   case 'D':
+						   //Si no está saltando movemos 5, si no sólo 3
 						   if(!Entities.enemies.get(x).isJumping()) {
+							   //Comprobamos si es de los que se tiran por las plataformas o no
 							   if(Entities.enemies.get(x).isSuicida()) {
 								   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
 										   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
 							   }
 							   else {
+								   //Si no es suicida, primero comprobamos si se va a caer o no si se mueve y se lo permitimos o no
 								   if(panel.isGround(Entities.enemies.get(x).getEntidad(),x,Entities.enemies.get(x).getPosXEnemy()+5-ejeX + Entities.enemies.get(x).getMoveEnemy(),
 										   Entities.enemies.get(x).getPosYEnemy()+49,Entities.enemies.get(x).getPrevYEnemy()+49,
 										   Entities.enemies.get(x).getPosXEnemy()-ejeX + Entities.enemies.get(x).getMoveEnemy())) {
 									   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
 											   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
 								   }
 							   }
+							   //Si debe estar cayendo, con ésto lo haemos caer
 							   Entities.enemies.get(x).setJumping(true);
 							   Entities.enemies.get(x).setContJumping(16);
 						   }
 						   else {
 							   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
 									   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-									   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+									   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
 						   }
 						   break;
 					   case 'I':
@@ -642,7 +646,7 @@ public class GameEngineLVL1 implements KeyListener {
 							   if(Entities.enemies.get(x).isSuicida()) {
 								   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
 										   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
 							   }
 							   else {
 								   if(panel.isGround(Entities.enemies.get(x).getEntidad(),x,Entities.enemies.get(x).getPosXEnemy()-5-ejeX + Entities.enemies.get(x).getMoveEnemy(),
@@ -650,7 +654,7 @@ public class GameEngineLVL1 implements KeyListener {
 										   Entities.enemies.get(x).getPosXEnemy()-ejeX + Entities.enemies.get(x).getMoveEnemy())) {
 									   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
 											   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
 								   }
 							   }
 							   Entities.enemies.get(x).setJumping(true);
@@ -663,29 +667,39 @@ public class GameEngineLVL1 implements KeyListener {
 						   }
 						   break;
 					   default:
+						   //Si está compartiendo ejeX con el Keko no querrá moverse más, pero debemos comprobar si debe estar cayendo igualmente
 						   if(!Entities.enemies.get(x).isJumping()) {
 							   Entities.enemies.get(x).setJumping(true);
 							   Entities.enemies.get(x).setContJumping(16);
 						   }
-						   //	panel.keko.doDamge(Enemies_lvl1.enemies.get(x));
+				   }
+
 			   }
-			   
+
 		   }
-		   
+
 	   }
 
-    }
+   }
 
-   
+   /**
+    * Método que nos sirve para ejecutar o no la pausa y que además usamos para hacer el repaint del panel.
+    */
    private void pausa() {
    
+	   //Si estamos en pausa
     	if(pausa) {
+    		//Le decimos a panel que pinte la pantalla de pausa
     		panel.setPause(true);
+    		//Hacemos un repaint con la pantalla de pausa
     		panel.repaint();
+    		//Paramos la música
     		try {musica.pausa();} catch (Exception e) {System.out.println("Fallo al pausar la música. Error: "+e);}
     	}
     	while(pausa) {
+    		//ÑAPA detenemos el hilo mientras estamos en pausa
     		System.out.println("pausa");
+    		//Estamos obligados a hacerle hacer algo dentro del while o se queda sordo a la variable pausa, imagino que es cosa de que el procesador se pone a full
     	}
     	if(!pausa) {
     		panel.setPause(false);
@@ -701,19 +715,20 @@ public class GameEngineLVL1 implements KeyListener {
      */
     private void fps(){
     	
-    	if(panel.keko.getPosYPlayer()-panel.getEjeY()>900) {
-    		panel.keko.setDead(true);
+    	//Dejamos que contador suba a 10 antes de permitirnos jugar para dar más tiempo de carga
+    	if(!(contador<10)) {
+	    	
+	    	movimientosMonstruos();
+	    	
+	        animacionesOtros();
+	    	
+	    	PJMove();
+	
+	    	ejecutarSalto();
+	    	
+	    	disparar();
+    	
     	}
-    	
-    	movimientosMonstruos();
-    	
-        animacionesOtros();
-    	
-    	PJMove();
-
-    	ejecutarSalto();
-    	
-    	disparar();
         
         panel.setEjeX(ejeX);
         panel.setEjeY(ejeY);
@@ -725,19 +740,32 @@ public class GameEngineLVL1 implements KeyListener {
      * Método de inicialización del nuevo nivel. Contiene un bucle (infinito por ahora) que se encarga de ordenar el repintado mediante el llamado
      *  al método fps() cada 11 milisegundos.
      */
-    public void arrancar(){
+    public int runGame(){
 
+    	//iniciamos ciertas cosas
         boolean gameOver = false;
         int puntuacion = 360;
         
-        musica.cargarMusicaFondo();
+        try {
+        	//Detenemos el hilo para darle tiempo al panel a cargar y ponemos la imagen de cargando
+        	panel.setLoading(true);
+        	//Hacemos que la música de fondo empiece unos milisegundos después de poner la pantalla de carga
+        	musica.cargarMusicaFondo();
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
+        }
+        
+        panel.setLoading(false);
         
         while(!gameOver){
         	
+        	//30 veces por segundo
         	if(contador%3==0) {
         		fps();	
         	}
         	
+        	/* *************ÑAPAS: AQUÍ HAY QUE PONER EL CÓDIGO DE IVÁN PARA LAS IMÁGENES DEL HUD(CREO) *****************************************/
         	if(contador%18==0) {
         		//pruebas:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             	if(!(panel.getArrPosBarra()==4)) {
@@ -753,7 +781,8 @@ public class GameEngineLVL1 implements KeyListener {
             	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         	}
 
-        	if(puntuacion < 0 || panel.keko.getEnergy() < 0 || panel.keko.isDead()) {
+        	//Si ha muerto o se ha acabado el tiempo
+        	if(puntuacion < 0 || panel.keko.getEnergy() < 0 || panel.keko.isDead() || panel.keko.getPosYPlayer()-panel.getEjeY()>780) {
         		gameOver = true;
         		}
 
@@ -764,7 +793,7 @@ public class GameEngineLVL1 implements KeyListener {
                 System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
             }
 
-            //Test por consola reducción de puntuación basada el tiempo transcurrido:
+            //Test por consola reducción de puntuación basada el tiempo transcurrido (máso menos un segundo cada vez que entra):
             if(contador%90==0){
                 puntuacion--;
                 System.out.println(puntuacion);
@@ -774,10 +803,19 @@ public class GameEngineLVL1 implements KeyListener {
         
         try {
 			musica.stop();
-			System.exit(1000);
+			panel.setLoading(true);
+			panel.repaint();
+			Thread.sleep(1500);
 		} catch (Exception e) {
-			System.out.println("Error deteniendo la reproducciónd e la música. Log: "+e);
+			System.out.println("Error deteniendo la reproducciónd e la música o deteniendo "
+					+ "el tiempo al final de la partida. Log: "+e);
 		}
+        
+        if(panel.keko.getLives()!=0) {
+        	puntuacion*=panel.keko.getLives();
+        }
+        
+        return puntuacion;
         
     }
     

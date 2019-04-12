@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Clase JPanel propia. Además de actuar de panel, se encarga de recolocar ella sola, a través de los parámetros que le pasamos, el resto del mapa.
- * Será necesario que haya una por nivel, al igual de la clase GameEngine.
+ * Ciertas lógicas se hacen aquí. Es arriesgado dado que esta clase va en su propio hilo por ser un JPanel, pero funciona bien.
  * @author kryon
  *
  */
@@ -19,12 +19,14 @@ public class PanelLVL1 extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 
+	//Imágenes
 	private BufferedImage fondo,keko_right,keko_right2,keko_right3,keko_right4,keko_stand_right,keko_stand_right2,keko_stand_right3,
 	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
 	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
 	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
-	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,arbol1,arbol2,arbusto,pausa;
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,arbol1,arbol2,arbusto,pausa,cargando;
 	
+	//Arrays de imágenes
 	private BufferedImage[] animKeko = new BufferedImage[16],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26];
 	
@@ -34,11 +36,12 @@ public class PanelLVL1 extends JPanel {
     
     private long momentoDisparo=0;
     
-    private boolean pause=false,disparo,disparado=false;
+    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
     
+    //Getters y Setters
     public boolean isPause() {return pause;}
 
 	public void setPause(boolean pause) {this.pause = pause;}
@@ -54,6 +57,10 @@ public class PanelLVL1 extends JPanel {
 	public int getArrPosMonstruo() {return arrPosMonstruo;}
 
 	public void setArrPosMonstruo(int arrPosMonstruo) {this.arrPosMonstruo = arrPosMonstruo;}
+
+	public boolean isLoading() {return loading;}
+
+	public void setLoading(boolean loading) {this.loading = loading;}
 
 	public int getArrPosReloj() {return arrPosReloj;}
 
@@ -78,6 +85,7 @@ public class PanelLVL1 extends JPanel {
 	public int getEjeX() {return this.x;}
 
     public int getEjeY() {return this.y;}
+    
     
     /**
      * Constructor del panel. Nos aseguramos de que cada vez que sea
@@ -169,6 +177,7 @@ public class PanelLVL1 extends JPanel {
 			suelo1=ImageIO.read(new File("resources/media/Suelos/cuadrado1.png"));
 			suelo2=ImageIO.read(new File("resources/media/Suelos/cuadrado2.png"));
 			pausa=ImageIO.read(new File("resources/media/Hud/pausa.png"));
+			cargando=ImageIO.read(new File("resources/media/Menú/OlivaAdventuresLibro.png"));
 			
           
        } catch (IOException e) {
@@ -281,6 +290,7 @@ public class PanelLVL1 extends JPanel {
 	private void cargarRaizImagenesNumeros() {
 		
 	}
+	
 	/**
      * Método para generar y añadir una nueva plataforma a la lista, que es borrada a cada repintado.
      * @param ejeX
@@ -295,7 +305,7 @@ public class PanelLVL1 extends JPanel {
     }
 
     /**
-     * Método que nos indica mediante un boolean si los ejes que le hemos pasado por parámetro están sobra la superficie de una plataforma o la ha atravesado.
+     * Método que nos indica mediante un boolean si los ejes que le hemos pasado por parámetro están sobre la superficie de una plataforma o la ha atravesado.
      * @param entidad -> 1 si es un keko, cualquier otro número si no lo es
      * @param ejeX
      * @param ejeY
@@ -303,10 +313,6 @@ public class PanelLVL1 extends JPanel {
      * @return false -> si sigue cayendo | true -> si se ha posado sobre una plataforma
      */
     public boolean isGround(int entidad,int posLista,int ejeX,int ejeY,int prevY,int prevX){
-
-    	/*
-    	 * QUEDAN CAMBIOS POR HACER Y AJUSTAR. LUEGO HAY QUE COMENTARLO
-    	 */
     	
     	boolean foundPlatform=false;
         int y,z,g;
@@ -316,6 +322,7 @@ public class PanelLVL1 extends JPanel {
         	
         	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
 
+        		//Le indicamos que si previamente ya ha encontrado algo contra lo que está chocando que deje de mirar apra mejorar el rendimiento
 	        	if(!foundPlatform) {
 	
 	        		z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
@@ -326,8 +333,10 @@ public class PanelLVL1 extends JPanel {
 	        		
 	        		case 1://Nuestro keko:
 	        			
+	        			//Comprobamos si estamos en el mismo eje X
 	        			if(350+30>=z&&350+15<=(z+g)) {
 	
+	        				//Comprobamos si estamos a la misma altura
 	            			if(720-ejeY+30>=y&&prevY<y){
 	
 	            				colision=true;
@@ -348,7 +357,7 @@ public class PanelLVL1 extends JPanel {
 	        				
 	        				if(!(y==ejeY-49) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
 	        				
-			    				if(ejeX+20>=z&&ejeX+50<=(z+g)) {
+			    				if(ejeX+25>=z&&ejeX+40<=(z+g)) {
 			
 			            			if(ejeY+49>=y&&prevY<y){
 			
@@ -386,20 +395,6 @@ public class PanelLVL1 extends JPanel {
         }
 
         return colision;
-        
-/*			if(350+30>=z&&350+15<=(z+g)) {
-
-    			if(720-ejeY+30>=y&&prevY<y){
-
-    				colision=true;
-
-    				foundPlatform=true;
-
-    				this.y=y;
-
-    			}
-
-    		}*/
 
     }
 
@@ -410,67 +405,192 @@ public class PanelLVL1 extends JPanel {
      */
     public int isWall(int entidad,int posLista,int intentoMovimiento,int ejeX,int ejeYCabeza,int ejeYPies,int anchoDerecha,int anchoIzquierda) {
     	
+    	boolean foundWall=false;
     	int y,z,g,k,s=intentoMovimiento;
     	int colision=intentoMovimiento;
 
     	for(int x=0;x<listaPlataformas.size();x++){
 
-    		if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+    		if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY || listaPlataformas.get(x).getTipo()==Tipo.BALA) {
 
-    			z=listaPlataformas.get(x).getEjeX();
-    			y=listaPlataformas.get(x).getEjeY();
-    			g=listaPlataformas.get(x).getAncho();
-    			k=listaPlataformas.get(x).getAlto();
-    			
-    			switch(entidad) {
-    			
-    			case 1:
-
-    				if(!(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
-
-    					if((ejeX+anchoDerecha+s>=z-5&&ejeX+s<=(z+g-15))) {
-
-    						//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
-    						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
-
-    							colision-= s>0 ? ejeX+anchoDerecha-(z-s-15) : ejeX-anchoIzquierda-(z+g-s-15);
-
-    						}
-
-    					}
-
-    				}
-    				
-    				break;
-    				
-    			case 2:
-    				
-    				if(!(z==ejeX) ||  !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
-
-        				if(!(y==ejeYCabeza && z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
-
-        					if((ejeX+anchoDerecha+s>=z-5&&ejeX+s<=(z+g-15))) {
-
-        						//if(((720-this.y)>y)&&((posYIniKeko-this.y)<(y+k))){
-        						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
-
-    								colision-= s>0 ? ejeX+anchoDerecha-(z-s-10) : ejeX-anchoIzquierda-(z+g-s-30);
-
-        						}
-
-        					}
-
-        				}
-
-        			}
-    				
-    				break;
-    				
-    			case 42:
-    				
-    				
-    				
-    				break;
+    			if(!foundWall) {
+	    			
+	    			z=listaPlataformas.get(x).getEjeX();
+	    			y=listaPlataformas.get(x).getEjeY();
+	    			g=listaPlataformas.get(x).getAncho();
+	    			k=listaPlataformas.get(x).getAlto();
+	    			
+	    			switch(entidad) {
+	    			
+	    			case 1: //Caso keko:
+	
+	    				if(!(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+	    					
+	    					if(!(listaPlataformas.get(x).getTipo()==Tipo.BALA)) {
+	
+		    					if((ejeX+anchoDerecha+s>=z-15&&ejeX+s<=(z+g-15))) {
+		    						
+		    						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
+		    							
+		    							//Si mueve a derecha o izquierda
+		    							if(s>0) {
+	        								
+		    								//Si está situado a derecha o izquierda del obstáculo (así evitamos algunos bugs durante caídas)
+	        								if(ejeX<z) {
+	        									
+	        									//Lo recolocamos pegado al obstáculo
+	        									colision-=ejeX+anchoDerecha-(z-s-18);
+	        									foundWall=true;
+	        									
+	        								}
+	        								else {
+	        									
+	        									colision-=ejeX-anchoIzquierda-(z+g-s-15);
+	        									foundWall=true;
+	        									
+	        								}
+	        								
+	        							}
+	        							else {
+	        								
+	        								if(ejeX>z) {
+	        									
+	        									colision-=ejeX-anchoIzquierda-(z+g-s-15);
+	        									foundWall=true;
+	        									
+	        								}
+	        								else {
+	        									
+	        									colision-=ejeX+anchoDerecha-(z-s-18);
+	        									foundWall=true;
+	        									
+	        								}
+	        								
+	        							}
+		
+		    						}
+		
+		    					}
+	    					
+	    					 }
+	
+	    				}
+	    				
+	    				break;
+	    				
+	    			case 2: //Caso pow:
+	    				
+	    				if(!(listaPlataformas.get(x).getTipo()==Tipo.BALA)) {
+		    				
+		    				if(!(z==ejeX) ||  !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+		
+		        				if(!(y==ejeYCabeza && z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+	        							
+	    							if((ejeX+anchoDerecha+s>=z-35&&ejeX+s<=(z+g-15))) {
+	    								
+		        						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
+		        							
+		        							//TODO aquí le especificaremos que si está chocando contra el keko, que le quite vida
+		        							
+		        							if(s>0) {
+		        								
+		        								if(ejeX<z) {
+		        									
+		        									colision-=ejeX+anchoIzquierda-(z-s-10);
+		        									foundWall=true;
+		        									
+		        								}
+		        								else {
+		        									
+		        									colision-=ejeX-anchoDerecha-(z+g-s-30);
+		        									foundWall=true;
+		        									
+		        								}
+		        								
+		        							}
+		        							else {
+		        								
+		        								if(ejeX>z) {
+		        									
+		        									colision-=ejeX-anchoDerecha-(z+g-s-30);
+		        									foundWall=true;
+		        									
+		        								}
+		        								else {
+		        									
+		        									colision-=ejeX+anchoIzquierda-(z-s-10);
+		        									foundWall=true;
+		        									
+		        								}
+		        								
+		        							}
+			
+		        						}
+		
+		        					}
+		
+		        				}
+		
+		        			}
+		    				
+	    				}
+	    				
+	    				//Evitamos que colisione contra enemigos cuando está en el aire
+	    				if((listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+	    					if(Entities.enemies.get(posLista).isJumping()) {
+	    						colision=intentoMovimiento;
+	    					}
+	    				}
+	    				
+	    				break;
+	    				
+	    			case 42: //Caso bala:
+	    				
+	    				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+	    					
+	    					if(!(listaPlataformas.get(x).getTipo()==Tipo.PLAYER)) {
+	    						
+	    						if(!(listaPlataformas.get(x).getTipo()==Tipo.BALA)) {
+		    						
+			    					if(((ejeX+anchoDerecha+s>=z) && (ejeX+s<=(z+g))) || (((ejeX+s<=z) && (ejeX+s>z)) && s>0) || ((ejeX+s>=z+g) && (ejeX+s<=z+g)) && s<0) {
+			
+			    						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
+			
+			    							switch(listaPlataformas.get(x).getTipo()) {
+			    							
+			    							case BOTH:
+			    								colision-= s>0 ? ejeX-(z-s) : ejeX-anchoIzquierda-(z+g-s);
+			    								foundWall=true;
+			    								impacto=true;
+			    								
+			    								break;
+			    								
+			    							case ENEMY:
+			    								
+			    								//TODO le indicaremos que en este caso le quite vida a dicho enemigo
+			    								colision-= s>0 ? ejeX-(z-s) : ejeX-anchoIzquierda-(z+g-s);
+			    								foundWall=true;
+			    								impacto=true;
+			    								
+			    								break;
+			    								
+											default:;
+											
+			    							}
+			    							
+			    						}
+			    						
+			    					}
+		    					
+	    						}
+	    					
+	    					}
+	    					
+	    				}
+	    				
+	    				break;
+	    			
+	    			}
     			
     			}
 
@@ -492,6 +612,7 @@ public class PanelLVL1 extends JPanel {
      */
     public int isTop(int entidad,int posLista,int newCabezaPos,int prevY,int ejeX,int prevX) {
     	
+    	boolean foundTop=false;
     	int y,z,g,k;
         int colision=0;
         
@@ -506,46 +627,52 @@ public class PanelLVL1 extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-	    	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
-	
-	    	z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
-	    	y=listaPlataformas.get(x).getEjeY();
-	    	g=listaPlataformas.get(x).getAncho();
-	    	k=listaPlataformas.get(x).getAlto();
-	    	
-		    	switch(entidad) {
+        	if(!foundTop) {
+        	
+		    	if(listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+		
+		    	z=listaPlataformas.get(x).getEjeX()+prevX-ejeX;
+		    	y=listaPlataformas.get(x).getEjeY();
+		    	g=listaPlataformas.get(x).getAncho();
+		    	k=listaPlataformas.get(x).getAlto();
 		    	
-		    	case 1:
-			
-			    	if(keko.getPosXPlayer()+30>=z&&keko.getPosXPlayer()+15<=(z+g)) {
-			
-			    		if(keko.getPosYPlayer()-this.y>=y+k&&keko.getPosYPlayer()-prevY-newCabezaPos<y+k){
-			
-			    			colision=(keko.getPosYPlayer()-prevY)-(y+k);
-			
-			    		}
-			
+			    	switch(entidad) {
+			    	
+			    	case 1:
+				
+				    	if(keko.getPosXPlayer()+30>=z&&keko.getPosXPlayer()+15<=(z+g)) {
+				
+				    		if(keko.getPosYPlayer()-this.y>=y+k&&keko.getPosYPlayer()-prevY-newCabezaPos<y+k){
+				
+				    			colision=(keko.getPosYPlayer()-prevY)-(y+k);
+				    			foundTop=true;
+				
+				    		}
+				
+				    	}
+				    	
+				    	break;
+				    	
+			    	case 2:
+			    		
+			    		if(Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+50>=z&&Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+20<=(z+g)) {
+			    			
+				    		if(prevY>=y+k&&newCabezaPos<=y+k){
+				
+				    			colision=(prevY)-(y+k);
+				    			foundTop=true;
+				
+				    		}
+				
+				    	}
+				    	
+			    		
+				    	break;
+				    	
 			    	}
-			    	
-			    	break;
-			    	
-		    	case 2:
-		    		
-		    		if(Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+50>=z&&Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+20<=(z+g)) {
-		    			
-			    		if(prevY>=y+k&&newCabezaPos<=y+k){
-			
-			    			colision=(prevY)-(y+k);
-			
-			    		}
-			
-			    	}
-			    	
-		    		
-			    	break;
-			    	
-		    	}
-	        	
+		        	
+	        	}
+	    	
         	}
 
         }
@@ -553,49 +680,72 @@ public class PanelLVL1 extends JPanel {
         return colision;
     }
     
+    /**
+     * Método para desplazar la bala y llamar a isWall para comprobar sus colisiones.
+     * @param g
+     * @param disparo
+     * @param x
+     */
     private void movimientoBala(Graphics g,boolean disparo,int x) {
     	
+    	//Variables de control de estado del disparo/bala
     	if(disparo) {
     		
     		if(!disparado) {
-	    		 // Aquí hay que sustituir el cuadrado rojo por la array de imágenes de la bala
+	    		 //TODO Hay que sustituir el cuadrado rojo por la array de imágenes de la bala
+    			
+    			//si miraba hacia un lado u otro al disparar
 	    		switch(keko.getLastSide()) {
 	    		
 	    		case 'D':
 	    			g.setColor(Color.red);
-	        		g.fillRect(keko.getPosXPlayer()+30,keko.getPosYPlayer()+30-y,10,10);
+	        		g.fillRect(keko.getPosXPlayer()+30,keko.getPosYPlayer()+50-y,10,10);
+	        		addPlatformToList(keko.getPosXPlayer()+30,keko.getPosYPlayer()+50-y,10,0, Tipo.BALA);
 	        		direccionDisparo='D';
 	    			break;
 	    		case 'I':
 	    			g.setColor(Color.red);
-	        		g.fillRect(keko.getPosXPlayer()-10,keko.getPosYPlayer()+30-y,10,10);
+	        		g.fillRect(keko.getPosXPlayer()-10,keko.getPosYPlayer()+50-y,10,10);
+	        		addPlatformToList(keko.getPosXPlayer()-10,keko.getPosYPlayer()+50-y,10,0, Tipo.BALA);
 	        		direccionDisparo='I';
 	    			break;
 	    			default:;
 	    		
 	    		}
+	    		//Guardamos la altura a la que fue disparada
 	    		alturaDisparo=y;
 	    		avanceDisparo=0;
+	    		//No volveremos a entrar en el apartado de generar la bala
+	    		impacto=false;
 	    		disparado=true;
     		}
     		else {
     			
-    			switch(direccionDisparo) {
-    			
-    			case 'D':
-    				g.setColor(Color.red);
-	        		g.fillRect(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+30-alturaDisparo,10,10);
-    				break;
-    			case'I':
-    				g.setColor(Color.red);
-	        		g.fillRect(keko.getPosXPlayer()-20-avanceDisparo,keko.getPosYPlayer()+30-alturaDisparo,10,10);
-    				break;
+    			//Mientras no choque
+    			if(!impacto) {
+	    			
+	    			switch(direccionDisparo) {
+	    			
+	    			case 'D':
+	    				avanceDisparo+=isWall(42,1,30,keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,
+	    						keko.getPosYPlayer()+50-alturaDisparo+20,10,0);
+	    				g.setColor(Color.red);
+		        		g.fillRect(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,10);
+		        		addPlatformToList(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,0, Tipo.BALA);
+	    				break;
+	    			case'I':
+	    				avanceDisparo+=isWall(42,1,-30,keko.getPosXPlayer()-10+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,
+	    						keko.getPosYPlayer()+50-alturaDisparo+20,10,0);
+	    				g.setColor(Color.red);
+		        		g.fillRect(keko.getPosXPlayer()-20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,10);
+		        		addPlatformToList(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,0, Tipo.BALA);
+	    				break;
+	    			
+	    			}
     			
     			}
     			
     		}
-    		
-    		avanceDisparo+=30;
     		
     	}
     	
@@ -604,6 +754,9 @@ public class PanelLVL1 extends JPanel {
      * Método para pintar nuestro panel
      */
     public void paint(Graphics g) {
+    	
+    	//Si estamos cargando no refresques
+    	if(!loading) {
 
 		//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
 		listaPlataformas.clear();
@@ -619,6 +772,7 @@ public class PanelLVL1 extends JPanel {
 			g.drawImage(fondo, ñ - (x / 4), 0, 750, 770, this);
 
 		}
+		
 		//Imagen móvil de las nubes
 		g.drawImage(nube1, 500 - (x / 2), 200, 100, 50, this);
 		g.drawImage(nube2, 700 - (x / 3), 100, 50, 30, this);
@@ -647,8 +801,6 @@ public class PanelLVL1 extends JPanel {
 		}
 		//Colisión del suelo:
 		addPlatformToList(-350 - x, 720, 10700, 50, Tipo.BOTH);
-		//Tope provisional de caídas:
-		//addPlatformToList(-10000 - x, 1000, 30000, 50, Tipo.BOTH);
 
 		//Plataformas para saltar
 		g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
@@ -684,11 +836,15 @@ public class PanelLVL1 extends JPanel {
 		g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
 		addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
 		
-		movimientoBala(g, disparo,x);
-		
 		//Árboles colisionables:
 		g.drawImage(arbol1,918-x,355,200,370,this);
 		addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
+		
+		//g.drawImage(arbol1,192-x,355,200,370,this);
+		//addPlatformToList(279 - x, 400, 35, 330, Tipo.BOTH);
+		
+		//Importante que sea lo último para poder ver y colisionar con todo
+		movimientoBala(g, disparo,x);
 		
 		//Árboles no colisionables:
 		g.drawImage(arbusto,500-x,660,70,70,this);
@@ -706,6 +862,11 @@ public class PanelLVL1 extends JPanel {
 		if(pause) {
 			g.drawImage(pausa,0,0,1000,1000,this);
 		}
+		
+    	}
+    	else {
+    		g.drawImage(cargando,0,0,1000,1000,this);
+    	}
 	}
 
 }

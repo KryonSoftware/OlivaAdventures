@@ -11,9 +11,9 @@ public class Entities {
         ArrayList<Enemy> enemies = new ArrayList<>();
 
         Enemy enemy = new Enemy(Enemy.typeEnemies.type1, 600, 0,true);
-        Enemy enemy1 = new Enemy(Enemy.typeEnemies.type1, 950, 0,false);
-        Enemy enemy2 = new Enemy(Enemy.typeEnemies.type1, 410, 450,false);
-        Enemy enemy3 = new Enemy(Enemy.typeEnemies.type1, 250, 0,true);
+        Enemy enemy1 = new Enemy(Enemy.typeEnemies.type1, 949, 0,true);
+        Enemy enemy2 = new Enemy(Enemy.typeEnemies.type1, 410, 450,true);
+        Enemy enemy3 = new Enemy(Enemy.typeEnemies.type1, 800, 0,true);
 
 
         enemies.add(enemy);

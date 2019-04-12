@@ -88,7 +88,7 @@ public class Player {
     /* Esta función lo que hará será hacerle daño a un enemigo cuando este sea alcanzado, se le restará una vida al
      * enemigo, una vez que el enemigo al que hayamos disparado se haya quedado sin vidas, morirá y la energía que tenia
      * este enemigo pasará totalmente al jugador */
-    public void doDamge(Enemy enemy){
+    public void doDamage(Enemy enemy){
         try {
             if (enemy.isDead()) throw new Exception();
             enemy.setLives((byte) (enemy.getLives() - 1));
