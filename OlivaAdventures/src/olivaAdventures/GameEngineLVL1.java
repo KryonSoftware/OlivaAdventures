@@ -413,7 +413,7 @@ public class GameEngineLVL1 implements KeyListener {
     			//Si no intenta disparar durante la pausa
 	        	if(!pausa) {
 	        		//Sonido disparo
-	        		musica.cargarSonidoPistola();
+	        		musica.playDisparo();
 	        		//Le indicamos cuándo efectuamos el disparo.Necesitamos saberlo porque limitamos la capacidad de disparar en el tiempo
 	        		panel.setMomentoDisparo(this.contador);
 	        		//Variables de control internas
@@ -694,7 +694,7 @@ public class GameEngineLVL1 implements KeyListener {
     		//Hacemos un repaint con la pantalla de pausa
     		panel.repaint();
     		//Paramos la música
-    		try {musica.pausa();} catch (Exception e) {System.out.println("Fallo al pausar la música. Error: "+e);}
+    		try {musica.pausaFondo();} catch (Exception e) {System.out.println("Fallo al pausar la música. Error: "+e);}
     	}
     	while(pausa) {
     		//ÑAPA detenemos el hilo mientras estamos en pausa
@@ -704,7 +704,7 @@ public class GameEngineLVL1 implements KeyListener {
     	if(!pausa) {
     		panel.setPause(false);
     		panel.repaint();
-    		try {musica.continuar();} catch (Exception e) {System.out.println("Fallo al reanudar la música. Error: "+e);}
+    		try {musica.continuarFondo();} catch (Exception e) {System.out.println("Fallo al reanudar la música. Error: "+e);}
     	}
     	
     }
@@ -750,7 +750,7 @@ public class GameEngineLVL1 implements KeyListener {
         	//Detenemos el hilo para darle tiempo al panel a cargar y ponemos la imagen de cargando
         	panel.setLoading(true);
         	//Hacemos que la música de fondo empiece unos milisegundos después de poner la pantalla de carga
-        	musica.cargarMusicaFondo();
+        	musica.playFondo();
             Thread.sleep(2500);
         } catch (InterruptedException e) {
             System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);

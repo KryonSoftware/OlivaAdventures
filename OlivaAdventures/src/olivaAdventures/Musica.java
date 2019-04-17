@@ -3,64 +3,62 @@ package olivaAdventures;
 import java.io.File;
 
 import javazoom.jlgui.basicplayer.BasicPlayer;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
 
 public class Musica {
 
     /* ATTRIBUTES */
-    private BasicPlayer player;
+    private BasicPlayer fondo,disparo;
     //Musica fondo = new Musica();
 
     /* CONSTRUCTOR */
     public Musica() {
-        player=new BasicPlayer();
+        fondo=new BasicPlayer();
+        disparo=new BasicPlayer();
+        cargarFondo();
+        cargarDisparo();
     }
 
     /* BASIC FUNCTIONS */
-    public void play() throws Exception {
-        player.play();
+    public void playFondo() {
+        try {fondo.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    
+    public void playDisparo() {
+        try {disparo.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
 
-    public void abrirFichero(String ruta) throws Exception {
-        player.open(new File(ruta));
+    public void pausaFondo() {
+        try {fondo.pause();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
 
-    public void pausa() throws Exception {
-        player.pause();
+    public void continuarFondo() {
+        try {fondo.resume();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
 
-    public void continuar() throws Exception {
-        player.resume();
-    }
-
-    public void stop() throws Exception {
-        player.stop();
+    public void stop() {
+        try {
+			fondo.stop();
+			disparo.stop();
+		} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
 
     /* FUNCTIONS */
-    public void cargarMusicaFondo(){
+    public void cargarFondo(){
 
         try {
-
-        	player.open(new File("resources/media/sonido/musica_fondo/" +
-                    "welcome_to_the_jungle_8_bit.mp3"));
-            player.play();
-
+        	fondo.open(new File("resources/sonido/musica_fondo/welcome_to_the_jungle_8_bit.mp3"));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error cargando la música de fondo. Posible error en el path. Error: "+e);
         }
     }
 
-    public void cargarSonidoPistola(){
-
-        Musica muscia = new Musica();
+    public void cargarDisparo(){
+    	
         try {
-
-            muscia.abrirFichero("resources/media/sonido/sonido_pistola/" +
-                    "realistic_gunshot_sound_effect.mp3");
-            muscia.play();
-
+        	disparo.open(new File("resources/sonido/sonido_pistola/realistic_gunshot_sound_effect.mp3"));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error cargando la música de disparo. Posible error en el path. Error: "+e);
         }
     }
 
