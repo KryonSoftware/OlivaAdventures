@@ -1,26 +1,32 @@
 package olivaAdventures;
 
-//import olivaAdventures.PlantillaVentana.TipoVentana;
+import olivaAdventures.PlantillaVentana.TipoVentana;
 
 public class Main {
 	
 	public static void main(String[] args) {
 		
-		/*
-		 * Código de David NO FUNCIONAL. A LA ESPERA DE BUGFIXING
-		 *
-		 * // PlantillaVentana implementa Runnable (es un hilo y debe ejecutarse como tal)
 		PlantillaVentana pv = new PlantillaVentana();
-		Thread thread = new Thread(pv);
-		thread.start();
 		pv.cambiarTipodeVentana(TipoVentana.Menu);
-		 *
-		 */
 		
+		while(true) {
+			
+			while (!(pv.menu.nivel)) {
+				System.out.println("Menú - Esperando");
+			}
+			
+			pv.cambiarTipodeVentana(TipoVentana.Nivel);
+			
+			pv=new PlantillaVentana();
+			pv.cambiarTipodeVentana(TipoVentana.Menu);
+			
+		}
+/*		
 		GameEngineLVL1 ge=new GameEngineLVL1();
 		int puntuacionFinal=ge.runGame();
 		System.out.println(puntuacionFinal+"eoeoeoeoe");
-		System.exit(1);
+*/		
+		
 		
 	}
 

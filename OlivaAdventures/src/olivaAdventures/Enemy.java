@@ -167,7 +167,7 @@ public class Enemy {
     public char getDecission(int posXEnemy, int posYEnemy, int posXPlayer, int posYPlayer){
 
         if (/*contador % 150 == 0 && */this.typeEnemy.equals("boss")){
-            generarEnemigo();
+           // generarEnemigo();
         } else {
 
             if (posXEnemy > posXPlayer+5){
@@ -219,16 +219,16 @@ public class Enemy {
         }
 
     }
-
-    /* Esta función se encargará de que el boss pueda generar enemigos */
+/*
+    // Esta función se encargará de que el boss pueda generar enemigos 
     private void generarEnemigo(){
 
         if (isWakeUp()){
-            Entities.enemies.add(new Enemy(typeEnemies.type1, this.posXEnemy, this.posYEnemy, true));
+            PanelLVL1.entities.enemies.add(new Enemy(typeEnemies.type1, this.posXEnemy, this.posYEnemy, true));
         }
 
     }
-
+*/
     //TO STRING
     @Override
     public String toString() {

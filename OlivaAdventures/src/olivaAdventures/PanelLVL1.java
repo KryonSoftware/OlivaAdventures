@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class PanelLVL1 extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
+	
+	public Entities entities= new Entities();
 
 	//Imágenes
 	private BufferedImage fondo,keko_right,keko_right2,keko_right3,keko_right4,keko_stand_right,keko_stand_right2,keko_stand_right3,
@@ -668,10 +670,10 @@ public class PanelLVL1 extends JPanel {
 			            				
 			            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
 			            				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
-			            					Entities.enemies.get(posLista).setPosYEnemy(y-51);
+			            					entities.enemies.get(posLista).setPosYEnemy(y-51);
 			            				}
 			            				else {
-			            					Entities.enemies.get(posLista).setPosYEnemy(y-49);
+			            					entities.enemies.get(posLista).setPosYEnemy(y-49);
 			            				}
 			
 			            			}
@@ -838,7 +840,7 @@ public class PanelLVL1 extends JPanel {
 	    				
 	    				//Evitamos que colisione contra enemigos cuando está en el aire
 	    				if((listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
-	    					if(Entities.enemies.get(posLista).isJumping()) {
+	    					if(entities.enemies.get(posLista).isJumping()) {
 	    						colision=intentoMovimiento;
 	    					}
 	    				}
@@ -956,7 +958,7 @@ public class PanelLVL1 extends JPanel {
 				    	
 			    	case 2:
 			    		
-			    		if(Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+50>=z&&Entities.enemies.get(posLista).getPosXEnemy()-this.x + Entities.enemies.get(posLista).getMoveEnemy()+20<=(z+g)) {
+			    		if(entities.enemies.get(posLista).getPosXEnemy()-this.x + entities.enemies.get(posLista).getMoveEnemy()+50>=z&&entities.enemies.get(posLista).getPosXEnemy()-this.x + entities.enemies.get(posLista).getMoveEnemy()+20<=(z+g)) {
 			    			
 				    		if(prevY>=y+k&&newCabezaPos<=y+k){
 				
@@ -1122,13 +1124,13 @@ public class PanelLVL1 extends JPanel {
 		//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		//Pows:
 		
-		for(int x=0;x<Entities.enemies.size();x++) {
+		for(int x=0;x<entities.enemies.size();x++) {
 		
-			if(!Entities.enemies.get(x).isDead()) {
-				g.drawImage(animMonstruo[arrPosMonstruo], Entities.enemies.get(x).getPosXEnemy() -this.x + Entities.enemies.get(x).getMoveEnemy(),
-						Entities.enemies.get(x).getPosYEnemy(), 70, 50, this);
-				addPlatformToList(Entities.enemies.get(x).getPosXEnemy() - this.x + Entities.enemies.get(x).getMoveEnemy(),
-						Entities.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
+			if(!entities.enemies.get(x).isDead()) {
+				g.drawImage(animMonstruo[arrPosMonstruo], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
+						entities.enemies.get(x).getPosYEnemy(), 70, 50, this);
+				addPlatformToList(entities.enemies.get(x).getPosXEnemy() - this.x + entities.enemies.get(x).getMoveEnemy(),
+						entities.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
 			}
 			
 		}

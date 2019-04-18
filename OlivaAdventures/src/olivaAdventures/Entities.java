@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Entities {
 
-    public static ArrayList<Enemy> enemies =  loadEnemies();
+    public ArrayList<Enemy> enemies =  loadEnemies();
 
-    private static ArrayList<Enemy> loadEnemies(){
+    private ArrayList<Enemy> loadEnemies(){
 
         ArrayList<Enemy> enemies = new ArrayList<>();
 

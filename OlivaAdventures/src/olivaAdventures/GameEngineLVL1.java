@@ -15,6 +15,7 @@ public class GameEngineLVL1 implements KeyListener {
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
+	public JFrame ventana;
     
     //Inicializamos el panel que va dentro del Frame:
     private PanelLVL1 panel = new PanelLVL1();
@@ -27,24 +28,21 @@ public class GameEngineLVL1 implements KeyListener {
     * El constructor simplemente se encarga de meter el panel en el frame que se le ha pasado y cargar sus listeners.
     * @param frame  JFrame del menú que usará el juego.
     */
-    public GameEngineLVL1(){
+    public GameEngineLVL1(JFrame ventana){
 
-    	/*    METER CÓDIGO DAVID      */
-    	
-    	//Creamos e instanciamos el Frame:
-        JFrame frame = new JFrame("Oliva Adventures");
-        //Valores del frame:
-        frame.setSize(1000,1000);
-        frame.setResizable(false);
-        frame.addKeyListener(this);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+    	this.ventana=ventana;
+    	//Valores del frame:
+        this.ventana.setSize(1000,1000);
+        this.ventana.setResizable(false);
+        this.ventana.addKeyListener(this);
+        this.ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.ventana.setLocationRelativeTo(null);
 
         //Añadimos el panel que instanciamos antes:
-        frame.add(panel);
+        this.ventana.add(panel);
 
         //Dejamos el frame visible al final para evitar problemas:
-        frame.setVisible(true);
+        ventana.setVisible(true);
 
     }
 
@@ -585,11 +583,11 @@ public class GameEngineLVL1 implements KeyListener {
     */
    private void movimientosMonstruos() {
 
-	   for(int x=0;x<Entities.enemies.size();x++) {
+	   for(int x=0;x<panel.entities.enemies.size();x++) {
 		   
 		   //Comprobamos si se ha caído por un precipicio. Si es así, lo matamos
-		   if(Entities.enemies.get(x).getPosYEnemy()>780) {
-			   Entities.enemies.get(x).setDead(true);
+		   if(panel.entities.enemies.get(x).getPosYEnemy()>780) {
+			   panel.entities.enemies.get(x).setDead(true);
 		   }
 			   
 	/*		   //ESTO ES PARA HACERLOS SALTAR SIN PARAR******************SE APLICARÁ A LOS SALTARINES******************************************************
@@ -600,77 +598,77 @@ public class GameEngineLVL1 implements KeyListener {
 				   }
 	*/
 
-		   if (!Entities.enemies.get(x).isDead()){
+		   if (!panel.entities.enemies.get(x).isDead()){
 			   
 			   //Llamamos al método que comprueba/ejecuta las caídas de éstos
-			   saltoMonstruos(Entities.enemies.get(x),x);
+			   saltoMonstruos(panel.entities.enemies.get(x),x);
 
 			   //Sólo actúa si está en el radio de acción
-			   if(Entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ Entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
-					   && Entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ Entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
+			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
+					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
 
 				   //Llamamos a su método para tomar decisión, que nos devolverá un char diciéndonos a dónde quiere ir
-				   switch (Entities.enemies.get(x).getDecission(Entities.enemies.get(x).getPosXEnemy()-ejeX+Entities.enemies.get(x).getMoveEnemy(),Entities.enemies.get(x).getPosYEnemy(),
+				   switch (panel.entities.enemies.get(x).getDecission(panel.entities.enemies.get(x).getPosXEnemy()-ejeX+panel.entities.enemies.get(x).getMoveEnemy(),panel.entities.enemies.get(x).getPosYEnemy(),
 						   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
 					   case 'D':
 						   //Si no está saltando movemos 5, si no sólo 3
-						   if(!Entities.enemies.get(x).isJumping()) {
+						   if(!panel.entities.enemies.get(x).isJumping()) {
 							   //Comprobamos si es de los que se tiran por las plataformas o no
-							   if(Entities.enemies.get(x).isSuicida()) {
-								   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
-										   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
+							   if(panel.entities.enemies.get(x).isSuicida()) {
+								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
+										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+										   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 							   }
 							   else {
 								   //Si no es suicida, primero comprobamos si se va a caer o no si se mueve y se lo permitimos o no
-								   if(panel.isGround(Entities.enemies.get(x).getEntidad(),x,Entities.enemies.get(x).getPosXEnemy()+5-ejeX + Entities.enemies.get(x).getMoveEnemy(),
-										   Entities.enemies.get(x).getPosYEnemy()+49,Entities.enemies.get(x).getPrevYEnemy()+49,
-										   Entities.enemies.get(x).getPosXEnemy()-ejeX + Entities.enemies.get(x).getMoveEnemy())) {
-									   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
-											   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
+								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()+5-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
+										   panel.entities.enemies.get(x).getPosYEnemy()+49,panel.entities.enemies.get(x).getPrevYEnemy()+49,
+										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
+									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
+											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 								   }
 							   }
 							   //Si debe estar cayendo, con ésto lo haemos caer
-							   Entities.enemies.get(x).setJumping(true);
-							   Entities.enemies.get(x).setContJumping(16);
+							   panel.entities.enemies.get(x).setJumping(true);
+							   panel.entities.enemies.get(x).setContJumping(16);
 						   }
 						   else {
-							   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
-									   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-									   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
+							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
+									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+									   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 						   }
 						   break;
 					   case 'I':
-						   if(!Entities.enemies.get(x).isJumping()) {
-							   if(Entities.enemies.get(x).isSuicida()) {
-								   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
-										   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-										   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
+						   if(!panel.entities.enemies.get(x).isJumping()) {
+							   if(panel.entities.enemies.get(x).isSuicida()) {
+								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
+										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+										   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 							   }
 							   else {
-								   if(panel.isGround(Entities.enemies.get(x).getEntidad(),x,Entities.enemies.get(x).getPosXEnemy()-5-ejeX + Entities.enemies.get(x).getMoveEnemy(),
-										   Entities.enemies.get(x).getPosYEnemy()+49,Entities.enemies.get(x).getPrevYEnemy()+49,
-										   Entities.enemies.get(x).getPosXEnemy()-ejeX + Entities.enemies.get(x).getMoveEnemy())) {
-									   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
-											   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-											   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,20,50));
+								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()-5-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
+										   panel.entities.enemies.get(x).getPosYEnemy()+49,panel.entities.enemies.get(x).getPrevYEnemy()+49,
+										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
+									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
+											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 								   }
 							   }
-							   Entities.enemies.get(x).setJumping(true);
-							   Entities.enemies.get(x).setContJumping(16);
+							   panel.entities.enemies.get(x).setJumping(true);
+							   panel.entities.enemies.get(x).setContJumping(16);
 						   }
 						   else {
-							   Entities.enemies.get(x).setMoveEnemy(Entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-3,
-									   Entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + Entities.enemies.get(x).getMoveEnemy(),
-									   Entities.enemies.get(x).getPosYEnemy(), Entities.enemies.get(x).getPosYEnemy()+49,50,20));
+							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-3,
+									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+									   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,50,20));
 						   }
 						   break;
 					   default:
 						   //Si está compartiendo ejeX con el Keko no querrá moverse más, pero debemos comprobar si debe estar cayendo igualmente
-						   if(!Entities.enemies.get(x).isJumping()) {
-							   Entities.enemies.get(x).setJumping(true);
-							   Entities.enemies.get(x).setContJumping(16);
+						   if(!panel.entities.enemies.get(x).isJumping()) {
+							   panel.entities.enemies.get(x).setJumping(true);
+							   panel.entities.enemies.get(x).setContJumping(16);
 						   }
 				   }
 
