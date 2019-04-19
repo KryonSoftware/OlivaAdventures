@@ -15,7 +15,7 @@ public class Puntuaciones {
 	private String name;											// Nombre que ya estaba en el top.
 	private String score;											// Puntuacion que ya estaba en el top.
 
-	private String path = "puntuaciones.txt";
+	private String path = "resources/Menu/puntuaciones.txt";
 	private String linea;											// Variable donde se guarda la lectura de la linea del archivo de las puntuaciones: *path*.
 	private String nuevaPuntuacion;									// Puntuaciones que toquen guardarse en el top.
 	public int p = 5;												// Puntuaciones totales que se escribiran (esta variable solo se modificara desde aqui).

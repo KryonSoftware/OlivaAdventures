@@ -592,6 +592,15 @@ public class PanelLVL1 extends JPanel {
 		bala[3] = disparo4;
 
 	}
+	
+	public void reset(int nuevasVidas) {
+		
+		entities=new Entities();
+		keko=new Player(350,720-89);
+		keko.setLives(nuevasVidas);
+		x=0;
+		
+	}
 
 	
 	/**

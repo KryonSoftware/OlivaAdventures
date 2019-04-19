@@ -14,6 +14,9 @@ public class PlantillaVentana {
 	private static final int ALTO = 1000;
 	private static final String NOMBRE = "Oliva Adventures";
 	Menu menu;
+	public int puntuacion=0;
+	public String nombrePuntuacion="AAA";
+	VentanaScore prueba2;
 	
 	public enum TipoVentana {
 		Menu,
@@ -44,13 +47,24 @@ public class PlantillaVentana {
 		} 
 		else if (tipus.equals(TipoVentana.Nivel)) {
 			GameEngineLVL1 nivel = new GameEngineLVL1(ventana);
-			int puntuacion=nivel.runGame();
+			puntuacion=nivel.runGame();
+			pasarPuntuacion();
+			ventana.setVisible(false);
 		}
 		else if (tipus.equals(TipoVentana.Puntuacion)) {
-			/*Puntuaciones prueba = new Puntuaciones("PLO", 12345);
-			VentanaScore prueba2 = new VentanaScore();*/
+			prueba2 = new VentanaScore(menu.ventana);
 		
 		}
+	}
+	
+	public String elegirNombre() {
+		return "TST";
+	}
+	
+	public void pasarPuntuacion() {
+		
+		menu.meterPuntuacion(elegirNombre(),puntuacion);
+		
 	}
 	
 	

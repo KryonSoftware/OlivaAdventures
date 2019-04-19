@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import java.io.BufferedReader;
@@ -20,7 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
-public class VentanaScore {
+public class VentanaScore implements KeyListener {
 
 	/* --- VARIABLES --- */
 	public static final int frameX=1000;											// Medida horizontal en pixeles para el JFrame.
@@ -29,9 +31,10 @@ public class VentanaScore {
 	public static final int labelX=50;												// Medida horizontal en pixeles para los JLabel.
 	public static final int labelY=50;												// Medida vertical en pixeles para los JLabel.
 
+	public volatile boolean scoresOn=true;
 
-	private String path = "puntuaciones.txt";
-	private JFrame frame= new JFrame();	
+	private String path = "resources/Menu/puntuaciones.txt";
+	public JFrame frame;	
 	private Dimension Dim = new Dimension(frameX, frameY);
 
 	private int x = 0;																// Coordenada X para situar el JLabel.
@@ -56,8 +59,9 @@ public class VentanaScore {
 	}
 
 	/* --- CONSTRUCTOR --- */
-	public VentanaScore() {
+	public VentanaScore(JFrame frame) {
 
+		this.frame=frame;
 		lecturaFichero();					// Leemos y guardamos las puntuaciones.
 		frameConfiguracion();				// Aplicamos el JFrame.
 
@@ -112,9 +116,10 @@ public class VentanaScore {
 		Dim.height -= 10;						// ... le quitamos tambien 10 pixeles a la altura (Y).
 		frame.setPreferredSize(Dim);
 		frame.pack();
+		frame.addKeyListener(this);
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);		// Asi se abrira la ventana centrada en la pantalla.
-
+		frame.setVisible(true);
 	}
 
 	private void seleccionarLabel(int c) {
@@ -214,27 +219,33 @@ public class VentanaScore {
 
 	private void imagenDeFondo() {
 
-		/*Graphics g = null;
-		BufferedImage img = null;
-		try {
-		    img = ImageIO.read(new File("C:/Users/alumne-DAM.EQUIPOSMX/git/Programacion/src/ZZ_OA_Puntuaciones/ajedre.gif"));
-		} catch (IOException e) {
-		}
-		g.drawImage(img, 0, 0, frameX, frameY, null);*/
+//		Graphics2D g = new Graphics2D();
+//		BufferedImage img = null;
+//		try {
+//		    img = ImageIO.read(new File("resources/Menu/fondoScores.gif"));
+//		} catch (IOException e) {
+//		}
+//		g.drawImage(img, 0, 0, frameX, frameY, null);
 		
-		
+		JLabel labelDeFondoAtras = new JLabel();
+		labelDeFondoAtras.setIcon(obtenerImagenPathAbsoluto("resources/Menu/fondoScores.jpg"));
+		labelDeFondoAtras.setBounds(0,-10,1000,1100);
 		JLabel labelDeFondo = new JLabel();
 		labelDeFondo = new JLabel();
 		//labelDeFondo.setHorizontalAlignment(JLabel.CENTER);
 		labelDeFondo.setBounds(0, 0, frameX, frameY);
-		labelDeFondo.setOpaque(true);
+		labelDeFondo.setOpaque(false);
 		//labelDeFondo.setBackground(Color.cyan);
 		//labelDeFondo.setForeground(Color.red);
 		
 		//labelDeFondo.setIcon(obtenerImagen("ajedre.gif"));
-		labelDeFondo.setIcon(obtenerImagenPathAbsoluto("resources/Menu/Scores11.png"));
-		//labelDeFondo.setIcon(obtenerImagen("fondo.jpg"));
+		labelDeFondo.setIcon(obtenerImagenPathAbsoluto("resources/Menu/Scores13.png"));
+		
+//		labelDeFondoAtras.setOpaque(true);
+//		frame.add(labelDeFondoAtras);
 		frame.add(labelDeFondo);
+		frame.add(labelDeFondoAtras);
+		
 		frame.repaint();
 
 	}
@@ -405,6 +416,38 @@ public class VentanaScore {
 			nombreTabla = (nombreTabla + cadena.charAt(i));
 		}
 		return nombreTabla;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		
+		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			scoresOn=false;
+			frame.removeKeyListener(this);
+			frame.setVisible(false);
+			scoresOn=false;
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			scoresOn=false;
+			frame.removeKeyListener(this);
+			frame.setVisible(false);
+			scoresOn=false;
+		}	
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			scoresOn=false;
+			frame.removeKeyListener(this);
+			frame.setVisible(false);
+			scoresOn=false;
+		}
 	}
 
 }

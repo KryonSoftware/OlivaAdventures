@@ -21,6 +21,8 @@ public class Menu implements KeyListener {
 	private JLabel label;
 	public JLabel etiqueta;
 
+	public Puntuaciones prueba;
+	
 	private int contadorTecla = 1;
 
 	private String newGameImagen = "resources/Menu/newGame.png";
@@ -29,6 +31,7 @@ public class Menu implements KeyListener {
 	private ImageIcon newGame = new ImageIcon(newGameImagen);
 	private ImageIcon scores = new ImageIcon(scoresImagen);
 	private ImageIcon exit = new ImageIcon(exitImagen);
+	public boolean scoresTF=false;
 
 
 	/* --- CONSTRUCTOR --- */
@@ -97,11 +100,33 @@ public class Menu implements KeyListener {
 			etiqueta.setIcon(scores);
 
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				Puntuaciones prueba = new Puntuaciones("ZZZ", 8888);
-				System.out.println("");
+//				Puntuaciones prueba = new Puntuaciones("ZZZ", 8888);
 				ventana.removeKeyListener(this);
-				ventana.setVisible(false);
-				VentanaScore prueba2 = new VentanaScore();
+				ventana.remove(etiqueta);
+//				VentanaScore prueba2 = new VentanaScore();
+				scoresTF=true;
+				
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e2) {
+//					System.out.println("Ha petado esperando en Menu a que VentanaScore nos devuelva scoresOn en true: ");
+//					e2.printStackTrace();
+//				}
+//				while(prueba2.scoresOn) {
+//					System.out.println("Scores - Esperando");
+//					try {
+//						Thread.sleep(4000);
+//					} catch (InterruptedException e1) {
+//						System.out.println("Ha petado esperando en Menu a que VentanaScore nos devuelva scoresOn en true: ");
+//						e1.printStackTrace();
+//					}
+//					prueba2.frame.setVisible(false);
+//
+//				}
+//				
+//				ventana.addKeyListener(this);
+//				ventana.setVisible(true);
+//				etiqueta.setIcon(scores);
 				
 			}
 
@@ -125,6 +150,12 @@ public class Menu implements KeyListener {
 			contadorTecla --;
 		}
 
+	}
+	
+	public void meterPuntuacion(String nombre,int punt) {
+		
+		prueba = new Puntuaciones(nombre, punt);
+		
 	}
 
 }

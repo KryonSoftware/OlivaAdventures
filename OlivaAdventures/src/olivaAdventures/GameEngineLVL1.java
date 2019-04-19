@@ -11,10 +11,11 @@ import javax.swing.*;
  */
 public class GameEngineLVL1 implements KeyListener {
 
-    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false;
     private long contador=0;
-    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0;
+    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
+	private String nombre="XXX";
 	public JFrame ventana;
     
     //Inicializamos el panel que va dentro del Frame:
@@ -23,7 +24,10 @@ public class GameEngineLVL1 implements KeyListener {
 	//La música que usaremos:
 	private Musica musica= new Musica();
     
-   /**
+	//Getter del nombre para que lo recoja PlantillaVentana:
+	public String getNombre() {return nombre;}
+
+/**
     * Constructor de la clase. Le pasamos el JFrame que deberá usar el juego.
     * El constructor simplemente se encarga de meter el panel en el frame que se le ha pasado y cargar sus listeners.
     * @param frame  JFrame del menú que usará el juego.
@@ -50,11 +54,7 @@ public class GameEngineLVL1 implements KeyListener {
      * Sin usar.
      */
     @Override
-    public void keyTyped(KeyEvent keyEvent) {
-
-    	//HOLA ME LLAMO MÉTODO TYPED Y SOY UN VAGO
-    	
-    }
+    public void keyTyped(KeyEvent keyEvent) {/*HOLA ME LLAMO MÉTODO TYPED Y SOY UN VAGO*/}
 
     /**
      * Estos eventos los usamos para activar las booleanas de presión de tecla. Gracias a esto podemos tener varias teclas pulsadas a la vez y controlamos
@@ -739,10 +739,6 @@ public class GameEngineLVL1 implements KeyListener {
      *  al método fps() cada 11 milisegundos.
      */
     public int runGame(){
-
-    	//iniciamos ciertas cosas
-        boolean gameOver = false;
-        int puntuacion = 360;
         
         try {
         	//Detenemos el hilo para darle tiempo al panel a cargar y ponemos la imagen de cargando
@@ -763,24 +759,32 @@ public class GameEngineLVL1 implements KeyListener {
         		fps();	
         	}
         	
-        	/* *************ÑAPAS: AQUÍ HAY QUE PONER EL CÓDIGO DE IVÁN PARA LAS IMÁGENES DEL HUD(CREO) *****************************************/
-        	if(contador%18==0) {
-        		//pruebas:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            	if(!(panel.getArrPosBarra()==4)) {
-            		panel.setArrPosBarra(panel.getArrPosBarra()+1);
-            	} else {
-            		panel.setArrPosBarra(0);
-            	}
-            	if(!(panel.getArrPosReloj()==25)) {
-            		panel.setArrPosReloj(panel.getArrPosReloj()+1);
-            	} else {
-            		panel.setArrPosReloj(0);
-            	}
-            	//pruebas+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        	if(panel.keko.getPosYPlayer()-panel.getEjeY()>780 || panel.keko.getEnergy() < 0) {
+        		if(panel.keko.getLives()-1>=0) {
+        			int tempVidas=panel.keko.getLives()-1;
+        			panel.reset(tempVidas);
+        			ejeX=0;ejeY=0;prevY=720-89;prevX=0;
+        			panel.setEjeX(ejeX);
+        	        panel.setEjeY(ejeY);
+        	       
+        			try {
+                	//Detenemos el hilo para darle tiempo al panel a cargar y ponemos la imagen de cargando
+                	panel.setLoading(true);
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
+                }
+        			pausa();
+        			panel.setLoading(false);
+
+        		}
+        		else {
+        			panel.keko.setDead(true);
+        		}
         	}
 
         	//Si ha muerto o se ha acabado el tiempo
-        	if(puntuacion < 0 || panel.keko.getEnergy() < 0 || panel.keko.isDead() || panel.keko.getPosYPlayer()-panel.getEjeY()>780) {
+        	if(puntuacion < 0 || panel.keko.isDead()) {
         		gameOver = true;
         		}
 
@@ -794,10 +798,23 @@ public class GameEngineLVL1 implements KeyListener {
             //Test por consola reducción de puntuación basada el tiempo transcurrido (máso menos un segundo cada vez que entra):
             if(contador%90==0){
                 puntuacion--;
-                System.out.println(puntuacion);
+                
+				contarSegundosCambiarImagenTiempo++;
+				
+				if (contarSegundosCambiarImagenTiempo % segundosCambiarImagenTiempo == 0){
+					if (panel.getArrPosReloj() <= 25){
+						panel.setArrPosReloj(panel.getArrPosReloj() + 1);
+					}
+				}
+
             }
             contador++;
         }
+        
+        /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    	 *TODO  AQUÍ HAY QUE PEDIRLE QUE META EL NOMBRE
+    	 *+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    	 */
         
         try {
 			musica.stop();
