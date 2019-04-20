@@ -48,6 +48,7 @@ public class PlantillaVentana {
 		else if (tipus.equals(TipoVentana.Nivel)) {
 			GameEngineLVL1 nivel = new GameEngineLVL1(ventana);
 			puntuacion=nivel.runGame();
+			nombrePuntuacion=nivel.getNombreJugador();
 			pasarPuntuacion();
 			ventana.setVisible(false);
 		}
@@ -57,13 +58,9 @@ public class PlantillaVentana {
 		}
 	}
 	
-	public String elegirNombre() {
-		return "TST";
-	}
-	
 	public void pasarPuntuacion() {
 		
-		menu.meterPuntuacion(elegirNombre(),puntuacion);
+		menu.meterPuntuacion(nombrePuntuacion,puntuacion);
 		
 	}
 	

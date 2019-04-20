@@ -11,10 +11,10 @@ import javax.swing.*;
  */
 public class GameEngineLVL1 implements KeyListener {
 
-    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
-	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0;
+	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,letraOK;
 	private String nombre="XXX";
 	public JFrame ventana;
     
@@ -63,7 +63,10 @@ public class GameEngineLVL1 implements KeyListener {
     @Override
     public void keyPressed(KeyEvent keyEvent) {
 
-        switch(keyEvent.getKeyCode()){
+    	//Mientras la partida continúe:
+    	if(!gameOver) {
+    		
+    		switch(keyEvent.getKeyCode()){
 
             case KeyEvent.VK_D:
                 derecha=true;
@@ -86,7 +89,29 @@ public class GameEngineLVL1 implements KeyListener {
             	}
             	break;
             default:;
-        }
+    		}
+    		
+    	}
+    	//Cuando nos pida el nombre para la puntuación:
+    	else {
+    		
+    		panel.setLetra(keyEvent.getKeyCode());
+    		try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				System.out.println("Error deteniendo el hilo para dar tiempo a cargar la imagen de la letra seleccionada "
+						+ "(eligiendo letras y repintando desde los listeners de GameEngine)/n/n Log: "+e);
+			}
+    		panel.repaint();
+    		
+    		if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER) {
+    			letraOK++;
+    			if(letraOK>2) {
+    				pidiendoNombre=false;
+    			}
+    		}
+    		
+    	}
 
     }
 
@@ -96,20 +121,25 @@ public class GameEngineLVL1 implements KeyListener {
     @Override
     public void keyReleased(KeyEvent keyEvent) {
 
-    	switch(keyEvent.getKeyCode()){
-        case KeyEvent.VK_D:
-            derecha=false;
-            break;
-        case KeyEvent.VK_A:
-            izquierda=false;
-            break;
-        case KeyEvent.VK_W:
-            arriba=false;
-            break;
-        case KeyEvent.VK_SPACE:
-        	gatillo=false;
-        default:;
-        }
+    	if(!gameOver) {
+    	
+    		switch(keyEvent.getKeyCode()){
+            case KeyEvent.VK_D:
+                derecha=false;
+                break;
+            case KeyEvent.VK_A:
+                izquierda=false;
+                break;
+            case KeyEvent.VK_W:
+                arriba=false;
+                break;
+            case KeyEvent.VK_SPACE:
+            	gatillo=false;
+            default:;
+            }
+    		
+    	}
+    	
     	cambio=0;
     }
     
@@ -735,6 +765,14 @@ public class GameEngineLVL1 implements KeyListener {
     }
     
     /**
+     * Método que nos devuelve el nombre elegido por el jugador.
+     * @return Tres carácteres en forma de String.
+     */
+    public String getNombreJugador() {
+    	return panel.getNombreElegido();
+    }
+    
+    /**
      * Método de inicialización del nuevo nivel. Contiene un bucle (infinito por ahora) que se encarga de ordenar el repintado mediante el llamado
      *  al método fps() cada 11 milisegundos.
      */
@@ -811,24 +849,34 @@ public class GameEngineLVL1 implements KeyListener {
             contador++;
         }
         
-        /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    	 *TODO  AQUÍ HAY QUE PEDIRLE QUE META EL NOMBRE
-    	 *+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    	 */
-        
         try {
 			musica.stop();
+			
+			//Pedimos el nombre del jugador:
+		    panel.setPedirNombre(true);
+		    panel.repaint();
+		    pidiendoNombre=true;
+		    
+		    while(pidiendoNombre) {
+		    	
+		    	System.out.println("GameEngine - Pidiendo nombre - Esperando");
+			
+		    }
+		    
+		    panel.setPedirNombre(false);
 			panel.setLoading(true);
 			panel.repaint();
 			Thread.sleep(1500);
+			
 		} catch (Exception e) {
 			System.out.println("Error deteniendo la reproducciónd e la música o deteniendo "
 					+ "el tiempo al final de la partida. Log: "+e);
 		}
         
-        if(panel.keko.getLives()!=0) {
-        	puntuacion*=panel.keko.getLives();
-        }
+        //Calculamos la puntuación final:   
+        puntuacion+=panel.keko.getEnergy()*100;
+        puntuacion+=panel.getEjeX();
+    	puntuacion*=panel.keko.getLives()+1;
         
         return puntuacion;
         

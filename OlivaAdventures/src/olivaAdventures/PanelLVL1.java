@@ -3,6 +3,7 @@ package olivaAdventures;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -40,20 +41,24 @@ public class PanelLVL1 extends JPanel {
 	energia61,energia62,energia63,energia64,energia65,energia66,energia67,energia68,energia69,energia70,
 	energia71,energia72,energia73,energia74,energia75,energia76,energia77,energia78,energia79,energia80,
 	energia81,energia82,energia83,energia84,energia85,energia86,energia87,energia88,energia89,energia90,
-	energia91,energia92,energia93,energia94,energia95,energia96,energia97,energia98,energia99,energia100;
+	energia91,energia92,energia93,energia94,energia95,energia96,energia97,energia98,energia99,energia100,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,
+	s,t,u,v,w,equis,yGriega,z,minus,muerto,letraUno,letraDos;
 	
 	//Arrays de imágenes
 	private BufferedImage[] animKeko = new BufferedImage[24],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
 			animReloj=new BufferedImage[26],anim_boss = new BufferedImage[18],anim_enemyTwo = new BufferedImage[4],anim_murcielago = new BufferedImage[4],bala = new BufferedImage[4],
 							barra_energia = new BufferedImage[101];
 	
-    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo;
+    private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
+    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos;
+    
+    public String nombreElegido="",terceraLetra="",segLetra="";
     
     private char direccionDisparo='D';
     
     private long momentoDisparo=0;
     
-    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false;
+    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -62,6 +67,14 @@ public class PanelLVL1 extends JPanel {
     public boolean isPause() {return pause;}
 
 	public void setPause(boolean pause) {this.pause = pause;}
+
+	public int getLetra() {return letra;}
+
+	public void setLetra(int letra) {this.letra = letra;}
+
+	public boolean isPedirNombre() {return pedirNombre;}
+
+	public void setPedirNombre(boolean pedirNombre) {this.pedirNombre = pedirNombre;}
 
 	public boolean isDisparo() {return disparo;}
 
@@ -78,6 +91,10 @@ public class PanelLVL1 extends JPanel {
 	public boolean isLoading() {return loading;}
 
 	public void setLoading(boolean loading) {this.loading = loading;}
+
+	public String getNombreElegido() {return nombreElegido;}
+
+	public void setNombreElegido(String nombreElegido) {this.nombreElegido = nombreElegido;}
 
 	public int getArrPosReloj() {return arrPosReloj;}
 
@@ -131,6 +148,7 @@ public class PanelLVL1 extends JPanel {
 			
 			//FONDO
 			fondo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
+			muerto = ImageIO.read(new File("resources/Menu/MUERTO.png"));
 
 			//FONDO DEL HUD
 			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
@@ -350,27 +368,56 @@ public class PanelLVL1 extends JPanel {
 			bossWalkRight4 = ImageIO.read(new File("resources/monstruo/Boss/Walking/Right/bossWalkRight4.png"));
 
 
-			//IMAGENES PLATAFORMAS: TODO importar todas las futuras imagenes
+			//IMÁGENES PLATAFORMAS
 			plataforma1 = ImageIO.read(new File("resources/plataforma/plataformaFINAL.png"));
 			plataforma2 = ImageIO.read(new File("resources/plataforma/plataformaFINAL.png"));
 
-			//IMAGENES NUEBES
+			//IMÁGENES NUBES
 			nube1=ImageIO.read(new File("resources/Mapa/Nubes/nubeGrande.png"));
 			nube2=ImageIO.read(new File("resources/Mapa/Nubes/nubePeque.png"));
 
-			//IMAGENES ARBOLES
+			//IMÁGENES AÁBOLES
 			arbol1=ImageIO.read(new File("resources/Mapa/Arboles/arbolGrande.png"));
 			arbol2=ImageIO.read(new File("resources/Mapa/Arboles/arbolMediano.png"));
 			arbusto=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
 
-			//IMAGENES SUELOS
+			//IMÁGENES SUELOS
 			suelo1=ImageIO.read(new File("resources/Suelos/cuadrado1.png"));
 			suelo2=ImageIO.read(new File("resources/Suelos/cuadrado2.png"));
 
 			//IMAGEN PAUSA
 			pausa=ImageIO.read(new File("resources/Hud/pausa.png"));
-
 			cargando=ImageIO.read(new File("resources/Menu/OlivaAdventuresLibro.png"));
+			
+			//IMÁGENES LETRAS
+			a=ImageIO.read(new File("resources/Menu/NumerosyLetras/A.png"));
+			b=ImageIO.read(new File("resources/Menu/NumerosyLetras/B.png"));
+			c=ImageIO.read(new File("resources/Menu/NumerosyLetras/C.png"));
+			d=ImageIO.read(new File("resources/Menu/NumerosyLetras/D.png"));
+			e=ImageIO.read(new File("resources/Menu/NumerosyLetras/E.png"));
+			f=ImageIO.read(new File("resources/Menu/NumerosyLetras/F.png"));
+			g=ImageIO.read(new File("resources/Menu/NumerosyLetras/G.png"));
+			h=ImageIO.read(new File("resources/Menu/NumerosyLetras/H.png"));
+			i=ImageIO.read(new File("resources/Menu/NumerosyLetras/L.png"));
+			j=ImageIO.read(new File("resources/Menu/NumerosyLetras/J.png"));
+			k=ImageIO.read(new File("resources/Menu/NumerosyLetras/K.png"));
+			l=ImageIO.read(new File("resources/Menu/NumerosyLetras/L.png"));
+			m=ImageIO.read(new File("resources/Menu/NumerosyLetras/M.png"));
+			n=ImageIO.read(new File("resources/Menu/NumerosyLetras/N.png"));
+			o=ImageIO.read(new File("resources/Menu/NumerosyLetras/O.png"));
+			p=ImageIO.read(new File("resources/Menu/NumerosyLetras/P.png"));
+			q=ImageIO.read(new File("resources/Menu/NumerosyLetras/Q.png"));
+			r=ImageIO.read(new File("resources/Menu/NumerosyLetras/R.png"));
+			s=ImageIO.read(new File("resources/Menu/NumerosyLetras/S.png"));
+			t=ImageIO.read(new File("resources/Menu/NumerosyLetras/T.png"));
+			u=ImageIO.read(new File("resources/Menu/NumerosyLetras/U.png"));
+			v=ImageIO.read(new File("resources/Menu/NumerosyLetras/V.png"));
+			w=ImageIO.read(new File("resources/Menu/NumerosyLetras/W.png"));
+			equis=ImageIO.read(new File("resources/Menu/NumerosyLetras/X.png"));
+			yGriega=ImageIO.read(new File("resources/Menu/NumerosyLetras/Y.png"));
+			z=ImageIO.read(new File("resources/Menu/NumerosyLetras/Z.png"));
+			minus=ImageIO.read(new File("resources/Menu/NumerosyLetras/-.png"));
+			
 			
           
        } catch (IOException e) {
@@ -1062,118 +1109,556 @@ public class PanelLVL1 extends JPanel {
     	}
     	
     }
+    
     /**
-     * Método para pintar nuestro panel
+     * Método para ir pintando las letras que vaya eligiendo el jugador para poner su nombre.
+     * @param g
+     * @param letra
+     */
+    private void meterNombrePuntuacion(Graphics g, int letra) {
+    	
+    	switch(letra){
+    	
+    	case KeyEvent.VK_A:
+    		g.drawImage(a,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=a;
+    			nombreElegido="A";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=a;
+    			segLetra="A";
+    		}
+    		else {
+    			terceraLetra="A";
+    		}
+    		break;
+    	case KeyEvent.VK_B:
+    		g.drawImage(b,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=b;
+    			nombreElegido="B";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=b;
+    			segLetra="B";
+    		}
+    		else {
+    			terceraLetra="B";
+    		}
+    		break;
+    	case KeyEvent.VK_C:
+    		g.drawImage(c,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=c;
+    			nombreElegido="C";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=c;
+    			segLetra="C";
+    		}
+    		else {
+    			terceraLetra="C";
+    		}
+    		break;
+    	case KeyEvent.VK_D:
+    		g.drawImage(d,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=d;
+    			nombreElegido="D";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=d;
+    			segLetra="D";
+    		}
+    		else {
+    			terceraLetra="D";
+    		}
+    		break;
+    	case KeyEvent.VK_E:
+    		g.drawImage(e,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=e;
+    			nombreElegido="E";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=e;
+    			segLetra="E";
+    		}
+    		else {
+    			terceraLetra="E";
+    		}
+    		break;
+    	case KeyEvent.VK_F:
+    		g.drawImage(f,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=f;
+    			nombreElegido="F";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=f;
+    			segLetra="F";
+    		}
+    		else {
+    			terceraLetra="F";
+    		}
+    		break;
+    	case KeyEvent.VK_G:
+    		g.drawImage(this.g,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=this.g;
+    			nombreElegido="G";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=this.g;
+    			segLetra="G";
+    		}
+    		else {
+    			terceraLetra="G";
+    		}
+    		break;
+    	case KeyEvent.VK_H:
+    		g.drawImage(h,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=h;
+    			nombreElegido="H";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=h;
+    			segLetra="H";
+    		}
+    		else {
+    			terceraLetra="H";
+    		}
+    		break;
+    	case KeyEvent.VK_I:
+    		g.drawImage(i,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=i;
+    			nombreElegido="I";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=i;
+    			segLetra="I";
+    		}
+    		else {
+    			terceraLetra="I";
+    		}
+    		break;
+    	case KeyEvent.VK_J:
+    		g.drawImage(j,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=j;
+    			nombreElegido="J";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=j;
+    			segLetra="J";
+    		}
+    		else {
+    			terceraLetra="J";
+    		}
+    		break;
+    	case KeyEvent.VK_K:
+    		g.drawImage(k,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=k;
+    			nombreElegido="K";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=k;
+    			segLetra="K";
+    		}
+    		else {
+    			terceraLetra="K";
+    		}
+    		break;
+    	case KeyEvent.VK_L:
+    		g.drawImage(l,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=l;
+    			nombreElegido="L";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=l;
+    			segLetra="L";
+    		}
+    		else {
+    			terceraLetra="L";
+    		}
+    		break;
+    	case KeyEvent.VK_M:
+    		g.drawImage(m,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=m;
+    			nombreElegido="M";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=m;
+    			segLetra="M";
+    		}
+    		else {
+    			terceraLetra="M";
+    		}
+    		break;
+    	case KeyEvent.VK_N:
+    		g.drawImage(n,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=n;
+    			nombreElegido="N";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=n;
+    			segLetra="N";
+    		}
+    		else {
+    			terceraLetra="N";
+    		}
+    		break;
+    	case KeyEvent.VK_O:
+    		g.drawImage(o,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=o;
+    			nombreElegido="O";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=o;
+    			segLetra="O";
+    		}
+    		else {
+    			terceraLetra="O";
+    		}
+    		break;
+    	case KeyEvent.VK_P:
+    		g.drawImage(p,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=p;
+    			nombreElegido="P";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=p;
+    			segLetra="P";
+    		}
+    		else {
+    			terceraLetra="P";
+    		}
+    		break;
+    	case KeyEvent.VK_Q:
+    		g.drawImage(q,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=q;
+    			nombreElegido="Q";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=q;
+    			segLetra="Q";
+    		}
+    		else {
+    			terceraLetra="Q";
+    		}
+    		break;
+    	case KeyEvent.VK_R:
+    		g.drawImage(r,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=r;
+    			nombreElegido="R";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=r;
+    			segLetra="R";
+    		}
+    		else {
+    			terceraLetra="R";
+    		}
+    		break;
+    	case KeyEvent.VK_S:
+    		g.drawImage(s,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=s;
+    			nombreElegido="S";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=s;
+    			segLetra="S";
+    		}
+    		else {
+    			terceraLetra="S";
+    		}
+    		break;
+    	case KeyEvent.VK_T:
+    		g.drawImage(t,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=t;
+    			nombreElegido="T";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=t;
+    			segLetra="T";
+    		}
+    		else {
+    			terceraLetra="T";
+    		}
+    		break;
+    	case KeyEvent.VK_U:
+    		g.drawImage(u,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=u;
+    			nombreElegido="U";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=u;
+    			segLetra="U";
+    		}
+    		else {
+    			terceraLetra="U";
+    		}
+    		break;
+    	case KeyEvent.VK_V:
+    		g.drawImage(v,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=v;
+    			nombreElegido="V";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=v;
+    			segLetra="V";
+    		}
+    		else {
+    			terceraLetra="V";
+    		}
+    		break;
+    	case KeyEvent.VK_W:
+    		g.drawImage(w,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=w;
+    			nombreElegido="W";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=w;
+    			segLetra="W";
+    		}
+    		else {
+    			terceraLetra="W";
+    		}
+    		break;
+    	case KeyEvent.VK_X:
+    		g.drawImage(equis,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=equis;
+    			nombreElegido="X";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=equis;
+    			segLetra="X";
+    		}
+    		else {
+    			terceraLetra="X";
+    		}
+    		break;
+    	case KeyEvent.VK_Y:
+    		g.drawImage(yGriega,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=yGriega;
+    			nombreElegido="Y";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=yGriega;
+    			segLetra="Y";
+    		}
+    		else {
+    			terceraLetra="Y";
+    		}
+    		break;
+    	case KeyEvent.VK_Z:
+    		g.drawImage(z,posicionLetra,750,66,114,this);
+    		if(!primeraLetra) {
+    			letraUno=z;
+    			nombreElegido="Z";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=z;
+    			segLetra="Z";
+    		}
+    		else {
+    			terceraLetra="Z";
+    		}
+    		break;
+    	case KeyEvent.VK_MINUS:
+    		g.drawImage(minus,posicionLetra,800,66,20,this);
+    		if(!primeraLetra) {
+    			letraUno=minus;
+    			nombreElegido="-";
+    		}
+    		if(!segundaLetra) {
+    			letraDos=minus;
+    			segLetra="-";
+    		}
+    		else {
+    			terceraLetra="-";
+    		}
+    		break;
+    	case KeyEvent.VK_ENTER:
+    		posicionLetra+=100;
+    		if(primeraLetra) {
+    			segundaLetra=true;
+    		}
+    		if(segundaLetra) {
+    			if(posicionLetra==550) {
+    				nombreElegido+=segLetra;
+    			}
+    			else {
+    				nombreElegido+=terceraLetra;
+    			}
+    		}
+    		
+    		primeraLetra=true;
+    		break;
+    	default:;
+    	}
+    }
+    
+    /**
+     * Método para pintar nuestro panel.
      */
     public void paint(Graphics g) {
     	
     	//Si estamos cargando no refresques
     	if(!loading) {
+    		
+    		if(!pedirNombre) {
+    			
 
-		//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
-		listaPlataformas.clear();
 
-		//Fondo por ahora de por si las moscas
-
-		g.setColor(Color.gray);
-		g.fillRect(0, 0, 1000, 1000);
-
-		//Imagen móvil de fondo
-		for (int ñ = -350; ñ < 2975; ñ += 750) {
-
-			g.drawImage(fondo, ñ - (x / 4), 0, 750, 770, this);
-
-		}
-		
-		//Imagen móvil de las nubes
-		g.drawImage(nube1, 500 - (x / 2), 200, 100, 50, this);
-		g.drawImage(nube2, 700 - (x / 3), 100, 50, 30, this);
-		g.drawImage(nube1, 1200 - (x / 2), 75, 100, 50, this);
-		g.drawImage(nube2, 1500 - (x / 3), 100, 50, 30, this);
-		g.drawImage(nube1, 1800 - (x / 2), 150, 100, 50, this);
-		g.drawImage(nube2, 2500 - (x / 3), 180, 50, 30, this);
-		g.drawImage(nube1, 3230 - (x / 2), 60, 100, 50, this);
-		g.drawImage(nube2, 3950 - (x / 3), 100, 50, 30, this);
-		g.drawImage(nube1, 4500 - (x / 2), 55, 100, 50, this);
-		g.drawImage(nube1, 3800 - (x / 2), 80, 100, 50, this);
-		g.drawImage(nube1, 2000 - (x / 2), 120, 100, 50, this);
-
-		//Plataforma suelo
-		g.setColor(Color.green);
-		g.fillRect(0 - x, 200, 50, 370);
-		addPlatformToList(0 - x, 200, 50, 370, Tipo.BOTH);
-
-		//Nuestros bloques de suelo
-		for (int o = -350; o < 10350; o += 90) {
-			if (o % 20 == 0) {
-				g.drawImage(suelo2, o - x, 710, 90, 92, this);
-			} else {
-				g.drawImage(suelo1, o - x, 710, 90, 92, this);
-			}
-		}
-		//Colisión del suelo:
-		addPlatformToList(-350 - x, 720, 10700, 50, Tipo.BOTH);
-
-		//Plataformas para saltar
-		g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
-		addPlatformToList(700 - x, 300, 100, 35, Tipo.PLATFORM);
-
-		g.drawImage(plataforma1, 700 - x, 650, 100, 35, this);
-		addPlatformToList(700 - x, 650, 100, 35, Tipo.PLATFORM);
-
-		g.drawImage(plataforma2, 900 - x, 150, 75, 25, this);
-		addPlatformToList(900 - x, 150, 75, 25, Tipo.PLATFORM);
-
-		g.drawImage(plataforma1, 550 - x, 450, 100, 35, this);
-		addPlatformToList(550 - x, 450, 100, 35, Tipo.PLATFORM);
-
-		g.drawImage(plataforma1, 400 - x, 600, 100, 35, this);
-		addPlatformToList(400 - x, 600, 100, 35, Tipo.PLATFORM);
-
-		//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		//Pows:
-		
-		for(int x=0;x<entities.enemies.size();x++) {
-		
-			if(!entities.enemies.get(x).isDead()) {
-				g.drawImage(animMonstruo[arrPosMonstruo], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
-						entities.enemies.get(x).getPosYEnemy(), 70, 50, this);
-				addPlatformToList(entities.enemies.get(x).getPosXEnemy() - this.x + entities.enemies.get(x).getMoveEnemy(),
-						entities.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
-			}
-			
-		}
-		
-		//Nuestro keko
-		g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
-		addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
-		
-		//Árboles colisionables:
-		g.drawImage(arbol1,918-x,355,200,370,this);
-		addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
-		
-		//g.drawImage(arbol1,192-x,355,200,370,this);
-		//addPlatformToList(279 - x, 400, 35, 330, Tipo.BOTH);
-		
-		//Importante que sea lo último para poder ver y colisionar con todo
-		movimientoBala(g, disparo,x);
-		
-		//Árboles no colisionables:
-		g.drawImage(arbusto,500-x,660,70,70,this);
-
-		//Imagen del hud
-		g.drawImage(hud, 0, 698, 1010, 350, this);
-		//Aquí habrá que programar las reproducciones las barras de energía
-		g.drawImage(barra_energia[50], 10, 790, 300, 160, this);
-		//Aquí habrá que programar las reproducciones de los corazones
-		g.drawImage(animCorazones[keko.getLives()], 725, 835, 250, 75, this);
-		//Aquí habrá que programar las reproducciones de los corazones
-		g.drawImage(animReloj[arrPosReloj], 475, 820, 75, 100, this);
-		
-		//Pantalla de pausa
-		if(pause) {
-			g.drawImage(pausa,0,0,1000,1000,this);
-		}
+    			//Borramos nuestras plataformas, ya que puede que ahora se vayan a mover
+    			listaPlataformas.clear();
+    	
+    			//Fondo por ahora de por si las moscas
+    	
+    			g.setColor(Color.gray);
+    			g.fillRect(0, 0, 1000, 1000);
+    	
+    			//Imagen móvil de fondo
+    			for (int ñ = -350; ñ < 2975; ñ += 750) {
+    	
+    				g.drawImage(fondo, ñ - (x / 4), 0, 750, 770, this);
+    	
+    			}
+    			
+    			//Imagen móvil de las nubes
+    			g.drawImage(nube1, 500 - (x / 2), 200, 100, 50, this);
+    			g.drawImage(nube2, 700 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 1200 - (x / 2), 75, 100, 50, this);
+    			g.drawImage(nube2, 1500 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 1800 - (x / 2), 150, 100, 50, this);
+    			g.drawImage(nube2, 2500 - (x / 3), 180, 50, 30, this);
+    			g.drawImage(nube1, 3230 - (x / 2), 60, 100, 50, this);
+    			g.drawImage(nube2, 3950 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 4500 - (x / 2), 55, 100, 50, this);
+    			g.drawImage(nube1, 3800 - (x / 2), 80, 100, 50, this);
+    			g.drawImage(nube1, 2000 - (x / 2), 120, 100, 50, this);
+    	
+    			//Plataforma suelo
+    			g.setColor(Color.green);
+    			g.fillRect(0 - x, 200, 50, 370);
+    			addPlatformToList(0 - x, 200, 50, 370, Tipo.BOTH);
+    	
+    			//Nuestros bloques de suelo
+    			for (int o = -350; o < 10350; o += 90) {
+    				if (o % 20 == 0) {
+    					g.drawImage(suelo2, o - x, 710, 90, 92, this);
+    				} else {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    			}
+    			//Colisión del suelo:
+    			addPlatformToList(-350 - x, 720, 10700, 50, Tipo.BOTH);
+    	
+    			//Plataformas para saltar
+    			g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
+    			addPlatformToList(700 - x, 300, 100, 35, Tipo.PLATFORM);
+    	
+    			g.drawImage(plataforma1, 700 - x, 650, 100, 35, this);
+    			addPlatformToList(700 - x, 650, 100, 35, Tipo.PLATFORM);
+    	
+    			g.drawImage(plataforma2, 900 - x, 150, 75, 25, this);
+    			addPlatformToList(900 - x, 150, 75, 25, Tipo.PLATFORM);
+    	
+    			g.drawImage(plataforma1, 550 - x, 450, 100, 35, this);
+    			addPlatformToList(550 - x, 450, 100, 35, Tipo.PLATFORM);
+    	
+    			g.drawImage(plataforma1, 400 - x, 600, 100, 35, this);
+    			addPlatformToList(400 - x, 600, 100, 35, Tipo.PLATFORM);
+    	
+    			//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    			//Pows:
+    			
+    			for(int x=0;x<entities.enemies.size();x++) {
+    			
+    				if(!entities.enemies.get(x).isDead()) {
+    					g.drawImage(animMonstruo[arrPosMonstruo], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
+    							entities.enemies.get(x).getPosYEnemy(), 70, 50, this);
+    					addPlatformToList(entities.enemies.get(x).getPosXEnemy() - this.x + entities.enemies.get(x).getMoveEnemy(),
+    							entities.enemies.get(x).getPosYEnemy(), 70, 50, Tipo.ENEMY);
+    				}
+    				
+    			}
+    			
+    			//Nuestro keko
+    			g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
+    			addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
+    			
+    			//Árboles colisionables:
+    			g.drawImage(arbol1,918-x,355,200,370,this);
+    			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
+    			
+    			//g.drawImage(arbol1,192-x,355,200,370,this);
+    			//addPlatformToList(279 - x, 400, 35, 330, Tipo.BOTH);
+    			
+    			//Importante que sea lo último para poder ver y colisionar con todo
+    			movimientoBala(g, disparo,x);
+    			
+    			//Árboles no colisionables:
+    			g.drawImage(arbusto,500-x,660,70,70,this);
+    	
+    			//Imagen del hud
+    			g.drawImage(hud, 0, 698, 1010, 350, this);
+    			//Aquí habrá que programar las reproducciones las barras de energía
+    			g.drawImage(barra_energia[50], 10, 790, 300, 160, this);
+    			//Aquí habrá que programar las reproducciones de los corazones
+    			g.drawImage(animCorazones[keko.getLives()], 725, 835, 250, 75, this);
+    			//Aquí habrá que programar las reproducciones de los corazones
+    			g.drawImage(animReloj[arrPosReloj], 475, 820, 75, 100, this);
+    			
+    			//Pantalla de pausa
+    			if(pause) {
+    				g.drawImage(pausa,0,0,1000,1000,this);
+    			}
+    			
+    		}
+    		else {
+    			
+    			g.drawImage(muerto,0,0,1010,1010,this);
+				
+				meterNombrePuntuacion(g,letra);
+				
+				if(primeraLetra) {
+					g.drawImage(letraUno,posPrimeraLetra,ejeYLetraUno,66,altoLetraUno,this);
+				}
+				else {
+					posPrimeraLetra=posicionLetra;
+					ejeYLetraUno=letra==KeyEvent.VK_MINUS ? 800 : 750;
+					altoLetraUno=letra==KeyEvent.VK_MINUS ? 20 : 114;
+				}
+				if(segundaLetra) {
+					g.drawImage(letraDos,posSegundaLetra,ejeYLetraDos,66,altoLetraDos,this);
+				}
+				else {
+					posSegundaLetra=posicionLetra;
+					ejeYLetraDos=letra==KeyEvent.VK_MINUS ? 800 : 750;
+					altoLetraDos=letra==KeyEvent.VK_MINUS ? 20 : 114;
+				}
+    			
+    		}
 		
     	}
     	else {
