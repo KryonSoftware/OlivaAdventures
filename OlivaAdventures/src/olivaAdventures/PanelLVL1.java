@@ -52,13 +52,13 @@ public class PanelLVL1 extends JPanel {
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
     		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos;
     
-    public String nombreElegido="",terceraLetra="",segLetra="";
+    public String nombreElegido="",tercLetra="",segLetra="";
     
     private char direccionDisparo='D';
     
     private long momentoDisparo=0;
     
-    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false;
+    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,terceraLetra=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -1130,7 +1130,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="A";
     		}
     		else {
-    			terceraLetra="A";
+    			tercLetra="A";
     		}
     		break;
     	case KeyEvent.VK_B:
@@ -1144,7 +1144,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="B";
     		}
     		else {
-    			terceraLetra="B";
+    			tercLetra="B";
     		}
     		break;
     	case KeyEvent.VK_C:
@@ -1158,7 +1158,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="C";
     		}
     		else {
-    			terceraLetra="C";
+    			tercLetra="C";
     		}
     		break;
     	case KeyEvent.VK_D:
@@ -1172,7 +1172,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="D";
     		}
     		else {
-    			terceraLetra="D";
+    			tercLetra="D";
     		}
     		break;
     	case KeyEvent.VK_E:
@@ -1186,7 +1186,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="E";
     		}
     		else {
-    			terceraLetra="E";
+    			tercLetra="E";
     		}
     		break;
     	case KeyEvent.VK_F:
@@ -1200,7 +1200,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="F";
     		}
     		else {
-    			terceraLetra="F";
+    			tercLetra="F";
     		}
     		break;
     	case KeyEvent.VK_G:
@@ -1214,7 +1214,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="G";
     		}
     		else {
-    			terceraLetra="G";
+    			tercLetra="G";
     		}
     		break;
     	case KeyEvent.VK_H:
@@ -1228,7 +1228,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="H";
     		}
     		else {
-    			terceraLetra="H";
+    			tercLetra="H";
     		}
     		break;
     	case KeyEvent.VK_I:
@@ -1242,7 +1242,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="I";
     		}
     		else {
-    			terceraLetra="I";
+    			tercLetra="I";
     		}
     		break;
     	case KeyEvent.VK_J:
@@ -1256,7 +1256,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="J";
     		}
     		else {
-    			terceraLetra="J";
+    			tercLetra="J";
     		}
     		break;
     	case KeyEvent.VK_K:
@@ -1270,7 +1270,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="K";
     		}
     		else {
-    			terceraLetra="K";
+    			tercLetra="K";
     		}
     		break;
     	case KeyEvent.VK_L:
@@ -1284,7 +1284,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="L";
     		}
     		else {
-    			terceraLetra="L";
+    			tercLetra="L";
     		}
     		break;
     	case KeyEvent.VK_M:
@@ -1298,7 +1298,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="M";
     		}
     		else {
-    			terceraLetra="M";
+    			tercLetra="M";
     		}
     		break;
     	case KeyEvent.VK_N:
@@ -1312,7 +1312,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="N";
     		}
     		else {
-    			terceraLetra="N";
+    			tercLetra="N";
     		}
     		break;
     	case KeyEvent.VK_O:
@@ -1326,7 +1326,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="O";
     		}
     		else {
-    			terceraLetra="O";
+    			tercLetra="O";
     		}
     		break;
     	case KeyEvent.VK_P:
@@ -1340,7 +1340,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="P";
     		}
     		else {
-    			terceraLetra="P";
+    			tercLetra="P";
     		}
     		break;
     	case KeyEvent.VK_Q:
@@ -1354,7 +1354,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="Q";
     		}
     		else {
-    			terceraLetra="Q";
+    			tercLetra="Q";
     		}
     		break;
     	case KeyEvent.VK_R:
@@ -1368,7 +1368,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="R";
     		}
     		else {
-    			terceraLetra="R";
+    			tercLetra="R";
     		}
     		break;
     	case KeyEvent.VK_S:
@@ -1382,7 +1382,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="S";
     		}
     		else {
-    			terceraLetra="S";
+    			tercLetra="S";
     		}
     		break;
     	case KeyEvent.VK_T:
@@ -1396,7 +1396,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="T";
     		}
     		else {
-    			terceraLetra="T";
+    			tercLetra="T";
     		}
     		break;
     	case KeyEvent.VK_U:
@@ -1410,7 +1410,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="U";
     		}
     		else {
-    			terceraLetra="U";
+    			tercLetra="U";
     		}
     		break;
     	case KeyEvent.VK_V:
@@ -1424,7 +1424,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="V";
     		}
     		else {
-    			terceraLetra="V";
+    			tercLetra="V";
     		}
     		break;
     	case KeyEvent.VK_W:
@@ -1438,7 +1438,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="W";
     		}
     		else {
-    			terceraLetra="W";
+    			tercLetra="W";
     		}
     		break;
     	case KeyEvent.VK_X:
@@ -1452,7 +1452,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="X";
     		}
     		else {
-    			terceraLetra="X";
+    			tercLetra="X";
     		}
     		break;
     	case KeyEvent.VK_Y:
@@ -1466,7 +1466,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="Y";
     		}
     		else {
-    			terceraLetra="Y";
+    			tercLetra="Y";
     		}
     		break;
     	case KeyEvent.VK_Z:
@@ -1480,21 +1480,7 @@ public class PanelLVL1 extends JPanel {
     			segLetra="Z";
     		}
     		else {
-    			terceraLetra="Z";
-    		}
-    		break;
-    	case KeyEvent.VK_MINUS:
-    		g.drawImage(minus,posicionLetra,800,66,20,this);
-    		if(!primeraLetra) {
-    			letraUno=minus;
-    			nombreElegido="-";
-    		}
-    		if(!segundaLetra) {
-    			letraDos=minus;
-    			segLetra="-";
-    		}
-    		else {
-    			terceraLetra="-";
+    			tercLetra="Z";
     		}
     		break;
     	case KeyEvent.VK_ENTER:
@@ -1502,12 +1488,13 @@ public class PanelLVL1 extends JPanel {
     		if(primeraLetra) {
     			segundaLetra=true;
     		}
+    		if(terceraLetra) {
+    			nombreElegido+=tercLetra;
+    		}
     		if(segundaLetra) {
     			if(posicionLetra==550) {
     				nombreElegido+=segLetra;
-    			}
-    			else {
-    				nombreElegido+=terceraLetra;
+    				terceraLetra=true;
     			}
     		}
     		

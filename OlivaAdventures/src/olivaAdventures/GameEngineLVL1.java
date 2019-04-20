@@ -878,7 +878,7 @@ public class GameEngineLVL1 implements KeyListener {
         puntuacion+=panel.getEjeX();
     	puntuacion*=panel.keko.getLives()+1;
         
-        return puntuacion;
+        return puntuacion+20000;
         
     }
     
