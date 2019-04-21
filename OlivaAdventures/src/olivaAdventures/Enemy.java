@@ -1,5 +1,7 @@
 package olivaAdventures;
 
+import olivaAdventures.Enemy.typeEnemies;
+
 public class Enemy {
 
     //ATTRIBUTTES
@@ -20,14 +22,14 @@ public class Enemy {
 
     private boolean wakeUp;
     private int contador;
-
+    private boolean voladorVertical=false;
     private int entidad;
 
 
         /* Type of enemies */
     enum typeEnemies{
         type1,
-        typeTrap,
+        fly,
         type2,
         boss
     }
@@ -36,24 +38,21 @@ public class Enemy {
     Enemy(typeEnemies typeEnemies, int posX, int posY, boolean suicida){
         switch (typeEnemies){
             case type1:
-                setLives((byte) 5);
+                setLives((byte) 2);
                 setTypeEnemy(String.valueOf(1));
                 this.suicida=suicida;
                 break;
-            case typeTrap:
-                setLives((byte) 120);
-                setTypeEnemy("typeTrap");
-                this.suicida=suicida;
+            case fly:
+                setLives((byte) 1);
+                setTypeEnemy("fly");
                 break;
             case type2:
-                setLives((byte) 10);
+                setLives((byte) 1);
                 setTypeEnemy(String.valueOf(2));
-                this.suicida=suicida;
                 break;
             case boss:
-                setLives((byte) 30);
+                setLives((byte) 35);
                 setTypeEnemy("boss");
-                this.suicida=suicida;
                 break;
         }
         /*
@@ -67,33 +66,19 @@ public class Enemy {
     }
 
     //GETTERS AND SETTERS
-    byte getLives() {
-        return lives;
-    }
+    byte getLives() { return lives; }
 
-    void setLives(byte lives) {
-        this.lives = lives;
-    }
+    void setLives(byte lives) { this.lives = lives; }
 
-    String getTypeEnemy() {
-        return typeEnemy;
-    }
+    String getTypeEnemy() { return typeEnemy; }
 
-    private void setTypeEnemy(String typeEnemy) {
-        this.typeEnemy = typeEnemy;
-    }
+    private void setTypeEnemy(String typeEnemy) { this.typeEnemy = typeEnemy; }
 
-    boolean isDead() {
-        return dead;
-    }
+    boolean isDead() { return dead; }
 
-    void setDead(boolean dead) {
-        this.dead = dead;
-    }
+    void setDead(boolean dead) { this.dead = dead; }
 
-    private int getEnergy() {
-        return energy;
-    }
+    private int getEnergy() { return energy; }
 
     public int getPosXEnemy() { return posXEnemy; }
 
@@ -103,13 +88,9 @@ public class Enemy {
 
     public void setPosYEnemy(int posYEnemy) { this.posYEnemy = posYEnemy; }
 
-    public boolean isSuicida() {
-		return suicida;
-	}
+    public boolean isSuicida() { return suicida; }
 
-	public void setSuicida(boolean suicida) {
-		this.suicida = suicida;
-	}
+	public void setSuicida(boolean suicida) { this.suicida = suicida; }
 
 	public int getMoveEnemy() { return moveEnemy; }
 
@@ -142,7 +123,7 @@ public class Enemy {
                 this.entidad = 3; break;
             case "boss":
                 this.entidad = 4; break;
-            case "typeTrap":
+            case "fly":
                 this.entidad = 5; break;
         }
 
@@ -153,8 +134,8 @@ public class Enemy {
         switch (typeEnemy){
             case "1":
                 energy = 10; break;
-            case "typeTrap":
-                energy = 80000000; break;
+            case "fly":
+                energy = 10; break;
             case "2":
                 energy = 20; break;
             case "boss":
@@ -166,17 +147,46 @@ public class Enemy {
 
     public char getDecission(int posXEnemy, int posYEnemy, int posXPlayer, int posYPlayer){
 
-        if (/*contador % 150 == 0 && */this.typeEnemy.equals("boss")){
-           // generarEnemigo();
-        } else {
-
+    	switch (typeEnemy){
+        case "1":
+        	if (posXEnemy > posXPlayer+5){
+                return 'I';
+            } else if (posXPlayer-5 > posXEnemy) {
+                return 'D';
+            }
+            break;
+        case "fly":
+        	if(voladorVertical) {
+        		if (posXEnemy > posXPlayer+5){
+                    return 'I';
+                } else if (posXPlayer-5 > posXEnemy) {
+                    return 'D';
+                }
+        		voladorVertical=false;
+        	}else {
+        		if (posYEnemy > posYPlayer){
+                    return 'W';
+                } else if (posYPlayer >= posYEnemy) {
+                    return 'S';
+                }
+        	}
+            break;
+        case "2":
+        	if (posXEnemy > posXPlayer+5){
+                return 'I';
+            } else if (posXPlayer-5 > posXEnemy) {
+                return 'D';
+            }
+            break;
+        case "boss":
             if (posXEnemy > posXPlayer+5){
                 return 'I';
             } else if (posXPlayer-5 > posXEnemy) {
                 return 'D';
             }
+            break;
+    }
 
-        }
         contador++;
 
         return '0';
@@ -208,6 +218,8 @@ public class Enemy {
                     player.setEnergy(playerEnergy - 40); break;
                 case "boss":
                     player.setEnergy(playerEnergy - 50); break;
+                case "fly":
+                    player.setEnergy(playerEnergy - 40); break;
             }
 
             if (player.getEnergy() <= 0){
@@ -219,16 +231,7 @@ public class Enemy {
         }
 
     }
-/*
-    // Esta función se encargará de que el boss pueda generar enemigos 
-    private void generarEnemigo(){
 
-        if (isWakeUp()){
-            PanelLVL1.entities.enemies.add(new Enemy(typeEnemies.type1, this.posXEnemy, this.posYEnemy, true));
-        }
-
-    }
-*/
     //TO STRING
     @Override
     public String toString() {
