@@ -50,7 +50,7 @@ public class PanelLVL1 extends JPanel {
 							barra_energia = new BufferedImage[101];
 	
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
-    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos;
+    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala;
     
     public String nombreElegido="",tercLetra="",segLetra="";
     
@@ -1047,24 +1047,38 @@ public class PanelLVL1 extends JPanel {
      */
     private void movimientoBala(Graphics g,boolean disparo,int x) {
     	
+    	switch(posicionBala) {
+    	case 0:
+    		posicionBala=1;
+    		break;
+    	case 1:
+    		posicionBala=2;
+    		break;
+    	case 2:
+    		posicionBala=3;
+    		break;
+    	case 3:
+    		posicionBala=0;
+    		break;
+    		default:;
+    		
+    	}
+    	
     	//Variables de control de estado del disparo/bala
     	if(disparo) {
     		
     		if(!disparado) {
-	    		 //TODO Hay que sustituir el cuadrado rojo por la array de imágenes de la bala
     			
     			//si miraba hacia un lado u otro al disparar
 	    		switch(keko.getLastSide()) {
 	    		
 	    		case 'D':
-	    			g.setColor(Color.red);
-	        		g.fillRect(keko.getPosXPlayer()+30,keko.getPosYPlayer()+50-y,10,10);
+	    			g.drawImage(bala[posicionBala],keko.getPosXPlayer()+30,keko.getPosYPlayer()+50-y,10,10,this);
 	        		addPlatformToList(keko.getPosXPlayer()+30,keko.getPosYPlayer()+50-y,10,0, Tipo.BALA);
 	        		direccionDisparo='D';
 	    			break;
 	    		case 'I':
-	    			g.setColor(Color.red);
-	        		g.fillRect(keko.getPosXPlayer()-10,keko.getPosYPlayer()+50-y,10,10);
+	    			g.drawImage(bala[posicionBala],keko.getPosXPlayer()-10,keko.getPosYPlayer()+50-y,10,10,this);
 	        		addPlatformToList(keko.getPosXPlayer()-10,keko.getPosYPlayer()+50-y,10,0, Tipo.BALA);
 	        		direccionDisparo='I';
 	    			break;
@@ -1088,15 +1102,13 @@ public class PanelLVL1 extends JPanel {
 	    			case 'D':
 	    				avanceDisparo+=isWall(42,1,30,keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,
 	    						keko.getPosYPlayer()+50-alturaDisparo+20,10,0);
-	    				g.setColor(Color.red);
-		        		g.fillRect(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,10);
+	    				g.drawImage(bala[posicionBala],keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,10,this);
 		        		addPlatformToList(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,0, Tipo.BALA);
 	    				break;
 	    			case'I':
 	    				avanceDisparo+=isWall(42,1,-30,keko.getPosXPlayer()-10+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,
 	    						keko.getPosYPlayer()+50-alturaDisparo+20,10,0);
-	    				g.setColor(Color.red);
-		        		g.fillRect(keko.getPosXPlayer()-20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,10);
+	    				g.drawImage(bala[posicionBala],keko.getPosXPlayer()-20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,10,this);
 		        		addPlatformToList(keko.getPosXPlayer()+20+avanceDisparo,keko.getPosYPlayer()+50-alturaDisparo,10,0, Tipo.BALA);
 	    				break;
 	    			
