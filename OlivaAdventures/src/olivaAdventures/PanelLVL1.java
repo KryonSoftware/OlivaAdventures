@@ -452,12 +452,12 @@ public class PanelLVL1 extends JPanel {
 		animKeko[15]=keko_stand_left4;
 		animKeko[16]=oliva_salto_izquierda;
 		animKeko[17]=oliva_salto_derecha;
-		animKeko[18]=keko_disparo_derecha1;
-		animKeko[19]=keko_disparo_derecha2;
-		animKeko[20]=keko_disparo_izquierda1;
-		animKeko[21]=keko_disparo_izquierda2;
-		animKeko[22]=keko_disparo_inicial_derecha;
-		animKeko[23]=keko_disparo_inicial_izquieda;
+		animKeko[18]=keko_disparo_inicial_derecha;
+		animKeko[19]=keko_disparo_derecha1;
+		animKeko[20]=keko_disparo_derecha2;
+		animKeko[21]=keko_disparo_inicial_izquieda;
+		animKeko[22]=keko_disparo_izquierda1;
+		animKeko[23]=keko_disparo_izquierda2;
 		
 	}
 	

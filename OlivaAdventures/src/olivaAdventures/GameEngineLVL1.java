@@ -14,7 +14,7 @@ public class GameEngineLVL1 implements KeyListener {
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
-	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,letraOK;
+	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,letraOK=0,impulso=0,anDisp=26;
 	private String nombre="XXX";
 	public JFrame ventana;
     
@@ -22,7 +22,7 @@ public class GameEngineLVL1 implements KeyListener {
     private PanelLVL1 panel = new PanelLVL1();
 
 	//La música que usaremos:
-	private Musica musica= new Musica();
+	private Musica musica= new Musica(),fxKeko=new Musica(),disparo=new Musica(),fxPow=new Musica(),fxZubat=new Musica(),fxEn2=new Musica(),fxBoss=new Musica();
     
 	//Getter del nombre para que lo recoja PlantillaVentana:
 	public String getNombre() {return nombre;}
@@ -157,65 +157,82 @@ public class GameEngineLVL1 implements KeyListener {
 	    	case 'D':
 	    		
 	    		if(!saltando) {
-	    			//Creamos secuencia de la animación de la respiración teniendo en cuenta el último lado hacia el que miraba
-	    			if(respirando==0) {
-	    				
-	    				switch(panel.getArrPosKeko()) {
-	    				
-	    				case 8:
-	    					panel.setArrPosKeko(9);
-	    					break;
-	    				case 9:
-	    					panel.setArrPosKeko(10);
-	    					break;
-	    				case 10:
-	    					panel.setArrPosKeko(11);
-	    					break;
-	    				case 11:
-	    					panel.setArrPosKeko(8);
-	    					break;
-	    					default:
-	    						panel.setArrPosKeko(8);
-	    						
-	    				}
-	    				respirando++;
-	    			} else if(respirando==1){respirando=2;} //Lo que hacemos es hacer girar un contador al paso de las iteraciones 
-	    			else if(respirando==2){respirando=3;} //para dar un tiempo extra entre cada imagen de la animación
-	    			else {respirando=0;}
+	    			
+	    			if(anDisp==26) {
+	    				//Creamos secuencia de la animación de la respiración teniendo en cuenta el último lado hacia el que miraba
+		    			if(respirando==0) {
+		    				
+		    				switch(panel.getArrPosKeko()) {
+		    				
+		    				case 8:
+		    					panel.setArrPosKeko(9);
+		    					break;
+		    				case 9:
+		    					panel.setArrPosKeko(10);
+		    					break;
+		    				case 10:
+		    					panel.setArrPosKeko(11);
+		    					break;
+		    				case 11:
+		    					panel.setArrPosKeko(8);
+		    					break;
+		    					default:
+		    						panel.setArrPosKeko(8);
+		    						
+		    				}
+		    				respirando++;
+		    			} else if(respirando==1){respirando=2;} //Lo que hacemos es hacer girar un contador al paso de las iteraciones 
+		    			else if(respirando==2){respirando=3;} //para dar un tiempo extra entre cada imagen de la animación
+		    			else {respirando=0;}
+	    			}
+	    		}
+	    		else {
+	    			if(anDisp==26) {
+	    				panel.setArrPosKeko(17);
+	    			}
 	    		}
 	    		break;
 	    	case 'I':
 	    		
 	    		if(!saltando) {
 	    			
-	    			if(respirando==0) {
-	    				
-	    				switch(panel.getArrPosKeko()) {
-	    				
-	    				case 12:
-	    					panel.setArrPosKeko(13);
-	    					break;
-	    				case 13:
-	    					panel.setArrPosKeko(14);
-	    					break;
-	    				case 14:
-	    					panel.setArrPosKeko(15);
-	    					break;
-	    				case 15:
-	    					panel.setArrPosKeko(12);
-	    					break;
-	    					default:
-	    						panel.setArrPosKeko(12);
-	    						
-	    				}
-	    				respirando++;
-	    			} else if(respirando==1){respirando=2;}
-	    			else if(respirando==2){respirando=3;}
-	    			else {respirando=0;}
+	    			if(anDisp==26) {
+	    			
+		    			if(respirando==0) {
+		    				
+		    				switch(panel.getArrPosKeko()) {
+		    				
+		    				case 12:
+		    					panel.setArrPosKeko(13);
+		    					break;
+		    				case 13:
+		    					panel.setArrPosKeko(14);
+		    					break;
+		    				case 14:
+		    					panel.setArrPosKeko(15);
+		    					break;
+		    				case 15:
+		    					panel.setArrPosKeko(12);
+		    					break;
+		    					default:
+		    						panel.setArrPosKeko(12);
+		    						
+		    				}
+		    				respirando++;
+		    			} else if(respirando==1){respirando=2;}
+		    			else if(respirando==2){respirando=3;}
+		    			else {respirando=0;}
+	    			}
+	    		}
+	    		else {
+	    			if(anDisp==26) {
+	    				panel.setArrPosKeko(16);
+	    			}
 	    		}
 	    		break;
 			default:;
 	    	}
+	    		
 	    	if(!saltando) {
 	    		saltando=true;
 	    		contadorSalto=16;
@@ -238,37 +255,40 @@ public class GameEngineLVL1 implements KeyListener {
     		
     		if(!saltando) {
     			
-    			if(cambio==0) {
-    				
-    				switch(panel.getArrPosKeko()) {
-    				
-    				case 4:
-    					panel.setArrPosKeko(5);
-    					break;
-    				case 5:
-    					panel.setArrPosKeko(6);
-    					break;
-    				case 6:
-    					panel.setArrPosKeko(7);
-    					break;
-    				case 7:
-    					panel.setArrPosKeko(4);
-    					break;
-    					default:
-    						panel.setArrPosKeko(5);
-    						
-    				}
-    				cambio++;
-    			} else if(cambio==1){cambio=0;}
-    			else {cambio=0;}
+    			if(anDisp==26) {
     			
-    			panel.keko.setLastSide('I');
-    			
-    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX+=panel.isWall(1,1,-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
-            	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
-                contadorSalto = 16;
-                saltando = true;
+	    			if(cambio==0) {
+	    				
+	    				switch(panel.getArrPosKeko()) {
+	    				
+	    				case 4:
+	    					panel.setArrPosKeko(5);
+	    					break;
+	    				case 5:
+	    					panel.setArrPosKeko(6);
+	    					break;
+	    				case 6:
+	    					panel.setArrPosKeko(7);
+	    					break;
+	    				case 7:
+	    					panel.setArrPosKeko(4);
+	    					break;
+	    					default:
+	    						panel.setArrPosKeko(5);
+	    						
+	    				}
+	    				cambio++;
+	    			} else if(cambio==1){cambio=0;}
+	    			else {cambio=0;}
+	    			
+	    			panel.keko.setLastSide('I');
+	    			
+	    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
+	            	ejeX+=panel.isWall(1,1,-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+	            	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
+	                contadorSalto = 16;
+	                saltando = true;
+    			}
             }
     		else {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
@@ -281,43 +301,51 @@ public class GameEngineLVL1 implements KeyListener {
             	else {
             		ejeX-=-panel.isWall(1,1,-10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	}
+            	panel.keko.setLastSide('I');
+            	if(anDisp==26) {
+            		panel.setArrPosKeko(16);
+            	}
             }
+    		
     	}
 	    if(derecha && !izquierda) {
 	    	
     		if(!saltando) {
     			
-    			if(cambio==0) {
-    				
-    				switch(panel.getArrPosKeko()) {
-    				
-    				case 0:
-    					panel.setArrPosKeko(1);
-    					break;
-    				case 1:
-    					panel.setArrPosKeko(2);
-    					break;
-    				case 2:
-    					panel.setArrPosKeko(3);
-    					break;
-    				case 3:
-    					panel.setArrPosKeko(0);
-    					break;
-    					default:
-    						panel.setArrPosKeko(1);
-    						
-    				}
-    				cambio++;
-    			} else if(cambio==1){cambio=0;}
-    			else {cambio=0;}
+    			if(anDisp==26) {
     			
-    			panel.keko.setLastSide('D');
-    			
-    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
-            	ejeX+=panel.isWall(1,1,10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
-            	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
-                contadorSalto = 16;
-                saltando = true;
+	    			if(cambio==0) {
+	    				
+	    				switch(panel.getArrPosKeko()) {
+	    				
+	    				case 0:
+	    					panel.setArrPosKeko(1);
+	    					break;
+	    				case 1:
+	    					panel.setArrPosKeko(2);
+	    					break;
+	    				case 2:
+	    					panel.setArrPosKeko(3);
+	    					break;
+	    				case 3:
+	    					panel.setArrPosKeko(0);
+	    					break;
+	    					default:
+	    						panel.setArrPosKeko(1);
+	    						
+	    				}
+	    				cambio++;
+	    			} else if(cambio==1){cambio=0;}
+	    			else {cambio=0;}
+	    			
+	    			panel.keko.setLastSide('D');
+	    			
+	    			//Nos desplazamos en el eje X y a continuación comprobamos si deberíamos estar cayendo:
+	            	ejeX+=panel.isWall(1,1,10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
+	            	//Estas dos líneas de código deberán implementarse otra vez cuando hagamos el suelo desaparecer bajo sus pies:
+	                contadorSalto = 16;
+	                saltando = true;
+    			}
             }
     		else {
             	//Si está saltando hacemos que vaya reduciendo su avance lateral cuando esté cayendo, pero no cuando esté subiendo (aún mantiene su impulso):
@@ -330,8 +358,13 @@ public class GameEngineLVL1 implements KeyListener {
             	else {
             		ejeX+=panel.isWall(1,1,10,panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-panel.getEjeY(),panel.keko.getPosYPlayer()+89-panel.getEjeY(),30,10);
             	}
+            	panel.keko.setLastSide('D');
+            	if(anDisp==26) {
+            		panel.setArrPosKeko(17);
+            	}
             }
-    	}
+	    		
+	    }
 	    
     }
 
@@ -352,7 +385,6 @@ public class GameEngineLVL1 implements KeyListener {
     	
          if(saltando){
         	 
-        	 
         	 //La secuencia de salto consiste en llamar a panel y decirle cuánto queremos movernos hacia arriba y él nos contesta diciendo cuánto podemos hacerlo
         	  
             if(contadorSalto>=0&&contadorSalto<5) {
@@ -369,12 +401,38 @@ public class GameEngineLVL1 implements KeyListener {
                 if(!(compruebaDistanciaSalto==10)) {
                 	contadorSalto=16;
                 }
+                switch(panel.keko.getLastSide()) {
+                case 'I':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(16);
+                	}
+               	 break;
+                case 'D':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(17);
+                	}               
+                	break;
+               	 default:;
+                }
             }
             else if(contadorSalto>7&&contadorSalto<12){
             	compruebaDistanciaSalto=(byte) panel.isTop(1,1,5,ejeY,ejeX,prevX);
                 ejeY+=compruebaDistanciaSalto;
                 if(!(compruebaDistanciaSalto==5)) {
                 	contadorSalto=16;
+                }
+                switch(panel.keko.getLastSide()) {
+                case 'I':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(16);
+                	}
+               	 break;
+                case 'D':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(17);
+                	}
+               	 break;
+               	 default:;
                 }
             }
             else if(contadorSalto>11&&contadorSalto<15){
@@ -383,9 +441,35 @@ public class GameEngineLVL1 implements KeyListener {
                 if(!(compruebaDistanciaSalto==1)) {
                 	contadorSalto=16;
                 }
+                switch(panel.keko.getLastSide()) {
+                case 'I':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(16);
+                	}
+               	 break;
+                case 'D':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(17);
+                	}
+               	 break;
+               	 default:;
+                }
             }
             else if(contadorSalto==15){
                 prevY=720-ejeY;
+                switch(panel.keko.getLastSide()) {
+                case 'I':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(16);
+                	}
+               	 break;
+                case 'D':
+                	if(anDisp==26) {
+                		panel.setArrPosKeko(17);
+                	}
+               	 break;
+               	 default:;
+                }
             }
             else if(contadorSalto>15) {
 	            if(!panel.isGround(1,0,ejeX, ejeY, prevY,prevX)) {
@@ -434,22 +518,6 @@ public class GameEngineLVL1 implements KeyListener {
     
     private void disparar() {
     	
-    	//Si está apretando la tecla disparo
-    	if(gatillo) {
-    		//Si no estamos en proceso de disparo ya
-    		if(!panel.isDisparo()) {
-    			//Si no intenta disparar durante la pausa
-	        	if(!pausa) {
-	        		//Sonido disparo
-	        		musica.playDisparo();
-	        		//Le indicamos cuándo efectuamos el disparo.Necesitamos saberlo porque limitamos la capacidad de disparar en el tiempo
-	        		panel.setMomentoDisparo(this.contador);
-	        		//Variables de control internas
-	        		panel.setDisparado(false);
-	        		panel.setDisparo(true);
-	        	}
-	    	}
-    	}
     	//Si estamos en proceso de disparo
     	if(panel.isDisparo()) {
     		//Limitamos el tiempo entre disparos
@@ -458,6 +526,107 @@ public class GameEngineLVL1 implements KeyListener {
     			panel.setDisparado(false);
     		}
     		
+    		if(anDisp<26) {
+    			
+        		switch(panel.keko.getLastSide()) {
+        		case 'I':
+        			if(impulso==0) {
+        	    		switch(anDisp) {
+        	        	case 21:
+        	        		panel.setArrPosKeko(anDisp);
+        	        		anDisp++;
+        	        		break;
+        	        	case 22:
+        	        		panel.setArrPosKeko(anDisp);
+        	        		anDisp++;
+        	        		break;
+        	        	case 23:
+        	        		panel.setArrPosKeko(anDisp);
+        	        		anDisp++;
+        	        		break;
+        	        	case 24:
+        	        		panel.setArrPosKeko(anDisp-2);
+        	        		anDisp++;
+        	        		break;
+        	        	case 25:
+        	        		panel.setArrPosKeko(anDisp-4);
+        	        		anDisp++;
+        	        		break;
+        	        	default:;
+        	        	}
+        	    		impulso++;
+        	    	}
+        	    	else{
+        	    		impulso=0;
+        	    	}
+        			
+        			break;
+        		case 'D':
+        			if(impulso==0) {
+        	    		switch(anDisp) {
+        	        	case 21:
+        	        		panel.setArrPosKeko(anDisp-3);
+        	        		anDisp++;
+        	        		break;
+        	        	case 22:
+        	        		panel.setArrPosKeko(anDisp-3);
+        	        		anDisp++;
+        	        		break;
+        	        	case 23:
+        	        		panel.setArrPosKeko(anDisp-3);
+        	        		anDisp++;
+        	        		break;
+        	        	case 24:
+        	        		panel.setArrPosKeko(anDisp-2-3);
+        	        		anDisp++;
+        	        		break;
+        	        	case 25:
+        	        		panel.setArrPosKeko(anDisp-4-3);
+        	        		anDisp++;
+        	        		break;
+        	        	default:;
+        	        	}
+        	    		impulso++;
+        	    	}
+        	    	else{
+        	    		impulso=0;
+        	    	}
+        			
+        			break;
+        		}
+    		}
+    			
+    		
+    		
+    	}
+    	
+    	//Si está apretando la tecla disparo
+    	if(gatillo) {
+    		//Si no estamos en proceso de disparo ya
+    		if(!panel.isDisparo()) {
+    			//Si no intenta disparar durante la pausa
+	        	if(!pausa) {
+	        		//Sonido disparo
+	        		disparo.playDisparo();
+	        		//Le indicamos cuándo efectuamos el disparo.Necesitamos saberlo porque limitamos la capacidad de disparar en el tiempo
+	        		panel.setMomentoDisparo(this.contador);
+	        		//Variables de control internas
+	        		panel.setDisparado(false);
+	        		panel.setDisparo(true);
+	        		
+	        		switch(panel.keko.getLastSide()) {
+	        		case 'I':
+	        			panel.setArrPosKeko(21);
+	        			anDisp=21;
+	        			break;
+	        		case 'D':
+	        			panel.setArrPosKeko(18);
+	        			anDisp=21;
+	        			break;
+        			default:;
+	        		}
+	        	}
+	    	}
     	}
     	
     }
@@ -782,6 +951,8 @@ public class GameEngineLVL1 implements KeyListener {
         	//Detenemos el hilo para darle tiempo al panel a cargar y ponemos la imagen de cargando
         	panel.setLoading(true);
         	//Hacemos que la música de fondo empiece unos milisegundos después de poner la pantalla de carga
+        	musica.cargarFondo();
+        	disparo.cargarDisparo();
         	musica.playFondo();
             Thread.sleep(2500);
         } catch (InterruptedException e) {
@@ -856,6 +1027,7 @@ public class GameEngineLVL1 implements KeyListener {
 		    panel.setPedirNombre(true);
 		    panel.repaint();
 		    pidiendoNombre=true;
+		    musica.lose();
 		    
 		    while(pidiendoNombre) {
 		    	
@@ -871,6 +1043,7 @@ public class GameEngineLVL1 implements KeyListener {
 		} catch (Exception e) {
 			System.out.println("Error deteniendo la reproducciónd e la música o deteniendo "
 					+ "el tiempo al final de la partida. Log: "+e);
+			e.printStackTrace();
 		}
         
         //Calculamos la puntuación final:   
@@ -878,7 +1051,7 @@ public class GameEngineLVL1 implements KeyListener {
         puntuacion+=panel.getEjeX();
     	puntuacion*=panel.keko.getLives()+1;
         
-        return puntuacion+20000;
+        return puntuacion;
         
     }
     

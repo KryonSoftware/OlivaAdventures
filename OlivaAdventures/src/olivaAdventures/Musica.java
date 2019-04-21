@@ -8,16 +8,8 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 public class Musica {
 
     /* ATTRIBUTES */
-    private BasicPlayer fondo,disparo;
+    private BasicPlayer fondo,disparo,click,salto,ouch,enemigoOuch,lose;
     //Musica fondo = new Musica();
-
-    /* CONSTRUCTOR */
-    public Musica() {
-        fondo=new BasicPlayer();
-        disparo=new BasicPlayer();
-        cargarFondo();
-        cargarDisparo();
-    }
 
     /* BASIC FUNCTIONS */
     public void playFondo() {
@@ -39,14 +31,27 @@ public class Musica {
     public void stop() {
         try {
 			fondo.stop();
-			disparo.stop();
 		} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void click() {
+        try {click.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void lose() {
+    	try {
+        	lose.play();
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de click. Posible error en el path. Error: "+e);
+        }
     }
 
     /* FUNCTIONS */
     public void cargarFondo(){
 
         try {
+            fondo=new BasicPlayer();
+            lose=new BasicPlayer();
+
+        	lose.open(new File("resources/sonido/musica_fondo/lose.mp3"));
         	fondo.open(new File("resources/sonido/musica_fondo/welcome_to_the_jungle_8_bit.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de fondo. Posible error en el path. Error: "+e);
@@ -56,10 +61,23 @@ public class Musica {
     public void cargarDisparo(){
     	
         try {
-        	disparo.open(new File("resources/sonido/sonido_pistola/realistic_gunshot_sound_effect.mp3"));
+            disparo=new BasicPlayer();
+
+        	disparo.open(new File("resources/sonido/sonido_pistola/shot.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de disparo. Posible error en el path. Error: "+e);
         }
     }
+    
+    public void cargarClick(){
+    	
+        try {
+            click=new BasicPlayer();
 
+        	click.open(new File("resources/sonido/Menu/click.mp3"));
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de click. Posible error en el path. Error: "+e);
+        }
+    }
+    
 }

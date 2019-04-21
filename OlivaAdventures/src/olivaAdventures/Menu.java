@@ -32,10 +32,13 @@ public class Menu implements KeyListener {
 	private ImageIcon scores = new ImageIcon(scoresImagen);
 	private ImageIcon exit = new ImageIcon(exitImagen);
 	public boolean scoresTF=false;
+	
+	Musica musica=new Musica();
 
 
 	/* --- CONSTRUCTOR --- */
 	public Menu(JFrame ventana, PlantillaVentana plantillaVentana) {
+		
 		this.ventana = ventana;
 		this.plantillaVentana = plantillaVentana;
         this.ventana.setPreferredSize(new Dimension(1000,1000)); 
@@ -73,15 +76,20 @@ public class Menu implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {			// Si la Tecla pulsada es "flecha hacia ABAJO" >>> +1 a contadorTecla.
 			contadorTecla++;
+			musica.cargarClick();
+			musica.click();
 		}
 
 		else if (e.getKeyCode() == KeyEvent.VK_UP) {		// Si la tecla pulsada es "flecha hacia ARRIBA" >>> -1 a contadorTecla.
 			contadorTecla--;
+			musica.cargarClick();
+			musica.click();
 		}
 
 	}
 
 	private void controlDeImagen(KeyEvent e) {
+		
 
 		if (contadorTecla == 1) {
 			etiqueta.setIcon(newGame);
@@ -136,6 +144,13 @@ public class Menu implements KeyListener {
 			etiqueta.setIcon(exit);
 
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {						 // Aqui ira el codigo para quitar la ventana grafica.
+				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				System.exit(1);
 				
 			}
