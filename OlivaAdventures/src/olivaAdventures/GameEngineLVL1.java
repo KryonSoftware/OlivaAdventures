@@ -604,6 +604,7 @@ public class GameEngineLVL1 implements KeyListener {
     	if(gatillo) {
     		//Si no estamos en proceso de disparo ya
     		if(!panel.isDisparo()) {
+    			panel.keko.setEnergy(panel.keko.getEnergy()-1);
     			//Si no intenta disparar durante la pausa
 	        	if(!pausa) {
 	        		//Sonido disparo
@@ -641,30 +642,37 @@ public class GameEngineLVL1 implements KeyListener {
     		switch(anMons) {
         	case 0:
         		panel.setArrPosMonstruo(anMons);
+        		panel.setArrPosFly(anMons);
         		anMons++;
         		break;
         	case 1:
         		panel.setArrPosMonstruo(anMons);
+        		panel.setArrPosFly(anMons);
         		anMons++;
         		break;
         	case 2:
         		panel.setArrPosMonstruo(anMons);
+        		panel.setArrPosFly(anMons);
         		anMons++;
         		break;
         	case 3:
         		panel.setArrPosMonstruo(anMons);
+        		panel.setArrPosFly(anMons);
         		anMons++;
         		break;
         	case 4:
         		panel.setArrPosMonstruo(anMons-2);
+        		panel.setArrPosFly(anMons-2);
         		anMons++;
         		break;
         	case 5:
         		panel.setArrPosMonstruo(anMons-4);
+        		panel.setArrPosFly(anMons-4);
         		anMons++;
         		break;
         	case 6:
         		panel.setArrPosMonstruo(anMons-6);
+        		panel.setArrPosFly(anMons-6);
         		anMons=0;
         		break;
         	default:;
@@ -781,9 +789,30 @@ public class GameEngineLVL1 implements KeyListener {
     * Método que se encarga de mover a los monstruos y de comprobar sus caídas.
     */
    private void movimientosMonstruos() {
+	   
+	   int movLateral=0,movLateralAire=0;
 
 	   for(int x=0;x<panel.entities.enemies.size();x++) {
 		   
+		   switch(panel.entities.enemies.get(x).getTypeEnemy()) {
+		   case "1":
+			   movLateral=5;
+			   movLateralAire=3;
+			   break;
+		   case "2":
+			   movLateral=7;
+			   movLateralAire=5;
+			   break;
+		   case "fly":
+			   movLateral=13;
+			   break;
+		   case "boss":
+			   movLateral=13;
+			   movLateralAire=10;
+			   break;
+			   default:;
+		   }
+				   		   
 		   //Comprobamos si se ha caído por un precipicio. Si es así, lo matamos
 		   if(panel.entities.enemies.get(x).getPosYEnemy()>780) {
 			   panel.entities.enemies.get(x).setDead(true);
@@ -807,68 +836,108 @@ public class GameEngineLVL1 implements KeyListener {
 					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
 
 				   //Llamamos a su método para tomar decisión, que nos devolverá un char diciéndonos a dónde quiere ir
-				   switch (panel.entities.enemies.get(x).getDecission(panel.entities.enemies.get(x).getPosXEnemy()-ejeX+panel.entities.enemies.get(x).getMoveEnemy(),panel.entities.enemies.get(x).getPosYEnemy(),
+				   switch (panel.entities.enemies.get(x).getDecission(panel.entities.enemies.get(x).getPosXEnemy()-ejeX+panel.entities.enemies.get(x).getMoveEnemy(),panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),
 						   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
 					   case 'D':
 						   //Si no está saltando movemos 5, si no sólo 3
-						   if(!panel.entities.enemies.get(x).isJumping()) {
+						   if(!panel.entities.enemies.get(x).isJumping() || panel.entities.enemies.get(x).getTypeEnemy().equals("fly")) {
 							   //Comprobamos si es de los que se tiran por las plataformas o no
 							   if(panel.entities.enemies.get(x).isSuicida()) {
-								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
+								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateral,
 										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-										   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),
+										   panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 							   }
 							   else {
 								   //Si no es suicida, primero comprobamos si se va a caer o no si se mueve y se lo permitimos o no
-								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()+5-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
+								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()+movLateral-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+49,panel.entities.enemies.get(x).getPrevYEnemy()+49,
 										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
-									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,5,
+									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateral,
 											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+											   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 								   }
 							   }
 							   //Si debe estar cayendo, con ésto lo haemos caer
-							   panel.entities.enemies.get(x).setJumping(true);
-							   panel.entities.enemies.get(x).setContJumping(16);
+							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly"))) {
+								   panel.entities.enemies.get(x).setJumping(true);
+								   panel.entities.enemies.get(x).setContJumping(16);
+							   }
 						   }
 						   else {
-							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,3,
+							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateralAire,
 									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-									   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 						   }
+						   panel.entities.enemies.get(x).setIzDer(true);
 						   break;
 					   case 'I':
-						   if(!panel.entities.enemies.get(x).isJumping()) {
+						   if(!panel.entities.enemies.get(x).isJumping() || panel.entities.enemies.get(x).getTypeEnemy().equals("fly")) {
+							   
 							   if(panel.entities.enemies.get(x).isSuicida()) {
-								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
+								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateral,
 										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-										   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 							   }
 							   else {
-								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()-5-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
+								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()-movLateral-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+49,panel.entities.enemies.get(x).getPrevYEnemy()+49,
 										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
-									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-5,
+									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateral,
 											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
 								   }
 							   }
-							   panel.entities.enemies.get(x).setJumping(true);
-							   panel.entities.enemies.get(x).setContJumping(16);
+							 //Si debe estar cayendo, con ésto lo haemos caer
+							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly"))) {
+								   panel.entities.enemies.get(x).setJumping(true);
+								   panel.entities.enemies.get(x).setContJumping(16);
+							   }
 						   }
 						   else {
-							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-3,
+							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateralAire,
 									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-									   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,50,20));
+									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,50,20));
+						   }
+						   panel.entities.enemies.get(x).setIzDer(false);
+						   break;
+					   case 'W':
+						   
+						   compruebaDistanciaSalto=(byte) panel.isTop(2,x,panel.entities.enemies.get(x).getPosYEnemy()-13,panel.entities.enemies.get(x).getPosYEnemy(),ejeX,prevX);
+						   if(panel.entities.enemies.get(x).getPosYEnemy()+panel.entities.enemies.get(x).getMoveYEnemy()-compruebaDistanciaSalto <= panel.keko.getPosYPlayer()-panel.getEjeY() && 
+								   panel.entities.enemies.get(x).getPosYEnemy()+panel.entities.enemies.get(x).getMoveYEnemy() >= panel.keko.getPosYPlayer()-panel.getEjeY()) {
+							   panel.entities.enemies.get(x).setPosYEnemy(panel.keko.getPosYPlayer()-panel.getEjeY());
+						   }
+						   else {
+							   panel.entities.enemies.get(x).setPosYEnemy(panel.entities.enemies.get(x).getPosYEnemy()-compruebaDistanciaSalto);
+						   }
+						   break;
+					   case 'S':
+				        	  
+						   if(panel.entities.enemies.get(x).getPosYEnemy()+panel.entities.enemies.get(x).getMoveYEnemy()+13 >= panel.keko.getPosYPlayer()-panel.getEjeY() && 
+						   panel.entities.enemies.get(x).getPosYEnemy()+panel.entities.enemies.get(x).getMoveYEnemy() <= panel.keko.getPosYPlayer()-panel.getEjeY()) {
+							   panel.entities.enemies.get(x).setPosYEnemy(panel.keko.getPosYPlayer()-panel.getEjeY());
+						   }
+						   else {
+							   panel.entities.enemies.get(x).setPosYEnemy(panel.entities.enemies.get(x).getPosYEnemy()+13);
 						   }
 						   break;
 					   default:
 						   //Si está compartiendo ejeX con el Keko no querrá moverse más, pero debemos comprobar si debe estar cayendo igualmente
 						   if(!panel.entities.enemies.get(x).isJumping()) {
-							   panel.entities.enemies.get(x).setJumping(true);
-							   panel.entities.enemies.get(x).setContJumping(16);
+							 //Si debe estar cayendo, con ésto lo haemos caer
+							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly"))) {
+								   panel.entities.enemies.get(x).setJumping(true);
+								   panel.entities.enemies.get(x).setContJumping(16);
+							   }
 						   }
+						   
+						   if(panel.isWall(2,x,1,
+								   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
+								   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50)==0) {
+									   panel.entities.enemies.get(x).doDamage(panel.keko);
+								   }
+						   
 				   }
 
 			   }

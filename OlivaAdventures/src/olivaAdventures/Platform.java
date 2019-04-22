@@ -7,8 +7,11 @@ public class Platform {
     private int ancho;
     private int alto;
     private Tipo tipo;
+    private int posListaEnemies;
 
     public Platform(int ejeX,int ejeY,int ancho,int alto,Tipo tipo){this.ejeX=ejeX;this.ejeY=ejeY;this.ancho=ancho;this.alto=alto;this.setTipo(tipo);}
+    
+    public Platform(int ejeX,int ejeY,int ancho,int alto,Tipo tipo,int posListaEnemies){this.ejeX=ejeX;this.ejeY=ejeY;this.ancho=ancho;this.alto=alto;this.setTipo(tipo);this.posListaEnemies=posListaEnemies;}
 
     public int getEjeX() {return ejeX;}
 
@@ -29,4 +32,8 @@ public class Platform {
 	public Tipo getTipo() {return tipo;}
 
 	public void setTipo(Tipo tipo) {this.tipo = tipo;}
+
+	public int getPosListaEnemies() {return posListaEnemies;}
+
+	public void setPosListaEnemies(int posListaEnemies) {this.posListaEnemies = posListaEnemies;}
 }

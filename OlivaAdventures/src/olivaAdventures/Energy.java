@@ -21,11 +21,13 @@ public class Energy {
     static int dropEnergy(Enemy enemy){
         switch (enemy.getTypeEnemy()){
             case "1":
-                return 10;
+                return 5;
             case "2":
-                return 20;
+                return 5;
             case "boss":
-                return 50;
+                return 100;
+            case "fly":
+            	return 5;
 
         }
         return -1;

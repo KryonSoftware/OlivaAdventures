@@ -14,15 +14,18 @@ public class Enemy {
     private int posXEnemy;
     private int posYEnemy;
     private int moveEnemy;
+    private int moveYEnemy;
     private boolean jumping=false;
-    private boolean suicida=false;
+    private boolean suicida=true;
 
 	private int contJumping;
     private int prevYEnemy;
+    
+    private boolean izDer=false;
 
     private boolean wakeUp;
     private int contador;
-    private boolean voladorVertical=false;
+    private boolean voladorVertical=true;
     private int entidad;
 
 
@@ -35,7 +38,7 @@ public class Enemy {
     }
 
     //CONSTRUCTOR
-    Enemy(typeEnemies typeEnemies, int posX, int posY, boolean suicida){
+    public Enemy(typeEnemies typeEnemies, int posX, int posY, boolean suicida){
         switch (typeEnemies){
             case type1:
                 setLives((byte) 2);
@@ -88,7 +91,23 @@ public class Enemy {
 
     public void setPosYEnemy(int posYEnemy) { this.posYEnemy = posYEnemy; }
 
-    public boolean isSuicida() { return suicida; }
+    public boolean isIzDer() {
+		return izDer;
+	}
+
+	public void setIzDer(boolean izDer) {
+		this.izDer = izDer;
+	}
+
+	public int getMoveYEnemy() {
+		return moveYEnemy;
+	}
+
+	public void setMoveYEnemy(int moveYEnemy) {
+		this.moveYEnemy = moveYEnemy;
+	}
+
+	public boolean isSuicida() { return suicida; }
 
 	public void setSuicida(boolean suicida) { this.suicida = suicida; }
 
@@ -158,17 +177,22 @@ public class Enemy {
         case "fly":
         	if(voladorVertical) {
         		if (posXEnemy > posXPlayer+5){
+        			voladorVertical=false;
                     return 'I';
-                } else if (posXPlayer-5 > posXEnemy) {
+                } else if (posXPlayer-5 > posXEnemy){
+                	voladorVertical=false;
                     return 'D';
                 }
         		voladorVertical=false;
         	}else {
-        		if (posYEnemy > posYPlayer){
+        		if (posYEnemy> posYPlayer){
+        			voladorVertical=true;
                     return 'W';
-                } else if (posYPlayer >= posYEnemy) {
+                } else if (posYPlayer > posYEnemy){
+                	voladorVertical=true;
                     return 'S';
                 }
+        		voladorVertical=true;
         	}
             break;
         case "2":
@@ -204,26 +228,22 @@ public class Enemy {
     Esta función lo que hará será restar al personaje una cantidad determinada de energía, dependiendo del tipo que sea
     el enemigo, cuando el personaje tenga 0 o menos de energia significará que el personaje está muerto
      */
-    public void doDamge(Player player, Enemy enemy){
+    public void doDamage(Player player){
 
         try {
 
             if (player.isDead()) throw new Exception();
 
             int playerEnergy = player.getEnergy();
-            switch (enemy.typeEnemy){
+            switch (typeEnemy){
                 case "1":
-                    player.setEnergy(playerEnergy - 20); break;
+                    player.setEnergy(playerEnergy - 2); break;
                 case "2":
-                    player.setEnergy(playerEnergy - 40); break;
+                    player.setEnergy(playerEnergy - 1); break;
                 case "boss":
-                    player.setEnergy(playerEnergy - 50); break;
+                    player.setEnergy(playerEnergy - 4); break;
                 case "fly":
-                    player.setEnergy(playerEnergy - 40); break;
-            }
-
-            if (player.getEnergy() <= 0){
-                player.setDead(true);
+                    player.setEnergy(playerEnergy - 1); break;
             }
 
         } catch (Exception e){

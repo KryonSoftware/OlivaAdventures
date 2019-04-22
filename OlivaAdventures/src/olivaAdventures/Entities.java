@@ -14,12 +14,11 @@ public class Entities {
         Enemy enemy1 = new Enemy(Enemy.typeEnemies.type1, 949, 0,true);
         Enemy enemy2 = new Enemy(Enemy.typeEnemies.type1, 410, 450,true);
         Enemy enemy3 = new Enemy(Enemy.typeEnemies.type1, 800, 0,true);
+        Enemy enemyFly1 = new Enemy(Enemy.typeEnemies.fly, 430, 50,true);
 
 
         enemies.add(enemy);
-        enemies.add(enemy1);
-        enemies.add(enemy2);
-        enemies.add(enemy3);
+        enemies.add(enemyFly1);
 
 
         return enemies;
