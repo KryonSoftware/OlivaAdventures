@@ -9,17 +9,17 @@ import javax.swing.*;
  * 
  * @author kryon
  */
-public class GameEngineLVL1 implements KeyListener {
+public class GameEngine implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
-	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,animacionesDe8=0,anMons=0,letraOK=0,impulso=0,anDisp=26;
+	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
 	private String nombre="XXX";
 	public JFrame ventana;
     
     //Inicializamos el panel que va dentro del Frame:
-    private PanelLVL1 panel = new PanelLVL1();
+    private Panel panel = new Panel();
 
 	//La música que usaremos:
 	private Musica musica= new Musica(),fxKeko=new Musica(),disparo=new Musica(),fxPow=new Musica(),fxZubat=new Musica(),fxEn2=new Musica(),fxBoss=new Musica();
@@ -32,7 +32,7 @@ public class GameEngineLVL1 implements KeyListener {
     * El constructor simplemente se encarga de meter el panel en el frame que se le ha pasado y cargar sus listeners.
     * @param frame  JFrame del menú que usará el juego.
     */
-    public GameEngineLVL1(JFrame ventana){
+    public GameEngine(JFrame ventana){
 
     	this.ventana=ventana;
     	//Valores del frame:
@@ -631,63 +631,7 @@ public class GameEngineLVL1 implements KeyListener {
     	}
     	
     }
-    
-    /**
-     * Animaciones de mosntruos, fuegos, hierbas, trampas,...
-     */
-    private void animacionesOtros() {
-    	
-    	//Animaciones respiraciones pow
-    	if(animacionesDe8==0) {
-    		switch(anMons) {
-        	case 0:
-        		panel.setArrPosMonstruo(anMons);
-        		panel.setArrPosFly(anMons);
-        		anMons++;
-        		break;
-        	case 1:
-        		panel.setArrPosMonstruo(anMons);
-        		panel.setArrPosFly(anMons);
-        		anMons++;
-        		break;
-        	case 2:
-        		panel.setArrPosMonstruo(anMons);
-        		panel.setArrPosFly(anMons);
-        		anMons++;
-        		break;
-        	case 3:
-        		panel.setArrPosMonstruo(anMons);
-        		panel.setArrPosFly(anMons);
-        		anMons++;
-        		break;
-        	case 4:
-        		panel.setArrPosMonstruo(anMons-2);
-        		panel.setArrPosFly(anMons-2);
-        		anMons++;
-        		break;
-        	case 5:
-        		panel.setArrPosMonstruo(anMons-4);
-        		panel.setArrPosFly(anMons-4);
-        		anMons++;
-        		break;
-        	case 6:
-        		panel.setArrPosMonstruo(anMons-6);
-        		panel.setArrPosFly(anMons-6);
-        		anMons=0;
-        		break;
-        	default:;
-        	}
-    		animacionesDe8++;
-    	}
-    	else if(animacionesDe8==2) {
-    		animacionesDe8=0;
-    	}
-    	else {
-    		animacionesDe8++;
-    	}
-    	
-    }
- 
+
     /**
      * Método de saltos enemigos. Hecho para llamarse dentro de un for, donde a cada iteración le pasamos
      *  un enemigo nuevo de los que hay dentro de la array correspondiente.
@@ -790,7 +734,7 @@ public class GameEngineLVL1 implements KeyListener {
     */
    private void movimientosMonstruos() {
 	   
-	   int movLateral=0,movLateralAire=0;
+	   int movLateral=0,movLateralAire=0,anchoDerecha=0,anchoIzquierda=0;
 
 	   for(int x=0;x<panel.entities.enemies.size();x++) {
 		   
@@ -798,17 +742,25 @@ public class GameEngineLVL1 implements KeyListener {
 		   case "1":
 			   movLateral=5;
 			   movLateralAire=3;
+			   anchoDerecha=20;
+			   anchoIzquierda=50;
 			   break;
 		   case "2":
 			   movLateral=7;
 			   movLateralAire=5;
+			   anchoDerecha=20;
+			   anchoIzquierda=50;
 			   break;
 		   case "fly":
 			   movLateral=13;
+			   anchoDerecha=20;
+			   anchoIzquierda=50;
 			   break;
 		   case "boss":
-			   movLateral=13;
-			   movLateralAire=10;
+			   movLateral=9;
+			   movLateralAire=8;
+			   anchoDerecha=250;
+			   anchoIzquierda=250;
 			   break;
 			   default:;
 		   }
@@ -818,13 +770,15 @@ public class GameEngineLVL1 implements KeyListener {
 			   panel.entities.enemies.get(x).setDead(true);
 		   }
 			   
-	/*		   //ESTO ES PARA HACERLOS SALTAR SIN PARAR******************SE APLICARÁ A LOS SALTARINES******************************************************
-			   
-			   if(!Enemies_lvl1.enemies.get(x).isJumping()) {
-					   Enemies_lvl1.enemies.get(x).setJumping(true);
-					   Enemies_lvl1.enemies.get(x).setContJumping(0);
+		   //Código que los hace saltar en bucle
+		   if(panel.entities.enemies.get(x).getTypeEnemy().equals("2")) {
+			
+			   if(!panel.entities.enemies.get(x).isJumping()) {
+				   panel.entities.enemies.get(x).setJumping(true);
+				   panel.entities.enemies.get(x).setContJumping(0);
 				   }
-	*/
+			   
+		   }
 
 		   if (!panel.entities.enemies.get(x).isDead()){
 			   
@@ -846,7 +800,7 @@ public class GameEngineLVL1 implements KeyListener {
 								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateral,
 										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),
-										   panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+										   panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 							   }
 							   else {
 								   //Si no es suicida, primero comprobamos si se va a caer o no si se mueve y se lo permitimos o no
@@ -855,11 +809,11 @@ public class GameEngineLVL1 implements KeyListener {
 										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
 									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateral,
 											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-											   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+											   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 								   }
 							   }
 							   //Si debe estar cayendo, con ésto lo haemos caer
-							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly"))) {
+							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly")) && !(panel.entities.enemies.get(x).getTypeEnemy().equals("2"))) {
 								   panel.entities.enemies.get(x).setJumping(true);
 								   panel.entities.enemies.get(x).setContJumping(16);
 							   }
@@ -867,7 +821,7 @@ public class GameEngineLVL1 implements KeyListener {
 						   else {
 							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateralAire,
 									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 						   }
 						   panel.entities.enemies.get(x).setIzDer(true);
 						   break;
@@ -877,7 +831,7 @@ public class GameEngineLVL1 implements KeyListener {
 							   if(panel.entities.enemies.get(x).isSuicida()) {
 								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateral,
 										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 							   }
 							   else {
 								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()-movLateral-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
@@ -885,11 +839,11 @@ public class GameEngineLVL1 implements KeyListener {
 										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
 									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateral,
 											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50));
+											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 								   }
 							   }
 							 //Si debe estar cayendo, con ésto lo haemos caer
-							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly"))) {
+							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly")) && !(panel.entities.enemies.get(x).getTypeEnemy().equals("2"))) {
 								   panel.entities.enemies.get(x).setJumping(true);
 								   panel.entities.enemies.get(x).setContJumping(16);
 							   }
@@ -897,9 +851,14 @@ public class GameEngineLVL1 implements KeyListener {
 						   else {
 							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateralAire,
 									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
-									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,50,20));
+									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 						   }
-						   panel.entities.enemies.get(x).setIzDer(false);
+						   if(panel.entities.enemies.get(x).getPosXEnemy()+panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()) {
+							   panel.entities.enemies.get(x).setIzDer(false);
+						   }
+						   else {
+							   panel.entities.enemies.get(x).setIzDer(false); 
+						   }
 						   break;
 					   case 'W':
 						   
@@ -926,7 +885,7 @@ public class GameEngineLVL1 implements KeyListener {
 						   //Si está compartiendo ejeX con el Keko no querrá moverse más, pero debemos comprobar si debe estar cayendo igualmente
 						   if(!panel.entities.enemies.get(x).isJumping()) {
 							 //Si debe estar cayendo, con ésto lo haemos caer
-							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly"))) {
+							   if(!(panel.entities.enemies.get(x).getTypeEnemy().equals("fly")) && !(panel.entities.enemies.get(x).getTypeEnemy().equals("2"))) {
 								   panel.entities.enemies.get(x).setJumping(true);
 								   panel.entities.enemies.get(x).setContJumping(16);
 							   }
@@ -986,8 +945,6 @@ public class GameEngineLVL1 implements KeyListener {
 	    	
 	    	movimientosMonstruos();
 	    	
-	        animacionesOtros();
-	    	
 	    	PJMove();
 	
 	    	ejecutarSalto();
@@ -1023,6 +980,7 @@ public class GameEngineLVL1 implements KeyListener {
         	musica.cargarFondo();
         	disparo.cargarDisparo();
         	musica.playFondo();
+        	panel.repaint();
             Thread.sleep(2500);
         } catch (InterruptedException e) {
             System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);

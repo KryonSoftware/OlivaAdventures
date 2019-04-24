@@ -22,6 +22,8 @@ public class Enemy {
     private int prevYEnemy;
     
     private boolean izDer=false;
+    private boolean cansado=false;
+    private boolean enfadado=false;
 
     private boolean wakeUp;
     private int contador;
@@ -97,6 +99,22 @@ public class Enemy {
 
 	public void setIzDer(boolean izDer) {
 		this.izDer = izDer;
+	}
+
+	public boolean isEnfadado() {
+		return enfadado;
+	}
+
+	public void setEnfadado(boolean enfadado) {
+		this.enfadado = enfadado;
+	}
+
+	public boolean isCansado() {
+		return cansado;
+	}
+
+	public void setCansado(boolean cansado) {
+		this.cansado = cansado;
 	}
 
 	public int getMoveYEnemy() {
@@ -203,9 +221,9 @@ public class Enemy {
             }
             break;
         case "boss":
-            if (posXEnemy > posXPlayer+5){
+            if (posXEnemy > posXPlayer-100){
                 return 'I';
-            } else if (posXPlayer-5 > posXEnemy) {
+            } else if (posXPlayer-140 > posXEnemy) {
                 return 'D';
             }
             break;
@@ -241,7 +259,7 @@ public class Enemy {
                 case "2":
                     player.setEnergy(playerEnergy - 1); break;
                 case "boss":
-                    player.setEnergy(playerEnergy - 4); break;
+                    player.setEnergy(playerEnergy - 3); break;
                 case "fly":
                     player.setEnergy(playerEnergy - 1); break;
             }

@@ -27,11 +27,13 @@ public class PlantillaVentana {
 	public PlantillaVentana() {
 		
 		ventana = new JFrame(NOMBRE);
+		ventana.setUndecorated(true);
 		ventana.setPreferredSize(new Dimension(ANCHO, ALTO));
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Al cerrar la ventana, la aplicacion no continuara en segundo plano
 		ventana.setResizable(false); //El usuario no podra arrastrar los bordes para hacer la ventana mas grande o pequeña
 		ventana.pack(); //Comando para que todo el contenido se ajuste al tamaño de la ventana
 		ventana.setLocationRelativeTo(null); //Fijar la ventana en el centro del escritorio, escribiendo otra cosa se fijaria al centro de esa cosa
+//        ventana.setUndecorated(true);
 		ventana.setVisible(true);
 		
 		
@@ -46,7 +48,7 @@ public class PlantillaVentana {
 
 		} 
 		else if (tipus.equals(TipoVentana.Nivel)) {
-			GameEngineLVL1 nivel = new GameEngineLVL1(ventana);
+			GameEngine nivel = new GameEngine(ventana);
 			puntuacion=nivel.runGame();
 			nombrePuntuacion=nivel.getNombreJugador();
 			pasarPuntuacion();

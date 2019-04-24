@@ -23,11 +23,11 @@ public class Energy {
             case "1":
                 return 5;
             case "2":
-                return 5;
+                return 4;
             case "boss":
-                return 100;
+                return 0;
             case "fly":
-            	return 5;
+            	return 4;
 
         }
         return -1;

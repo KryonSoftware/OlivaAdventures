@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 @SuppressWarnings("serial")
-public class PanelLVL1 extends JPanel {
+public class Panel extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 	
@@ -24,8 +24,8 @@ public class PanelLVL1 extends JPanel {
 
 	//Imágenes
 	private BufferedImage fondo,keko_right,keko_right2,keko_right3,keko_right4,keko_stand_right,keko_stand_right2,keko_stand_right3,
-	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,barraExp100,barraExp75,
-	barraExp50,barraExp25,barraExp0,vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
+	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,
+	vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
 	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
 	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,arbol1,arbol2,arbusto,pausa,cargando,bossAngryLeft1,bossAngryLeft2,
 	bossAngryRight1,bossAngryRight2,bossLeft1,bossLeft2,bossLeft3,bossRight1,bossRight2,bossRight3,bossWalkLeft1,bossWalkLeft2,
@@ -43,15 +43,15 @@ public class PanelLVL1 extends JPanel {
 	energia71,energia72,energia73,energia74,energia75,energia76,energia77,energia78,energia79,energia80,
 	energia81,energia82,energia83,energia84,energia85,energia86,energia87,energia88,energia89,energia90,
 	energia91,energia92,energia93,energia94,energia95,energia96,energia97,energia98,energia99,energia100,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,
-	s,t,u,v,w,equis,yGriega,z,minus,muerto,letraUno,letraDos;
+	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos;
 	
 	//Arrays de imágenes
-	private BufferedImage[] animKeko = new BufferedImage[24],animBarra=new BufferedImage[5],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
-			animReloj=new BufferedImage[26],anim_boss = new BufferedImage[18],anim_enemyTwo = new BufferedImage[4],anim_murcielago = new BufferedImage[4],bala = new BufferedImage[4],
-							barra_energia = new BufferedImage[101],animFly = new BufferedImage[8];
+	private BufferedImage[] animKeko = new BufferedImage[24],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
+			animReloj=new BufferedImage[26],animBoss = new BufferedImage[24],bala = new BufferedImage[4],
+							barra_energia = new BufferedImage[101],animFly = new BufferedImage[8],animLlama = new BufferedImage[8];
 	
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
-    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0;
+    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0;
     
     public String nombreElegido="",tercLetra="",segLetra="";
     
@@ -93,6 +93,14 @@ public class PanelLVL1 extends JPanel {
 
 	public void setArrPosMonstruo(int arrPosMonstruo) {this.arrPosMonstruo = arrPosMonstruo;}
 
+	public int getArrPosBoss() {return arrPosBoss;}
+
+	public void setArrPosBoss(int arrPosBoss) {this.arrPosBoss = arrPosBoss;}
+
+	public int getArrPosLlama() {return arrPosLlama;}
+
+	public void setArrPosLlama(int arrPosLlama) {this.arrPosLlama = arrPosLlama;}
+
 	public boolean isLoading() {return loading;}
 
 	public void setLoading(boolean loading) {this.loading = loading;}
@@ -130,7 +138,7 @@ public class PanelLVL1 extends JPanel {
      * Constructor del panel. Nos aseguramos de que cada vez que sea
      *  instanciado va a cargar los buffer de las imágenes que le pertoque.
      */
-	public PanelLVL1() {
+	public Panel() {
 
 		cargarImagenes();
 		cargarRaizImagenesKeko();
@@ -385,7 +393,7 @@ public class PanelLVL1 extends JPanel {
 			nube1=ImageIO.read(new File("resources/Mapa/Nubes/nubeGrande.png"));
 			nube2=ImageIO.read(new File("resources/Mapa/Nubes/nubePeque.png"));
 
-			//IMÁGENES AÁBOLES
+			//IMÁGENES ÁBOLES
 			arbol1=ImageIO.read(new File("resources/Mapa/Arboles/arbolGrande.png"));
 			arbol2=ImageIO.read(new File("resources/Mapa/Arboles/arbolMediano.png"));
 			arbusto=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
@@ -425,7 +433,6 @@ public class PanelLVL1 extends JPanel {
 			equis=ImageIO.read(new File("resources/Menu/NumerosyLetras/X.png"));
 			yGriega=ImageIO.read(new File("resources/Menu/NumerosyLetras/Y.png"));
 			z=ImageIO.read(new File("resources/Menu/NumerosyLetras/Z.png"));
-			minus=ImageIO.read(new File("resources/Menu/NumerosyLetras/-.png"));
 			
 			
           
@@ -490,6 +497,38 @@ public class PanelLVL1 extends JPanel {
 		animFly[5]=murcielago6;
 		animFly[6]=murcielago7;
 		animFly[7]=murcielago8;
+		
+		//Llamitas
+		animLlama[0]=enemyTwo1;
+		animLlama[1]=enemyTwo2;
+		animLlama[2]=enemyTwo3;
+		animLlama[3]=enemyTwo4;
+		
+		//Boss
+		animBoss[0]=bossAngryLeft1;
+		animBoss[1]=bossAngryLeft2;
+		animBoss[2]=bossAngryLeft1;
+		animBoss[3]=bossAngryLeft2;
+		animBoss[4]=bossAngryRight1;
+		animBoss[5]=bossAngryRight2;
+		animBoss[6]=bossAngryRight1;
+		animBoss[7]=bossAngryRight2;
+		animBoss[8]=bossLeft1;
+		animBoss[9]=bossLeft2;
+		animBoss[10]=bossLeft3;
+		animBoss[11]=bossLeft2;
+		animBoss[12]=bossRight1;
+		animBoss[13]=bossRight2;
+		animBoss[14]=bossRight3;
+		animBoss[15]=bossRight2;
+		animBoss[16]=bossWalkLeft1;
+		animBoss[17]=bossWalkLeft2;
+		animBoss[18]=bossWalkLeft3;
+		animBoss[19]=bossWalkLeft4;
+		animBoss[20]=bossWalkRight1;
+		animBoss[21]=bossWalkRight2;
+		animBoss[22]=bossWalkRight3;
+		animBoss[23]=bossWalkRight4;
 		
 	}
 	
@@ -927,23 +966,45 @@ public class PanelLVL1 extends JPanel {
 	    								
 		        						if(((ejeYPies)>y)&&((ejeYCabeza)<(y+k))){
 		        							
-		        							//TODO aquí le especificaremos que si está chocando contra el keko, que le quite vida
+	        								int correccionDerecha=0,correccionIzquierda=0;
+	        								
+	        								switch(entities.enemies.get(posLista).getTypeEnemy()) {
+	        								case "1":
+	        									correccionDerecha=10;
+	        									correccionIzquierda=30;
+	        									break;
+	        								case "2":
+	        									correccionDerecha=0;
+	        									correccionIzquierda=70;
+	        									break;
+	        								case "boss":
+	        									correccionDerecha=10;
+	        									correccionIzquierda=260;
+	        									break;
+	        								case "fly":
+	        									correccionDerecha=10;
+	        									correccionIzquierda=30;
+	        									break;
+	        									default:;
+	        								}
+		        							
+		        							//Si choca contra el keko le quitamos vida, y en el caso del volador, colisionamos contra él
 		        							
 		        							if(listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
-		        								entities.enemies.get(posLista).doDamage(keko);
+//		        								entities.enemies.get(posLista).doDamage(keko);
 		        								if(entities.enemies.get(posLista).getTypeEnemy().equals("fly")) {
 		        									
 		        									if(s>0) {
 				        								
 				        								if(ejeX<z) {
 				        									
-				        									colision-=ejeX+anchoIzquierda-(z-s-10);
+				        									colision-=ejeX+anchoIzquierda-(z-s-correccionDerecha);
 				        									foundWall=true;
 				        									
 				        								}
 				        								else {
 				        									
-				        									colision-=ejeX-anchoDerecha-(z+g-s-30);
+				        									colision-=ejeX-anchoDerecha-(z+g-s-correccionIzquierda);
 				        									foundWall=true;
 				        									
 				        								}
@@ -953,13 +1014,13 @@ public class PanelLVL1 extends JPanel {
 				        								
 				        								if(ejeX>z) {
 				        									
-				        									colision-=ejeX-anchoDerecha-(z+g-s-30);
+				        									colision-=ejeX-anchoDerecha-(z+g-s-correccionIzquierda);
 				        									foundWall=true;
 				        									
 				        								}
 				        								else {
 				        									
-				        									colision-=ejeX+anchoIzquierda-(z-s-10);
+				        									colision-=ejeX+anchoIzquierda-(z-s-correccionDerecha);
 				        									foundWall=true;
 				        									
 				        								}
@@ -969,39 +1030,47 @@ public class PanelLVL1 extends JPanel {
 		        								}
 		        							}
 		        							else {
-		        							
-			        							if(s>0) {
-			        								
-			        								if(ejeX<z) {
-			        									
-			        									colision-=ejeX+anchoIzquierda-(z-s-10);
-			        									foundWall=true;
-			        									
-			        								}
-			        								else {
-			        									
-			        									colision-=ejeX-anchoDerecha-(z+g-s-30);
-			        									foundWall=true;
-			        									
-			        								}
-			        								
-			        							}
-			        							else {
-			        								
-			        								if(ejeX>z) {
-			        									
-			        									colision-=ejeX-anchoDerecha-(z+g-s-30);
-			        									foundWall=true;
-			        									
-			        								}
-			        								else {
-			        									
-			        									colision-=ejeX+anchoIzquierda-(z-s-10);
-			        									foundWall=true;
-			        									
-			        								}
-			        								
-			        							}
+		        								
+		        								if(!(entities.enemies.get(posLista).getTypeEnemy().equals("boss")) &&
+		        										!(entities.enemies.get(posLista).getTypeEnemy().equals("fly")) || 
+		        										listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+		        									
+		        									if(s>0) {
+				        								
+				        								if(ejeX<z) {
+				        									
+				        									colision-=ejeX+anchoIzquierda-(z-s-correccionDerecha);
+				        									foundWall=true;
+				        									
+				        								}
+				        								else {
+				        									if(!(entities.enemies.get(posLista).getTypeEnemy().equals("boss"))) {
+					        									colision-=ejeX-anchoDerecha-(z+g-s-correccionIzquierda);
+					        									foundWall=true;
+				        									}
+				        									
+				        								}
+				        								
+				        							}
+				        							else {
+				        								
+				        								if(ejeX>z) {
+				        									
+				        									colision-=ejeX-anchoDerecha-(z+g-s-correccionIzquierda);
+				        									foundWall=true;
+				        									
+				        								}
+				        								else {
+				        									if(!(entities.enemies.get(posLista).getTypeEnemy().equals("boss"))) {
+				        										colision-=ejeX+anchoIzquierda-(z-s-correccionDerecha);
+					        									foundWall=true;
+				        									}
+				        									
+				        								}
+				        								
+				        							}
+		        									
+		        								}
 		        							
 		        							}
 			
@@ -1120,7 +1189,7 @@ public class PanelLVL1 extends JPanel {
      * @param disparo
      * @param x
      */
-    private void movimientoBala(Graphics g,boolean disparo,int x) {
+    private void movimientoBala(Graphics g,boolean disparo) {
     	
     	switch(posicionBala) {
     	case 0:
@@ -1591,10 +1660,85 @@ public class PanelLVL1 extends JPanel {
     	}
     }
     
+    
+    /**
+     * Animaciones de mosntruos, fuegos, hierbas, trampas,...
+     */
+    private void animacionesOtros() {
+    	
+    	//Animaciones monstruos
+    	if(animaciones==0) {
+    		switch(anMons) {
+        	case 0:
+        		setArrPosMonstruo(anMons);
+        		setArrPosFly(anMons);
+        		setArrPosLlama(anMons);
+        		setArrPosBoss(anMons);
+        		anMons++;
+        		break;
+        	case 1:
+        		setArrPosMonstruo(anMons);
+        		setArrPosFly(anMons);
+        		setArrPosLlama(anMons);
+        		setArrPosBoss(anMons);
+        		anMons++;
+        		break;
+        	case 2:
+        		setArrPosMonstruo(anMons);
+        		setArrPosFly(anMons);
+        		setArrPosLlama(anMons);
+        		setArrPosBoss(anMons);
+        		anMons++;
+        		break;
+        	case 3:
+        		setArrPosMonstruo(anMons);
+        		setArrPosFly(anMons);
+        		setArrPosLlama(anMons);
+        		setArrPosBoss(anMons);
+        		anMons++;
+        		break;
+        	case 4:
+        		setArrPosMonstruo(anMons-2);
+        		setArrPosFly(anMons-2);
+        		setArrPosLlama(anMons-2);
+        		setArrPosBoss(anMons-2);
+        		anMons++;
+        		break;
+        	case 5:
+        		setArrPosMonstruo(anMons-4);
+        		setArrPosFly(anMons-4);
+        		setArrPosLlama(anMons-4);
+        		setArrPosBoss(anMons-4);
+        		anMons++;
+        		break;
+        	case 6:
+        		setArrPosMonstruo(anMons-6);
+        		setArrPosFly(anMons-6);
+        		setArrPosLlama(anMons-6);
+        		setArrPosBoss(anMons-6);
+        		anMons=0;
+        		break;
+        	default:;
+        	}
+    		animaciones++;
+    	}
+    	else if(animaciones==2) {
+    		animaciones=0;
+    	}
+    	else {
+    		animaciones++;
+    	}
+    	
+    }
+ 
+    
     /**
      * Método para pintar nuestro panel.
      */
     public void paint(Graphics g) {
+    	
+    	//Hacemos que sus imágenes vayan cambiando
+    	animacionesOtros();
     	
     	//Si estamos cargando no refresques
     	if(!loading) {
@@ -1645,7 +1789,7 @@ public class PanelLVL1 extends JPanel {
     				}
     			}
     			//Colisión del suelo:
-    			addPlatformToList(-350 - x, 720, 10700, 50, Tipo.BOTH);
+    			addPlatformToList(-350 - x, 720, 10700, 500, Tipo.BOTH);
     	
     			//Plataformas para saltar
     			g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
@@ -1662,7 +1806,7 @@ public class PanelLVL1 extends JPanel {
     	
     			g.drawImage(plataforma1, 400 - x, 600, 100, 35, this);
     			addPlatformToList(400 - x, 600, 100, 35, Tipo.PLATFORM);
-    	
+    			
     			//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     			
     			for(int x=0;x<entities.enemies.size();x++) {
@@ -1670,7 +1814,12 @@ public class PanelLVL1 extends JPanel {
     				if(!entities.enemies.get(x).isDead()) {
     					
     					if(entities.enemies.get(x).getTypeEnemy().equals("fly")) {
-    						g.drawImage(animFly[arrPosFly+= entities.enemies.get(x).isIzDer()? 4 : 0], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
+    						
+    						if(animaciones==1) {
+    							lado=entities.enemies.get(x).isIzDer()? 4: 0;
+    						}
+    						
+    						g.drawImage(animFly[arrPosFly+lado], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
         							entities.enemies.get(x).getPosYEnemy()+entities.enemies.get(x).getMoveYEnemy(), 100, 100, this);
         					addPlatformToList(entities.enemies.get(x).getPosXEnemy() - this.x + entities.enemies.get(x).getMoveEnemy(),
         							entities.enemies.get(x).getPosYEnemy()+entities.enemies.get(x).getMoveYEnemy(), 70, 50, Tipo.ENEMY,x);
@@ -1686,12 +1835,10 @@ public class PanelLVL1 extends JPanel {
     					}
     					else if(entities.enemies.get(x).getTypeEnemy().equals("2")) {
     						
-    						
-    						
-    					}
-    					else if(entities.enemies.get(x).getTypeEnemy().equals("boss")) {
-    						
-    						
+    						g.drawImage(animLlama[arrPosLlama], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
+        							entities.enemies.get(x).getPosYEnemy()-50, 50, 100, this);
+        					addPlatformToList(entities.enemies.get(x).getPosXEnemy() - this.x + entities.enemies.get(x).getMoveEnemy(),
+        							entities.enemies.get(x).getPosYEnemy(), 50, 50, Tipo.ENEMY,x);
     						
     					}
     					
@@ -1703,6 +1850,41 @@ public class PanelLVL1 extends JPanel {
     			g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
     			addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
     			
+    			//El Boss (pintándolo aquí haremos que sólo él esté por delante del keko
+    			for(int x=0;x<entities.enemies.size();x++) {
+        			
+    				if(!entities.enemies.get(x).isDead()) {
+    					if(entities.enemies.get(x).getTypeEnemy().equals("boss")) {
+    						
+    						if(animaciones==1) {
+    							
+    							if(entities.enemies.get(x).isEnfadado()) {
+        							arrPosBoss+=0;
+        						}
+        						else {
+        							arrPosBoss+=16;
+        						}
+        						
+        						if(entities.enemies.get(x).isCansado()) {
+        							arrPosBoss+=8;
+        						}
+        						
+        						if(entities.enemies.get(x).isIzDer()) {
+        							
+        							arrPosBoss+=4;
+        						}
+    							
+    						}
+    						
+    						g.drawImage(animBoss[arrPosBoss], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
+        							entities.enemies.get(x).getPosYEnemy()-250, 250, 300, this);
+        					addPlatformToList(entities.enemies.get(x).getPosXEnemy() - this.x + entities.enemies.get(x).getMoveEnemy(),
+        							entities.enemies.get(x).getPosYEnemy()-250, 250, 300, Tipo.ENEMY,x);
+    						
+    					}
+    				}
+				}
+    			
     			//Árboles colisionables:
     			g.drawImage(arbol1,918-x,355,200,370,this);
     			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
@@ -1711,7 +1893,7 @@ public class PanelLVL1 extends JPanel {
     			//addPlatformToList(279 - x, 400, 35, 330, Tipo.BOTH);
     			
     			//Importante que sea lo último para poder ver y colisionar con todo
-    			movimientoBala(g, disparo,x);
+    			movimientoBala(g, disparo);
     			
     			//Árboles no colisionables:
     			g.drawImage(arbusto,500-x,660,70,70,this);
