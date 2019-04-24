@@ -226,6 +226,10 @@ public class Enemy {
             } else if (posXPlayer-140 > posXEnemy) {
                 return 'D';
             }
+            else if(posYEnemy<=posYPlayer){
+            	if(posYEnemy+300>=posYPlayer+80)
+            	return 'K';
+            }
             break;
     }
 

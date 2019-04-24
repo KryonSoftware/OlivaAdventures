@@ -35,7 +35,7 @@ public class Entities {
 //        enemies.add(enemyLlama2);
 //        enemies.add(enemyLlama3);
 
-//        enemies.add(enemyBoss);
+        enemies.add(enemyBoss);
         
 
 

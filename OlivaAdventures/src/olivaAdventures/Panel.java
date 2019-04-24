@@ -20,6 +20,8 @@ public class Panel extends JPanel {
 
 	private ArrayList<Platform> listaPlataformas=new ArrayList<>();
 	
+	private Musica fxKeko=new Musica();
+	
 	public Entities entities= new Entities();
 
 	//Imágenes
@@ -43,7 +45,7 @@ public class Panel extends JPanel {
 	energia71,energia72,energia73,energia74,energia75,energia76,energia77,energia78,energia79,energia80,
 	energia81,energia82,energia83,energia84,energia85,energia86,energia87,energia88,energia89,energia90,
 	energia91,energia92,energia93,energia94,energia95,energia96,energia97,energia98,energia99,energia100,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,
-	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos;
+	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos,vivo;
 	
 	//Arrays de imágenes
 	private BufferedImage[] animKeko = new BufferedImage[24],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
@@ -51,7 +53,7 @@ public class Panel extends JPanel {
 							barra_energia = new BufferedImage[101],animFly = new BufferedImage[8],animLlama = new BufferedImage[8];
 	
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
-    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0;
+    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0;
     
     public String nombreElegido="",tercLetra="",segLetra="";
     
@@ -59,7 +61,7 @@ public class Panel extends JPanel {
     
     private long momentoDisparo=0;
     
-    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,terceraLetra=false;
+    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,terceraLetra=false,ganador=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -121,6 +123,10 @@ public class Panel extends JPanel {
 
 	public void setArrPosKeko(int arrPosKeko) {this.arrPosKeko = arrPosKeko;}
 
+	public boolean isGanador() {return ganador;}
+
+	public void setGanador(boolean ganador) {this.ganador = ganador;}
+
 	public void setEjeX(int x){this.x=x;}
 
     public void setEjeY(int y){this.y=y;}
@@ -147,6 +153,7 @@ public class Panel extends JPanel {
 		cargarRaizImagenesMonstruo();
 		cargarRaizImagenesReloj();
 		cargarRaizImagenesBala();
+		fxKeko.cargarOuch();
 	    	
 	}
 	
@@ -162,6 +169,7 @@ public class Panel extends JPanel {
 			//FONDO
 			fondo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
 			muerto = ImageIO.read(new File("resources/Menu/MUERTO.png"));
+			vivo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
 
 			//FONDO DEL HUD
 			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
@@ -991,7 +999,12 @@ public class Panel extends JPanel {
 		        							//Si choca contra el keko le quitamos vida, y en el caso del volador, colisionamos contra él
 		        							
 		        							if(listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
-//		        								entities.enemies.get(posLista).doDamage(keko);
+		        								entities.enemies.get(posLista).doDamage(keko);
+		        								
+		        								try {
+		        									fxKeko.ouch();
+		        								}catch(Exception e) {}
+		        								
 		        								if(entities.enemies.get(posLista).getTypeEnemy().equals("fly")) {
 		        									
 		        									if(s>0) {
@@ -1730,6 +1743,52 @@ public class Panel extends JPanel {
     	}
     	
     }
+    
+    /**
+     * Método para controlar el comportamiento del boss.
+     */
+    private void estadosDeAnimoBoss() {
+    	
+    	int posBoss=69;
+    	
+    	for(int r=0;r<entities.enemies.size();r++) {
+			
+			if(entities.enemies.get(r).getTypeEnemy().equals("boss")) {
+				
+				posBoss=r;
+				
+			}
+		}
+    	if(!(posBoss==69)) {
+    		
+        	if(estados>450 && estados<900) {
+				
+    			entities.enemies.get(posBoss).setCansado(false);
+    			entities.enemies.get(posBoss).setEnfadado(true);
+    			
+        	}
+        	else if(estados>899 && estados<1350) {
+        		
+    			entities.enemies.get(posBoss).setEnfadado(false);
+    			entities.enemies.get(posBoss).setCansado(true);
+    			
+    			if(estados==1349) {
+    				estados=-1;
+    			}
+        		
+        	}
+        	else {
+        		
+        		entities.enemies.get(posBoss).setCansado(false);
+        		entities.enemies.get(posBoss).setEnfadado(false);
+        		
+        	}
+    		
+    	}
+    	
+    	estados++;
+    	
+    }
  
     
     /**
@@ -1739,6 +1798,8 @@ public class Panel extends JPanel {
     	
     	//Hacemos que sus imágenes vayan cambiando
     	animacionesOtros();
+    	
+    	estadosDeAnimoBoss();
     	
     	//Si estamos cargando no refresques
     	if(!loading) {
@@ -1862,7 +1923,9 @@ public class Panel extends JPanel {
         							arrPosBoss+=0;
         						}
         						else {
-        							arrPosBoss+=16;
+        							if(!(entities.enemies.get(x).isCansado())) {
+        								arrPosBoss+=16;
+        							}
         						}
         						
         						if(entities.enemies.get(x).isCansado()) {
@@ -1915,7 +1978,7 @@ public class Panel extends JPanel {
     		}
     		else {
     			
-    			g.drawImage(muerto,0,0,1010,1010,this);
+    			g.drawImage(ganador? vivo: muerto,0,0,1010,1010,this);
 				
 				meterNombrePuntuacion(g,letra);
 				

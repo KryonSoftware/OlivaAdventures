@@ -11,7 +11,7 @@ import javax.swing.*;
  */
 public class GameEngine implements KeyListener {
 
-    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,spawn=false,matadoBoss=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
@@ -376,6 +376,7 @@ public class GameEngine implements KeyListener {
     private void saltar(){
         contadorSalto=0;
         saltando=true;
+        fxKeko.salto();
     }
     
     /**
@@ -780,7 +781,7 @@ public class GameEngine implements KeyListener {
 			   
 		   }
 
-		   if (!panel.entities.enemies.get(x).isDead()){
+		   if (!panel.entities.enemies.get(x).isDead() && !panel.entities.enemies.get(x).isEnfadado() && !panel.entities.enemies.get(x).isCansado()){
 			   
 			   //Llamamos al método que comprueba/ejecuta las caídas de éstos
 			   saltoMonstruos(panel.entities.enemies.get(x),x);
@@ -881,6 +882,11 @@ public class GameEngine implements KeyListener {
 							   panel.entities.enemies.get(x).setPosYEnemy(panel.entities.enemies.get(x).getPosYEnemy()+13);
 						   }
 						   break;
+
+					   case 'K':
+						   panel.entities.enemies.get(x).doDamage(panel.keko);
+						   System.out.println("tematoh");
+						   break;
 					   default:
 						   //Si está compartiendo ejeX con el Keko no querrá moverse más, pero debemos comprobar si debe estar cayendo igualmente
 						   if(!panel.entities.enemies.get(x).isJumping()) {
@@ -894,13 +900,37 @@ public class GameEngine implements KeyListener {
 						   if(panel.isWall(2,x,1,
 								   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 								   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50)==0) {
-									   panel.entities.enemies.get(x).doDamage(panel.keko);
-								   }
+						   }
 						   
 				   }
 
 			   }
 
+		   }
+		   else if(panel.entities.enemies.get(x).isEnfadado()) {
+			   
+			   //Sólo actúa si está en el radio de acción
+			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
+					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
+			   
+				   if(puntuacion%4==0) {
+					   if(spawn) {
+						   panel.entities.enemies.add(new Enemy(Enemy.typeEnemies.type2, panel.keko.getPosXPlayer()+panel.getEjeX(), -30,true));
+						   fxBoss.wagh();
+					   }
+					   spawn=false;
+				   }
+				   else {
+					   spawn=true;
+				   }
+			   
+			   }
+		   }
+		   else if(panel.entities.enemies.get(x).getTypeEnemy().equals("boss") && panel.entities.enemies.get(x).isDead()) {
+			   
+			   matadoBoss=true;
+			   gameOver=true;
+			   
 		   }
 
 	   }
@@ -979,6 +1009,8 @@ public class GameEngine implements KeyListener {
         	//Hacemos que la música de fondo empiece unos milisegundos después de poner la pantalla de carga
         	musica.cargarFondo();
         	disparo.cargarDisparo();
+        	fxBoss.cargarWagh();
+        	fxKeko.cargarSalto();
         	musica.playFondo();
         	panel.repaint();
             Thread.sleep(2500);
@@ -1022,7 +1054,7 @@ public class GameEngine implements KeyListener {
         	//Si ha muerto o se ha acabado el tiempo
         	if(puntuacion < 0 || panel.keko.isDead()) {
         		gameOver = true;
-        		}
+    		}
 
             try {
             	//Ésto nos permite detener el hilo y darnos el control sobre cuántas veces iteramos por segundo (aproximadamente)
@@ -1077,6 +1109,7 @@ public class GameEngine implements KeyListener {
         puntuacion+=panel.keko.getEnergy()*100;
         puntuacion+=panel.getEjeX();
     	puntuacion*=panel.keko.getLives()+1;
+    	puntuacion+=matadoBoss? 500000:0;
         
         return puntuacion;
         

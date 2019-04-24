@@ -8,8 +8,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 public class Musica {
 
     /* ATTRIBUTES */
-    private BasicPlayer fondo,disparo,click,salto,ouch,enemigoOuch,lose;
-    //Musica fondo = new Musica();
+    private BasicPlayer fondo,disparo,click,salto,ouch,enemigoOuch,lose,wagh;
 
     /* BASIC FUNCTIONS */
     public void playFondo() {
@@ -35,6 +34,15 @@ public class Musica {
     }
     public void click() {
         try {click.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void wagh() {
+        try {wagh.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void ouch() {
+        try {ouch.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void salto() {
+        try {salto.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
     public void lose() {
     	try {
@@ -77,6 +85,39 @@ public class Musica {
         	click.open(new File("resources/sonido/Menu/click.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de click. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarWagh(){
+    	
+        try {
+            wagh=new BasicPlayer();
+
+        	wagh.open(new File("resources/monstruo/Boss/Angry/grito_boss.mp3"));
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de wagh. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarOuch(){
+    	
+        try {
+            ouch=new BasicPlayer();
+            
+        	ouch.open(new File("resources/sonido/danno/danno.mp3"));
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de ouch. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarSalto(){
+    	
+        try {
+            salto=new BasicPlayer();
+            
+        	salto.open(new File("resources/sonido/salto/salto.mp3"));
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de salto. Posible error en el path. Error: "+e);
         }
     }
     
