@@ -33,7 +33,7 @@ public class Menu implements KeyListener {
 	private ImageIcon exit = new ImageIcon(exitImagen);
 	public boolean scoresTF=false;
 	
-	Musica musica=new Musica();
+	Musica navegar=new Musica(),seleccion = new Musica();
 
 
 	/* --- CONSTRUCTOR --- */
@@ -76,14 +76,14 @@ public class Menu implements KeyListener {
 
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) {			// Si la Tecla pulsada es "flecha hacia ABAJO" >>> +1 a contadorTecla.
 			contadorTecla++;
-			musica.cargarClick();
-			musica.click();
+			navegar.cargarClick();
+			navegar.click();
 		}
 
 		else if (e.getKeyCode() == KeyEvent.VK_UP) {		// Si la tecla pulsada es "flecha hacia ARRIBA" >>> -1 a contadorTecla.
 			contadorTecla--;
-			musica.cargarClick();
-			musica.click();
+			navegar.cargarClick();
+			navegar.click();
 		}
 
 	}
@@ -95,6 +95,9 @@ public class Menu implements KeyListener {
 			etiqueta.setIcon(newGame);
 
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				
+				seleccion.cargarSeleccion();
+				seleccion.seleccion();
 				
 				ventana.remove(etiqueta);
 				
@@ -108,6 +111,8 @@ public class Menu implements KeyListener {
 			etiqueta.setIcon(scores);
 
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				seleccion.cargarSeleccion();
+				seleccion.seleccion();
 //				Puntuaciones prueba = new Puntuaciones("ZZZ", 8888);
 				ventana.removeKeyListener(this);
 				ventana.remove(etiqueta);
@@ -141,9 +146,16 @@ public class Menu implements KeyListener {
 		}
 
 		else if (contadorTecla == 3) {
+			
 			etiqueta.setIcon(exit);
 
-			if (e.getKeyCode() == KeyEvent.VK_ENTER) {						 // Aqui ira el codigo para quitar la ventana grafica.
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				
+				seleccion.cargarExit();
+				
+				seleccion.exit();
+				
+				// Aqui ira el codigo para quitar la ventana grafica.
 				
 				try {
 					Thread.sleep(1000);

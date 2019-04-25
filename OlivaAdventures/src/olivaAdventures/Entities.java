@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Entities {
 
     public ArrayList<Enemy> enemies =  loadEnemies();
-    public ArrayList<Platform> plataformas =  loadPlataformas();
+    public ArrayList<Box> cajas =  loadBoxes();
 
     private ArrayList<Enemy> loadEnemies(){
 
@@ -35,17 +35,19 @@ public class Entities {
 //        enemies.add(enemyLlama2);
 //        enemies.add(enemyLlama3);
 
-        enemies.add(enemyBoss);
+//        enemies.add(enemyBoss);
         
 
 
         return enemies;
     }
 
-    private ArrayList<Platform> loadPlataformas(){
+    private ArrayList<Box> loadBoxes(){
     	
-    	ArrayList<Platform> plataformas = new ArrayList<>();
+    	ArrayList<Box> cajas = new ArrayList<>();
     	
-    	return plataformas;
+    	cajas.add(new Box(400, 670));
+    	
+    	return cajas;
     }
 }

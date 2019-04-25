@@ -5,5 +5,6 @@ public enum Tipo{
 	BOTH,
 	ENEMY,
 	PLAYER,
-	BALA
+	BALA,
+	BOX
 }

@@ -1,16 +1,22 @@
 package olivaAdventures;
 
+import olivaAdventures.Enemy.typeEnemies;
+
 public class Box {
 
     /* ATTRIBUTES */
     private int energy;
     private int lives;
-    private boolean destroyed;
+    private boolean destroyed=false;
+	private int posX;
+	private int posY;
 
     /* CONSTRUCTOR */
-    Box(){
+    public Box(int posX, int posY){
+    	this.setPosX(posX);
+    	this.setPosY(posY);
         setEnergy();
-        setLives(5);
+        setLives(2);
     }
 
     /* GETTERS AND SETTERS */
@@ -53,5 +59,21 @@ public class Box {
                 ", destroyed=" + destroyed +
                 '}';
     }
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
 
 }

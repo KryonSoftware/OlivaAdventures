@@ -27,9 +27,10 @@ public class Panel extends JPanel {
 	//Imágenes
 	private BufferedImage fondo,keko_right,keko_right2,keko_right3,keko_right4,keko_stand_right,keko_stand_right2,keko_stand_right3,
 	keko_stand_right4,keko_left,keko_left2,keko_left3,keko_left4,keko_stand_left,keko_stand_left2,keko_stand_left3,keko_stand_left4,hud,
-	vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,plataforma2,
-	reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
-	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,arbol1,arbol2,arbusto,pausa,cargando,bossAngryLeft1,bossAngryLeft2,
+	vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,
+	reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
+	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,suelo3,sueloInicio,sueloFinal,arbol1,arbol2,arbol3,arbolPino,
+	arbusto,pausa,cargando,bossAngryLeft1,bossAngryLeft2,
 	bossAngryRight1,bossAngryRight2,bossLeft1,bossLeft2,bossLeft3,bossRight1,bossRight2,bossRight3,bossWalkLeft1,bossWalkLeft2,
 	bossWalkLeft3,bossWalkLeft4,bossWalkRight1,bossWalkRight2,bossWalkRight3,bossWalkRight4,enemyTwo1,enemyTwo2,enemyTwo3,enemyTwo4,
 	murcielago1,murcielago2,murcielago3,murcielago4,murcielago5,murcielago6,murcielago7,murcielago8,
@@ -45,7 +46,7 @@ public class Panel extends JPanel {
 	energia71,energia72,energia73,energia74,energia75,energia76,energia77,energia78,energia79,energia80,
 	energia81,energia82,energia83,energia84,energia85,energia86,energia87,energia88,energia89,energia90,
 	energia91,energia92,energia93,energia94,energia95,energia96,energia97,energia98,energia99,energia100,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,
-	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos,vivo;
+	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos,vivo,creditosScroll,box;
 	
 	//Arrays de imágenes
 	private BufferedImage[] animKeko = new BufferedImage[24],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
@@ -53,7 +54,7 @@ public class Panel extends JPanel {
 							barra_energia = new BufferedImage[101],animFly = new BufferedImage[8],animLlama = new BufferedImage[8];
 	
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
-    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0;
+    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0,movCreditos=0;
     
     public String nombreElegido="",tercLetra="",segLetra="";
     
@@ -61,7 +62,8 @@ public class Panel extends JPanel {
     
     private long momentoDisparo=0;
     
-    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,terceraLetra=false,ganador=false;
+    private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,
+    		terceraLetra=false,ganador=false,creditos=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -135,6 +137,14 @@ public class Panel extends JPanel {
 
 	public void setDisparado(boolean disparado) {this.disparado = disparado;}
 
+	public boolean isCreditos() {return creditos;}
+
+	public void setCreditos(boolean creditos) {this.creditos = creditos;}
+
+	public int getMovCreditos() {return movCreditos;}
+
+	public void setMovCreditos(int movCreditos) {this.movCreditos = movCreditos;}
+
 	public int getEjeX() {return this.x;}
 
     public int getEjeY() {return this.y;}
@@ -170,6 +180,7 @@ public class Panel extends JPanel {
 			fondo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
 			muerto = ImageIO.read(new File("resources/Menu/MUERTO.png"));
 			vivo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
+			creditosScroll = ImageIO.read(new File("resources/Menu/fondoScores.jpg"));
 
 			//FONDO DEL HUD
 			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
@@ -395,7 +406,6 @@ public class Panel extends JPanel {
 
 			//IMÁGENES PLATAFORMAS
 			plataforma1 = ImageIO.read(new File("resources/plataforma/plataformaFINAL.png"));
-			plataforma2 = ImageIO.read(new File("resources/plataforma/plataformaFINAL.png"));
 
 			//IMÁGENES NUBES
 			nube1=ImageIO.read(new File("resources/Mapa/Nubes/nubeGrande.png"));
@@ -405,10 +415,15 @@ public class Panel extends JPanel {
 			arbol1=ImageIO.read(new File("resources/Mapa/Arboles/arbolGrande.png"));
 			arbol2=ImageIO.read(new File("resources/Mapa/Arboles/arbolMediano.png"));
 			arbusto=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
+			arbol3=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
+			arbolPino=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
 
 			//IMÁGENES SUELOS
 			suelo1=ImageIO.read(new File("resources/Suelos/cuadrado1.png"));
 			suelo2=ImageIO.read(new File("resources/Suelos/cuadrado2.png"));
+			suelo3=ImageIO.read(new File("resources/Suelos/cuadrado3.png"));
+			sueloInicio=ImageIO.read(new File("resources/Suelos/cuadradoinicio.png"));
+			sueloFinal=ImageIO.read(new File("resources/Suelos/cuadradofinal.png"));
 
 			//IMAGEN PAUSA
 			pausa=ImageIO.read(new File("resources/Hud/pausa.png"));
@@ -441,6 +456,9 @@ public class Panel extends JPanel {
 			equis=ImageIO.read(new File("resources/Menu/NumerosyLetras/X.png"));
 			yGriega=ImageIO.read(new File("resources/Menu/NumerosyLetras/Y.png"));
 			z=ImageIO.read(new File("resources/Menu/NumerosyLetras/Z.png"));
+			
+			//Imágenes cajas
+			box=ImageIO.read(new File("resources/boxes/box_2d.png"));
 			
 			
           
@@ -845,7 +863,9 @@ public class Panel extends JPanel {
 
     	for(int x=0;x<listaPlataformas.size();x++){
 
-    		if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY || listaPlataformas.get(x).getTipo()==Tipo.BALA || listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
+    		if(listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.ENEMY || 
+    				listaPlataformas.get(x).getTipo()==Tipo.BALA || listaPlataformas.get(x).getTipo()==Tipo.PLAYER
+    				|| listaPlataformas.get(x).getTipo()==Tipo.BOX) {
 
     			if(!foundWall) {
 	    			
@@ -918,7 +938,7 @@ public class Panel extends JPanel {
 	    				
 	    			case 42: //Caso bala:
 	    				
-	    				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+	    				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY || listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.BOX) {
 	    			
 	    					if(!(listaPlataformas.get(x).getTipo()==Tipo.PLAYER)) {
 	    						
@@ -946,6 +966,14 @@ public class Panel extends JPanel {
 			    								
 			    								break;
 			    								
+			    							case BOX:
+			    								
+			    								keko.doBoxDamage(entities.cajas.get(listaPlataformas.get(x).getPosListaEnemies()));
+			    								colision-= s>0 ? ejeX-(z-s) : ejeX-anchoIzquierda-(z+g-s);
+			    								foundWall=true;
+			    								impacto=true;
+			    								
+			    								
 											default:;
 											
 			    							}
@@ -964,7 +992,7 @@ public class Panel extends JPanel {
 	    				
 	    			default:
 	    				
-	    				if(!(listaPlataformas.get(x).getTipo()==Tipo.BALA)) {
+	    				if(!(listaPlataformas.get(x).getTipo()==Tipo.BALA) && (!(listaPlataformas.get(x).getTipo()==Tipo.BOX))) {
 		    				
 		    				if(!(z==ejeX) ||  !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
 		
@@ -1817,9 +1845,9 @@ public class Panel extends JPanel {
     			g.fillRect(0, 0, 1000, 1000);
     	
     			//Imagen móvil de fondo
-    			for (int ñ = -350; ñ < 2975; ñ += 750) {
+    			for (int ñ = -1000; ñ < 4500; ñ += 750) {
     	
-    				g.drawImage(fondo, ñ - (x / 4), 0, 750, 770, this);
+    				g.drawImage(fondo, ñ - (x / 4), 0, 750, 775, this);
     	
     			}
     			
@@ -1835,32 +1863,124 @@ public class Panel extends JPanel {
     			g.drawImage(nube1, 4500 - (x / 2), 55, 100, 50, this);
     			g.drawImage(nube1, 3800 - (x / 2), 80, 100, 50, this);
     			g.drawImage(nube1, 2000 - (x / 2), 120, 100, 50, this);
-    	
-    			//Plataforma suelo
-    			g.setColor(Color.green);
-    			g.fillRect(0 - x, 200, 50, 370);
-    			addPlatformToList(0 - x, 200, 50, 370, Tipo.BOTH);
+    			g.drawImage(nube2, 5000 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 6800 - (x / 2), 55, 100, 50, this);
     	
     			//Nuestros bloques de suelo
-    			for (int o = -350; o < 10350; o += 90) {
-    				if (o % 20 == 0) {
+    			for (int o = -350; o < 2000; o += 90) {
+    				if (o % 20 == 0 && (!(o==-350) && !(o+90>2000))) {
     					g.drawImage(suelo2, o - x, 710, 90, 92, this);
-    				} else {
+    				} else if(!(o==-350) && o+90<2000) {
     					g.drawImage(suelo1, o - x, 710, 90, 92, this);
     				}
+    				if(o==-350) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>2000) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
     			}
-    			//Colisión del suelo:
-    			addPlatformToList(-350 - x, 720, 10700, 500, Tipo.BOTH);
+    			//Colisiones del suelo:
+    			addPlatformToList(-350 - x, 720, 2438, 500, Tipo.BOTH);
+    			for (int o = 2500; o < 5000; o += 90) {
+    				if (o % 20 == 0 && (!(o==2500) && !(o+90>5000))) {
+    					g.drawImage(suelo3, o - x, 710, 90, 92, this);
+    				} else if(!(o==2500) && o+90<5000) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if(o==2500) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>5000) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(2500 - x, 720, 2508, 500, Tipo.BOTH);
+    			for (int o = 6000; o < 7000; o += 90) {
+    				if (o % 20 == 0 && (!(o==6000) && !(o+90>7000))) {
+    					g.drawImage(suelo2, o - x, 710, 90, 92, this);
+    				} else if(!(o==6000) && o+90<7000) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if(o==6000) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>7000) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(6000 - x, 720, 1075, 500, Tipo.BOTH);
+    			for (int o = 7300; o < 9000; o += 90) {
+    				if (o % 20 == 0 && (!(o==7300) && !(o+90>9000))) {
+    					g.drawImage(suelo3, o - x, 710, 90, 92, this);
+    				} else if(!(o==7300) && o+90<9000) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if(o==7300) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>9000) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(7300 - x, 720, 1695, 500, Tipo.BOTH);
+    			for (int o = 10000; o < 10350; o += 90) {
+    				if (o % 20 == 0 && (!(o==10000) && !(o+90>10350))) {
+    					g.drawImage(suelo2, o - x, 710, 90, 92, this);
+    				} else if(!(o==10000) && o+90<10350) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if(o==10000) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>10350) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(10000 - x, 720, 355, 500, Tipo.BOTH);
+    			for (int o = 13500; o < 14800; o += 90) {
+    				if (o % 20 == 0 && (!(o==13500) && !(o+90>14800))) {
+    					g.drawImage(suelo3, o - x, 710, 90, 92, this);
+    				} else if(!(o==13500) && o+90<14800) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if (o % 50 == 0 && (!(o==13500) && !(o+90>14800))) {
+    					g.drawImage(suelo2, o - x, 710, 90, 92, this);
+    				}
+    				if(x>13000) {
+    					System.out.println("hola");
+    				}
+    				if(o==13500) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>14800) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(13500 - x, 720, 1350, 500, Tipo.BOTH);
+    			
+    			addPlatformToList(-350 - x, 775, 18000, 500, Tipo.BOTH);
     	
+//       			//Árboles colisionables:
+//    			g.drawImage(arbol1,918-x,355,200,370,this);
+////    			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
+//    			g.drawImage(arbol1,2918-x,355,200,370,this);
+////    			addPlatformToList(3000 - x, 400, 35, 330, Tipo.BOTH);
+//    			g.drawImage(arbol1,3918-x,355,200,370,this);
+////    			addPlatformToList(4000 - x, 400, 35, 330, Tipo.BOTH);
+//    			g.drawImage(arbol1,6218-x,355,200,370,this);
+////    			addPlatformToList(6300 - x, 400, 35, 330, Tipo.BOTH);
+//    			g.drawImage(arbol1,8518-x,355,200,370,this);
+////    			addPlatformToList(8600 - x, 400, 35, 330, Tipo.BOTH);
+    			
     			//Plataformas para saltar
     			g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
     			addPlatformToList(700 - x, 305, 100, 35, Tipo.PLATFORM);
-    	
-    			g.drawImage(plataforma1, 700 - x, 650, 100, 35, this);
-    			addPlatformToList(700 - x, 655, 100, 35, Tipo.PLATFORM);
-    	
-    			g.drawImage(plataforma2, 900 - x, 150, 75, 25, this);
-    			addPlatformToList(900 - x, 155, 75, 25, Tipo.PLATFORM);
     	
     			g.drawImage(plataforma1, 550 - x, 450, 100, 35, this);
     			addPlatformToList(550 - x, 455, 100, 35, Tipo.PLATFORM);
@@ -1907,6 +2027,15 @@ public class Panel extends JPanel {
     				
     			}
     			
+    			//Las cajas
+    			for(int k=0;k<entities.cajas.size();k++) {
+    				if(!(entities.cajas.get(k).isDestroyed())){    					
+    					g.drawImage(box,entities.cajas.get(k).getPosX()-x,entities.cajas.get(k).getPosY(),50,50,this);
+    					addPlatformToList( entities.cajas.get(k).getPosX()-x, entities.cajas.get(k).getPosY(), 50, 50,Tipo.BOX,k);
+    				}
+    			}
+    			
+    			
     			//Nuestro keko
     			g.drawImage(animKeko[arrPosKeko], keko.getPosXPlayer(), keko.getPosYPlayer()-y, 50, 90, this);
     			addPlatformToList( keko.getPosXPlayer(), keko.getPosYPlayer()-y, 49, 89,Tipo.PLAYER);
@@ -1950,7 +2079,15 @@ public class Panel extends JPanel {
     			
     			//Árboles colisionables:
     			g.drawImage(arbol1,918-x,355,200,370,this);
-    			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
+//    			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
+    			g.drawImage(arbol1,2918-x,355,200,370,this);
+//    			addPlatformToList(3000 - x, 400, 35, 330, Tipo.BOTH);
+    			g.drawImage(arbol1,3918-x,355,200,370,this);
+//    			addPlatformToList(4000 - x, 400, 35, 330, Tipo.BOTH);
+    			g.drawImage(arbol1,6218-x,355,200,370,this);
+//    			addPlatformToList(6300 - x, 400, 35, 330, Tipo.BOTH);
+    			g.drawImage(arbol1,8518-x,355,200,370,this);
+//    			addPlatformToList(8600 - x, 400, 35, 330, Tipo.BOTH);
     			
     			//g.drawImage(arbol1,192-x,355,200,370,this);
     			//addPlatformToList(279 - x, 400, 35, 330, Tipo.BOTH);
@@ -1959,12 +2096,16 @@ public class Panel extends JPanel {
     			movimientoBala(g, disparo);
     			
     			//Árboles no colisionables:
-    			g.drawImage(arbusto,500-x,660,70,70,this);
+    			g.drawImage(arbusto,500-x,680,50,50,this);
+    			g.drawImage(arbusto,1500-x,680,50,50,this);
+    			g.drawImage(arbusto,4500-x,680,50,50,this);
+    			g.drawImage(arbusto,8000-x,680,50,50,this);
+    			g.drawImage(arbusto,14000-x,680,50,50,this);
     	
     			//Imagen del hud
-    			g.drawImage(hud, 0, 698, 1010, 350, this);
+    			g.drawImage(hud, -5, 695, 1010, 390, this);
     			//Aquí habrá que programar las reproducciones las barras de energía
-    			g.drawImage(barra_energia[keko.getEnergy()], 10, 790, 300, 160, this);
+    			g.drawImage(barra_energia[keko.getEnergy()<=99? keko.getEnergy():99], 10, 790, 300, 160, this);
     			//Aquí habrá que programar las reproducciones de los corazones
     			g.drawImage(animCorazones[keko.getLives()], 725, 835, 250, 75, this);
     			//Aquí habrá que programar las reproducciones de los corazones
@@ -1978,27 +2119,32 @@ public class Panel extends JPanel {
     		}
     		else {
     			
-    			g.drawImage(ganador? vivo: muerto,0,0,1010,1010,this);
-				
-				meterNombrePuntuacion(g,letra);
-				
-				if(primeraLetra) {
-					g.drawImage(letraUno,posPrimeraLetra,ejeYLetraUno,66,altoLetraUno,this);
-				}
-				else {
-					posPrimeraLetra=posicionLetra;
-					ejeYLetraUno=letra==KeyEvent.VK_MINUS ? 800 : 750;
-					altoLetraUno=letra==KeyEvent.VK_MINUS ? 20 : 114;
-				}
-				if(segundaLetra) {
-					g.drawImage(letraDos,posSegundaLetra,ejeYLetraDos,66,altoLetraDos,this);
-				}
-				else {
-					posSegundaLetra=posicionLetra;
-					ejeYLetraDos=letra==KeyEvent.VK_MINUS ? 800 : 750;
-					altoLetraDos=letra==KeyEvent.VK_MINUS ? 20 : 114;
-				}
-    			
+    			if(!creditos) {
+    				g.drawImage(ganador? vivo: muerto,0,0,1010,1010,this);
+    				
+    				meterNombrePuntuacion(g,letra);
+    				
+    				if(primeraLetra) {
+    					g.drawImage(letraUno,posPrimeraLetra,ejeYLetraUno,66,altoLetraUno,this);
+    				}
+    				else {
+    					posPrimeraLetra=posicionLetra;
+    					ejeYLetraUno=letra==KeyEvent.VK_MINUS ? 800 : 750;
+    					altoLetraUno=letra==KeyEvent.VK_MINUS ? 20 : 114;
+    				}
+    				if(segundaLetra) {
+    					g.drawImage(letraDos,posSegundaLetra,ejeYLetraDos,66,altoLetraDos,this);
+    				}
+    				else {
+    					posSegundaLetra=posicionLetra;
+    					ejeYLetraDos=letra==KeyEvent.VK_MINUS ? 800 : 750;
+    					altoLetraDos=letra==KeyEvent.VK_MINUS ? 20 : 114;
+    				}
+        			
+        		}
+    			else {
+    				g.drawImage(creditosScroll,-5,-movCreditos,1010,4000,this);
+    			}
     		}
 		
     	}

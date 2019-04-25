@@ -11,7 +11,8 @@ import javax.swing.*;
  */
 public class GameEngine implements KeyListener {
 
-    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,spawn=false,matadoBoss=false;
+    private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,
+    		spawn=false,matadoBoss=false,creditos=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
@@ -22,7 +23,7 @@ public class GameEngine implements KeyListener {
     private Panel panel = new Panel();
 
 	//La música que usaremos:
-	private Musica musica= new Musica(),fxKeko=new Musica(),disparo=new Musica(),fxPow=new Musica(),fxZubat=new Musica(),fxEn2=new Musica(),fxBoss=new Musica();
+	private Musica musica= new Musica(),winLose=new Musica(),fxKeko=new Musica(),disparo=new Musica()/*,fxPow=new Musica(),fxZubat=new Musica(),fxEn2=new Musica()*/,fxBoss=new Musica();
     
 	//Getter del nombre para que lo recoja PlantillaVentana:
 	public String getNombre() {return nombre;}
@@ -929,6 +930,7 @@ public class GameEngine implements KeyListener {
 		   else if(panel.entities.enemies.get(x).getTypeEnemy().equals("boss") && panel.entities.enemies.get(x).isDead()) {
 			   
 			   matadoBoss=true;
+			   panel.setGanador(true);
 			   gameOver=true;
 			   
 		   }
@@ -1008,6 +1010,7 @@ public class GameEngine implements KeyListener {
         	panel.setLoading(true);
         	//Hacemos que la música de fondo empiece unos milisegundos después de poner la pantalla de carga
         	musica.cargarFondo();
+        	winLose.cargarWinLose();
         	disparo.cargarDisparo();
         	fxBoss.cargarWagh();
         	fxKeko.cargarSalto();
@@ -1086,12 +1089,35 @@ public class GameEngine implements KeyListener {
 		    panel.setPedirNombre(true);
 		    panel.repaint();
 		    pidiendoNombre=true;
-		    musica.lose();
+		    if(matadoBoss) {
+		    	winLose.win();
+		    }else {
+		    	winLose.lose();
+		    }
 		    
 		    while(pidiendoNombre) {
 		    	
 		    	System.out.println("GameEngine - Pidiendo nombre - Esperando");
 			
+		    }
+		    
+		    if(matadoBoss) {
+		    	musica.ganador();
+		    	creditos=true;
+		    	panel.setCreditos(true);
+		    	panel.repaint();
+		    }
+		    
+		    if(creditos) {		    	
+		    	for(int contCreditos=0;contCreditos<4000;contCreditos++) {
+		    		if(contCreditos<3001) {
+		    			panel.setMovCreditos(contCreditos);
+		    			panel.repaint();
+		    		}
+		    		
+		    		Thread.sleep(50); 	
+		    	}
+		    	musica.ganadorStop();
 		    }
 		    
 		    panel.setPedirNombre(false);
@@ -1108,8 +1134,8 @@ public class GameEngine implements KeyListener {
         //Calculamos la puntuación final:   
         puntuacion+=panel.keko.getEnergy()*100;
         puntuacion+=panel.getEjeX();
+        puntuacion+=matadoBoss? 10000:0;
     	puntuacion*=panel.keko.getLives()+1;
-    	puntuacion+=matadoBoss? 500000:0;
         
         return puntuacion;
         

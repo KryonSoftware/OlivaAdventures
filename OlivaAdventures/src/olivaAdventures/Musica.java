@@ -8,7 +8,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 public class Musica {
 
     /* ATTRIBUTES */
-    private BasicPlayer fondo,disparo,click,salto,ouch,enemigoOuch,lose,wagh;
+    private BasicPlayer fondo,disparo,click,salto,ouch,exit,lose,wagh,seleccion,win,ganador;
 
     /* BASIC FUNCTIONS */
     public void playFondo() {
@@ -32,8 +32,16 @@ public class Musica {
 			fondo.stop();
 		} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
+    public void ganadorStop() {
+        try {
+			ganador.stop();
+		} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
     public void click() {
         try {click.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void ganador() {
+        try {ganador.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
     public void wagh() {
         try {wagh.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
@@ -43,6 +51,15 @@ public class Musica {
     }
     public void salto() {
         try {salto.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void seleccion() {
+        try {seleccion.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void exit() {
+        try {exit.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void win() {
+        try {win.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
     public void lose() {
     	try {
@@ -57,9 +74,8 @@ public class Musica {
 
         try {
             fondo=new BasicPlayer();
-            lose=new BasicPlayer();
-
-        	lose.open(new File("resources/sonido/musica_fondo/lose.mp3"));
+            ganador=new BasicPlayer();
+            ganador.open(new File("resources/sonido/musica_fondo/ganador.mp3"));
         	fondo.open(new File("resources/sonido/musica_fondo/welcome_to_the_jungle_8_bit.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de fondo. Posible error en el path. Error: "+e);
@@ -118,6 +134,41 @@ public class Musica {
         	salto.open(new File("resources/sonido/salto/salto.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de salto. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarSeleccion(){
+    	
+        try {
+            seleccion=new BasicPlayer();
+            
+        	seleccion.open(new File("resources/sonido/Menu/selected.mp3"));
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de selección. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarExit(){
+    	
+        try {
+            exit=new BasicPlayer();
+            
+        	exit.open(new File("resources/sonido/Menu/exit.mp3"));
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de salida. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarWinLose(){
+    	
+        try {
+            win=new BasicPlayer();
+            lose=new BasicPlayer();
+        	lose.open(new File("resources/sonido/musica_fondo/lose.mp3"));
+        	win.open(new File("resources/sonido/musica_fondo/win.mp3"));
+        	
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de salida. Posible error en el path. Error: "+e);
         }
     }
     

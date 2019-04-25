@@ -42,7 +42,9 @@ public class VentanaScore implements KeyListener {
 	private int n = JLabelTotal + 1;												// Numero total de JLabels que habra, se suma +1 porque asignamos al primer JLabel "1" para facilitar las cuentas.
 	private JLabel[] lista = new JLabel[n];											// Array que guardara los distintos JLabels.
 	private String[] puntuacion = new String[5];									// Array que guardara las puntuaciones.
-
+	private Musica exit=new Musica();
+	
+	
 	private enum Posicion {															// Asignacion de un nombre para cada JLabel con letra, numero o guion.
 
 		N1_1, N1_2, N1_3,
@@ -61,6 +63,7 @@ public class VentanaScore implements KeyListener {
 	/* --- CONSTRUCTOR --- */
 	public VentanaScore(JFrame frame) {
 
+		exit.cargarExit();
 		this.frame=frame;
 		lecturaFichero();					// Leemos y guardamos las puntuaciones.
 		frameConfiguracion();				// Aplicamos el JFrame.
@@ -422,6 +425,13 @@ public class VentanaScore implements KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		
 		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			exit.exit();
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			scoresOn=false;
 			frame.removeKeyListener(this);
 			frame.setVisible(false);
@@ -433,6 +443,13 @@ public class VentanaScore implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			exit.exit();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			scoresOn=false;
 			frame.removeKeyListener(this);
 			frame.setVisible(false);
@@ -443,6 +460,13 @@ public class VentanaScore implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE) {
+			exit.exit();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			scoresOn=false;
 			frame.removeKeyListener(this);
 			frame.setVisible(false);
