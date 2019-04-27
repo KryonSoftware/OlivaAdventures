@@ -30,7 +30,7 @@ public class Panel extends JPanel {
 	vidas0,vidas1,vidas2,vidas3,monstruo1,monstruo2,monstruo3,monstruo4,plataforma1,reloj0,reloj1,reloj2,reloj3,reloj4,reloj5,reloj6,
 	reloj7,reloj8,reloj9,reloj10,reloj11,reloj12,reloj13,reloj14,reloj15,reloj16,reloj17,reloj18,
 	reloj19,reloj20,reloj21,reloj22,reloj23,reloj24,reloj25,nube1,nube2,suelo1,suelo2,suelo3,sueloInicio,sueloFinal,arbol1,arbol2,arbol3,arbolPino,
-	arbusto,pausa,cargando,bossAngryLeft1,bossAngryLeft2,
+	arbusto,pausa,cargando,bossAngryLeft1,bossAngryLeft2,piedra1,piedra2,piedra3,piedra4,piedra5,piedra6,piedra7,piedra8,piedra9,piedra10,piedra11,
 	bossAngryRight1,bossAngryRight2,bossLeft1,bossLeft2,bossLeft3,bossRight1,bossRight2,bossRight3,bossWalkLeft1,bossWalkLeft2,
 	bossWalkLeft3,bossWalkLeft4,bossWalkRight1,bossWalkRight2,bossWalkRight3,bossWalkRight4,enemyTwo1,enemyTwo2,enemyTwo3,enemyTwo4,
 	murcielago1,murcielago2,murcielago3,murcielago4,murcielago5,murcielago6,murcielago7,murcielago8,
@@ -54,16 +54,17 @@ public class Panel extends JPanel {
 							barra_energia = new BufferedImage[101],animFly = new BufferedImage[8],animLlama = new BufferedImage[8];
 	
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
-    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0,movCreditos=0;
+    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0,
+    		contadorMovimientoPlataforma,movCreditos=0,movSobrePlataforma=0,recienAterrizado=0;
     
     public String nombreElegido="",tercLetra="",segLetra="";
     
     private char direccionDisparo='D';
     
-    private long momentoDisparo=0;
+    private long momentoDisparo=0,contadorPintado=0;
     
     private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,
-    		terceraLetra=false,ganador=false,creditos=false;
+    		terceraLetra=false,ganador=false,creditos=false,plataformaDerecha=false,sobrePlataforma=false,aterrizado=false,corregirEjeX=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -89,6 +90,10 @@ public class Panel extends JPanel {
 
 	public void setDisparo(boolean disparo) {this.disparo = disparo;}
 
+	public int getMovSobrePlataforma() {return movSobrePlataforma;}
+
+	public void setMovSobrePlataforma(int movSobrePlataforma) {this.movSobrePlataforma = movSobrePlataforma;}
+
 	public long getMomentoDisparo() {return momentoDisparo;}
 
 	public void setMomentoDisparo(long contador) {this.momentoDisparo = contador;}
@@ -100,6 +105,10 @@ public class Panel extends JPanel {
 	public int getArrPosBoss() {return arrPosBoss;}
 
 	public void setArrPosBoss(int arrPosBoss) {this.arrPosBoss = arrPosBoss;}
+
+	public boolean isSobrePlataforma() {return sobrePlataforma;}
+
+	public void setSobrePlataforma(boolean sobrePlataforma) {this.sobrePlataforma = sobrePlataforma;}
 
 	public int getArrPosLlama() {return arrPosLlama;}
 
@@ -133,7 +142,11 @@ public class Panel extends JPanel {
 
     public void setEjeY(int y){this.y=y;}
     
-    public boolean isDisparado() {return disparado;}
+    public boolean isCorregirEjeX() {return corregirEjeX;}
+
+	public void setCorregirEjeX(boolean corregirEjeX) {this.corregirEjeX = corregirEjeX;}
+
+	public boolean isDisparado() {return disparado;}
 
 	public void setDisparado(boolean disparado) {this.disparado = disparado;}
 
@@ -179,7 +192,7 @@ public class Panel extends JPanel {
 			//FONDO
 			fondo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
 			muerto = ImageIO.read(new File("resources/Menu/MUERTO.png"));
-			vivo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
+			vivo = ImageIO.read(new File("resources/Menu/VIVO.png"));
 			creditosScroll = ImageIO.read(new File("resources/Menu/fondoScores.jpg"));
 
 			//FONDO DEL HUD
@@ -411,13 +424,24 @@ public class Panel extends JPanel {
 			nube1=ImageIO.read(new File("resources/Mapa/Nubes/nubeGrande.png"));
 			nube2=ImageIO.read(new File("resources/Mapa/Nubes/nubePeque.png"));
 
-			//IMÁGENES ÁBOLES
-			arbol1=ImageIO.read(new File("resources/Mapa/Arboles/arbolGrande.png"));
-			arbol2=ImageIO.read(new File("resources/Mapa/Arboles/arbolMediano.png"));
+			//IMÁGENES ÁBOLES Y ROCAS
+			arbol1=ImageIO.read(new File("resources/Mapa/Arboles/arbolamarilloTrans.png"));
+			arbol2=ImageIO.read(new File("resources/Mapa/Arboles/arbolverdeTrans.png"));
 			arbusto=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
-			arbol3=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
-			arbolPino=ImageIO.read(new File("resources/Mapa/Arboles/arbustito.png"));
-
+			arbol3=ImageIO.read(new File("resources/Mapa/Arboles/arbolGrande.png"));
+			arbolPino=ImageIO.read(new File("resources/Mapa/Arboles/arbolpinoTrans.png"));
+			piedra1=ImageIO.read(new File("resources/Mapa/Arboles/piedra1.png"));
+			piedra2=ImageIO.read(new File("resources/Mapa/Arboles/piedra2.png"));
+			piedra3=ImageIO.read(new File("resources/Mapa/Arboles/piedra3.png"));
+			piedra4=ImageIO.read(new File("resources/Mapa/Arboles/piedra4.png"));
+			piedra5=ImageIO.read(new File("resources/Mapa/Arboles/piedra5.png"));
+			piedra6=ImageIO.read(new File("resources/Mapa/Arboles/piedra6.png"));
+			piedra7=ImageIO.read(new File("resources/Mapa/Arboles/piedra7.png"));
+			piedra8=ImageIO.read(new File("resources/Mapa/Arboles/piedra8.png"));
+			piedra9=ImageIO.read(new File("resources/Mapa/Arboles/piedra9.png"));
+			piedra10=ImageIO.read(new File("resources/Mapa/Arboles/piedra10.png"));
+			piedra11=ImageIO.read(new File("resources/Mapa/Arboles/piedra11.png"));
+			
 			//IMÁGENES SUELOS
 			suelo1=ImageIO.read(new File("resources/Suelos/cuadrado1.png"));
 			suelo2=ImageIO.read(new File("resources/Suelos/cuadrado2.png"));
@@ -438,7 +462,7 @@ public class Panel extends JPanel {
 			f=ImageIO.read(new File("resources/Menu/NumerosyLetras/F.png"));
 			g=ImageIO.read(new File("resources/Menu/NumerosyLetras/G.png"));
 			h=ImageIO.read(new File("resources/Menu/NumerosyLetras/H.png"));
-			i=ImageIO.read(new File("resources/Menu/NumerosyLetras/L.png"));
+			i=ImageIO.read(new File("resources/Menu/NumerosyLetras/I.png"));
 			j=ImageIO.read(new File("resources/Menu/NumerosyLetras/J.png"));
 			k=ImageIO.read(new File("resources/Menu/NumerosyLetras/K.png"));
 			l=ImageIO.read(new File("resources/Menu/NumerosyLetras/L.png"));
@@ -801,14 +825,32 @@ public class Panel extends JPanel {
 	            				foundPlatform=true;
 	
 	            				this.y=y;
-	
+	            				
+	            				sobrePlataforma= listaPlataformas.get(x).getPosListaEnemies()==1010? true:false;
+	            				if(sobrePlataforma) {
+	            					if(!aterrizado){
+	            						movSobrePlataforma=0;
+	            						recienAterrizado=contadorMovimientoPlataforma;
+	            						aterrizado=true;
+	            						corregirEjeX=true;
+	            					}
+	            					else {
+	            						corregirEjeX=false;
+	            						movSobrePlataforma=contadorMovimientoPlataforma-recienAterrizado;
+	            					}
+	            				}
+	            				else {
+	            					aterrizado=false;
+	            					corregirEjeX=false;
+	            				}
+	            				
 	            			}
 	
 	            		}
 	        			
 	       			break;
 	        			
-	        		default://Los pow:
+	        		default://Enemigos:
 	        			
 	        			if(!(z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
 	        				
@@ -844,6 +886,11 @@ public class Panel extends JPanel {
 
         	}
 
+        }
+        
+        if(!colision && entidad==1) {
+        	aterrizado=false;
+        	corregirEjeX=false;
         }
 
         return colision;
@@ -1155,7 +1202,9 @@ public class Panel extends JPanel {
      * @return Distancia que puedes mover en vertical sin golpearte contra nada.
      */
     public int isTop(int entidad,int posLista,int newCabezaPos,int prevY,int ejeX,int prevX) {
-    	
+
+    	aterrizado=false;
+    	corregirEjeX=false;
     	boolean foundTop=false;
     	int y,z,g,k;
         int colision=0;
@@ -1817,12 +1866,38 @@ public class Panel extends JPanel {
     	estados++;
     	
     }
+    
+    /**
+     * Método para pintar plataformas móviles.
+     */
+    private void plataformaMovil(Graphics g,int colocacion,int ejey) {
+    	
+    	if(plataformaDerecha) {
+    		
+    		g.drawImage(plataforma1, colocacion - x + contadorMovimientoPlataforma, ejey, 100, 35, this);
+			addPlatformToList(colocacion - x + contadorMovimientoPlataforma, ejey, 100, 35, Tipo.PLATFORM,1010);
+    		
+    	}
+    	else {
+    		
+    		g.drawImage(plataforma1, colocacion - x + contadorMovimientoPlataforma, ejey, 100, 35, this);
+			addPlatformToList(colocacion - x + contadorMovimientoPlataforma, ejey, 100, 35, Tipo.PLATFORM,1010);
+    		
+    	}
+    	
+    }
  
     
     /**
      * Método para pintar nuestro panel.
      */
     public void paint(Graphics g) {
+    	
+//    	if(sobrePlataforma) {
+//    		this.x+=contadorMovimientoPlataforma;
+//    	}
+		this.x+=movSobrePlataforma;
+
     	
     	//Hacemos que sus imágenes vayan cambiando
     	animacionesOtros();
@@ -1964,7 +2039,7 @@ public class Panel extends JPanel {
     			//Colisiones del suelo:
     			addPlatformToList(13500 - x, 720, 1350, 500, Tipo.BOTH);
     			
-    			addPlatformToList(-350 - x, 775, 18000, 500, Tipo.BOTH);
+//    			addPlatformToList(-350 - x, 775, 18000, 500, Tipo.BOTH);
     	
 //       			//Árboles colisionables:
 //    			g.drawImage(arbol1,918-x,355,200,370,this);
@@ -1988,7 +2063,14 @@ public class Panel extends JPanel {
     			g.drawImage(plataforma1, 400 - x, 600, 100, 35, this);
     			addPlatformToList(400 - x, 600, 100, 35, Tipo.PLATFORM);
     			
-    			//PRUEBAS MONSTRUO:++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    			plataformaMovil(g,1500,600);
+    			
+    			g.drawImage(plataforma1, 1950 - x, 420, 100, 35, this);
+    			addPlatformToList(1950 - x, 420, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,2000,300);
+    			
+    			//Monstruos no Boss
     			
     			for(int x=0;x<entities.enemies.size();x++) {
     			
@@ -2078,15 +2160,30 @@ public class Panel extends JPanel {
 				}
     			
     			//Árboles colisionables:
-    			g.drawImage(arbol1,918-x,355,200,370,this);
-//    			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
-    			g.drawImage(arbol1,2918-x,355,200,370,this);
-//    			addPlatformToList(3000 - x, 400, 35, 330, Tipo.BOTH);
-    			g.drawImage(arbol1,3918-x,355,200,370,this);
-//    			addPlatformToList(4000 - x, 400, 35, 330, Tipo.BOTH);
-    			g.drawImage(arbol1,6218-x,355,200,370,this);
-//    			addPlatformToList(6300 - x, 400, 35, 330, Tipo.BOTH);
-    			g.drawImage(arbol1,8518-x,355,200,370,this);
+    			
+    			//Plantillas árboles------------------------------------------
+//    			g.drawImage(arbol1,918-x,355,200,370,this);
+//    			addPlatformToList(918+97 - x, 400, 20, 330, Tipo.BOTH);
+//    			g.drawImage(arbol2,918-x,355,250,380,this);
+//    			addPlatformToList(918+115 - x, 400, 28, 330, Tipo.BOTH);
+//    			g.drawImage(arbolPino,850-x,230,400,550,this);
+//    			addPlatformToList(850+155 - x, 400, 60, 280, Tipo.BOTH);
+    			//Plantillas árboles------------------------------------------
+    			
+    			g.drawImage(arbol2,918-x,355,250,380,this);
+    			addPlatformToList(918+115 - x, 400, 28, 330, Tipo.BOTH);
+    			
+//    			g.drawImage(piedra1,750-x,630,220,145,this);
+//    			g.drawImage(piedra2,550-x,650,180,125,this);
+//    			g.drawImage(piedra3,320-x,625,150,170,this);
+//    			g.drawImage(piedra4,100-x,650,180,125,this);
+//    			g.drawImage(piedra5,-100-x,650,180,125,this);
+//    			g.drawImage(piedra6,890-x,650,180,125,this);
+//    			g.drawImage(piedra7,1200-x,650,180,125,this);
+//    			g.drawImage(piedra8,400-x,650,180,125,this);
+//    			g.drawImage(piedra9,1700-x,650,180,125,this);
+//    			g.drawImage(piedra10,2000-x,650,180,125,this);
+//    			g.drawImage(piedra11,1500-x,650,180,125,this);
 //    			addPlatformToList(8600 - x, 400, 35, 330, Tipo.BOTH);
     			
     			//g.drawImage(arbol1,192-x,355,200,370,this);
@@ -2095,32 +2192,43 @@ public class Panel extends JPanel {
     			//Importante que sea lo último para poder ver y colisionar con todo
     			movimientoBala(g, disparo);
     			
-    			//Árboles no colisionables:
-    			g.drawImage(arbusto,500-x,680,50,50,this);
-    			g.drawImage(arbusto,1500-x,680,50,50,this);
-    			g.drawImage(arbusto,4500-x,680,50,50,this);
-    			g.drawImage(arbusto,8000-x,680,50,50,this);
-    			g.drawImage(arbusto,14000-x,680,50,50,this);
+    			//No colisionables:
+    			
+    			g.drawImage(arbolPino,-450-x,230,400,550,this);
+    			g.drawImage(piedra1,50-x,630,220,145,this);
     	
     			//Imagen del hud
     			g.drawImage(hud, -5, 695, 1010, 390, this);
     			//Aquí habrá que programar las reproducciones las barras de energía
-    			g.drawImage(barra_energia[keko.getEnergy()<=99? keko.getEnergy():99], 10, 790, 300, 160, this);
+    			g.drawImage(barra_energia[keko.getEnergy()<=99? keko.getEnergy():99], 10, 810, 300, 160, this);
     			//Aquí habrá que programar las reproducciones de los corazones
-    			g.drawImage(animCorazones[keko.getLives()], 725, 835, 250, 75, this);
+    			g.drawImage(animCorazones[keko.getLives()], 725, 855, 250, 75, this);
     			//Aquí habrá que programar las reproducciones de los corazones
-    			g.drawImage(animReloj[arrPosReloj], 475, 820, 75, 100, this);
+    			g.drawImage(animReloj[arrPosReloj], 475, 840, 75, 100, this);
     			
     			//Pantalla de pausa
     			if(pause) {
     				g.drawImage(pausa,0,0,1000,1000,this);
     			}
     			
+    			if(contadorPintado%60==0) {
+    	    		plataformaDerecha=plataformaDerecha? false:true;
+    	    	}
+    			
+    			if(plataformaDerecha) {
+    				contadorMovimientoPlataforma+=5;
+    			}
+    			else {
+    				if(contadorMovimientoPlataforma-5>0) {
+    	    			contadorMovimientoPlataforma-=5;
+    	    		}
+    			}
+    			
     		}
     		else {
     			
     			if(!creditos) {
-    				g.drawImage(ganador? vivo: muerto,0,0,1010,1010,this);
+    				g.drawImage(ganador? vivo: muerto,-500,-10,2000,1050,this);
     				
     				meterNombrePuntuacion(g,letra);
     				
@@ -2151,6 +2259,8 @@ public class Panel extends JPanel {
     	else {
     		g.drawImage(cargando,0,0,1000,1000,this);
     	}
+    	System.out.println(350+x);
+    	contadorPintado++;
 	}
 
 }

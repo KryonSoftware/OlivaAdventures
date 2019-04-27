@@ -16,7 +16,7 @@ public class Box {
     	this.setPosX(posX);
     	this.setPosY(posY);
         setEnergy();
-        setLives(2);
+        setLives(5);
     }
 
     /* GETTERS AND SETTERS */
