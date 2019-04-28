@@ -1074,7 +1074,7 @@ public class Panel extends JPanel {
 		        							//Si choca contra el keko le quitamos vida, y en el caso del volador, colisionamos contra él
 		        							
 		        							if(listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
-		        								entities.enemies.get(posLista).doDamage(keko);
+//		        								entities.enemies.get(posLista).doDamage(keko);
 		        								
 		        								try {
 		        									fxKeko.ouch();
@@ -1203,8 +1203,10 @@ public class Panel extends JPanel {
      */
     public int isTop(int entidad,int posLista,int newCabezaPos,int prevY,int ejeX,int prevX) {
 
-    	aterrizado=false;
-    	corregirEjeX=false;
+    	if(entidad==1) {
+    		aterrizado=false;
+    		corregirEjeX=false;
+    	}
     	boolean foundTop=false;
     	int y,z,g,k;
         int colision=0;
@@ -1920,7 +1922,7 @@ public class Panel extends JPanel {
     			g.fillRect(0, 0, 1000, 1000);
     	
     			//Imagen móvil de fondo
-    			for (int ñ = -1000; ñ < 4500; ñ += 750) {
+    			for (int ñ = -1000; ñ < 6000; ñ += 750) {
     	
     				g.drawImage(fondo, ñ - (x / 4), 0, 750, 775, this);
     	
@@ -1940,6 +1942,20 @@ public class Panel extends JPanel {
     			g.drawImage(nube1, 2000 - (x / 2), 120, 100, 50, this);
     			g.drawImage(nube2, 5000 - (x / 3), 100, 50, 30, this);
     			g.drawImage(nube1, 6800 - (x / 2), 55, 100, 50, this);
+    			g.drawImage(nube1, 7000 - (x / 2), 200, 100, 50, this);
+    			g.drawImage(nube1, 7200 - (x / 2), 55, 100, 50, this);
+    			g.drawImage(nube1, 7500 - (x / 2), 120, 100, 50, this);
+    			g.drawImage(nube2, 7500 - (x / 3), 50, 50, 30, this);
+    			g.drawImage(nube2, 8000 - (x / 3), 200, 50, 30, this);
+    			g.drawImage(nube2, 8200 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 8200 - (x / 2), 200, 100, 50, this);
+    			g.drawImage(nube1, 9000 - (x / 2), 75, 100, 50, this);
+    			g.drawImage(nube1, 10500 - (x / 2), 50, 100, 50, this);
+    			g.drawImage(nube2, 12000 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 13000 - (x / 3), 120, 50, 30, this);
+    			g.drawImage(nube1, 14500 - (x / 2), 90, 100, 50, this);
+    			g.drawImage(nube2, 13000 - (x / 3), 200, 50, 30, this);
+    			g.drawImage(nube2, 14100 - (x / 2), 55, 100, 50, this);
     	
     			//Nuestros bloques de suelo
     			for (int o = -350; o < 2000; o += 90) {
@@ -1987,13 +2003,13 @@ public class Panel extends JPanel {
     			}
     			//Colisiones del suelo:
     			addPlatformToList(6000 - x, 720, 1075, 500, Tipo.BOTH);
-    			for (int o = 7300; o < 9000; o += 90) {
-    				if (o % 20 == 0 && (!(o==7300) && !(o+90>9000))) {
+    			for (int o = 7275; o < 9000; o += 90) {
+    				if (o % 25 == 0 && (!(o==7275) && !(o+90>9000))) {
     					g.drawImage(suelo3, o - x, 710, 90, 92, this);
-    				} else if(!(o==7300) && o+90<9000) {
+    				} else if(!(o==7275) && o+90<9000) {
     					g.drawImage(suelo1, o - x, 710, 90, 92, this);
     				}
-    				if(o==7300) {
+    				if(o==7275) {
     					g.drawImage(sueloInicio, o-x,710,90,92,this);
     				}
     				if(o+90>9000) {
@@ -2001,7 +2017,7 @@ public class Panel extends JPanel {
     				}
     			}
     			//Colisiones del suelo:
-    			addPlatformToList(7300 - x, 720, 1695, 500, Tipo.BOTH);
+    			addPlatformToList(7275 - x, 720, 1800, 500, Tipo.BOTH);
     			for (int o = 10000; o < 10350; o += 90) {
     				if (o % 20 == 0 && (!(o==10000) && !(o+90>10350))) {
     					g.drawImage(suelo2, o - x, 710, 90, 92, this);
@@ -2026,32 +2042,57 @@ public class Panel extends JPanel {
     				if (o % 50 == 0 && (!(o==13500) && !(o+90>14800))) {
     					g.drawImage(suelo2, o - x, 710, 90, 92, this);
     				}
-    				if(x>13000) {
-    					System.out.println("hola");
-    				}
     				if(o==13500) {
     					g.drawImage(sueloInicio, o-x,710,90,92,this);
     				}
-    				if(o+90>14800) {
+    				if(o+90>=14800) {
     					g.drawImage(sueloFinal, o-x,710,90,92,this);
     				}
     			}
     			//Colisiones del suelo:
     			addPlatformToList(13500 - x, 720, 1350, 500, Tipo.BOTH);
     			
-//    			addPlatformToList(-350 - x, 775, 18000, 500, Tipo.BOTH);
+    			for (int o = 17000; o < 18300; o += 90) {
+    				if (o % 20 == 0 && (!(o==17000) && !(o+90>18300))) {
+    					g.drawImage(suelo3, o - x, 710, 90, 92, this);
+    				} else if(!(o==17000) && o+90<18300) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if (o % 50 == 0 && (!(o==17000) && !(o+90>18300))) {
+    					g.drawImage(suelo2, o - x, 710, 90, 92, this);
+    				}
+    				if(o==17000) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>=18300) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(17000 - x, 720, 1350, 500, Tipo.BOTH);
+    			
+    			for (int o = 20000; o < 21300; o += 90) {
+    				if (o % 20 == 0 && (!(o==20000) && !(o+90>21300))) {
+    					g.drawImage(suelo3, o - x, 710, 90, 92, this);
+    				} else if(!(o==20000) && o+90<21300) {
+    					g.drawImage(suelo1, o - x, 710, 90, 92, this);
+    				}
+    				if (o % 50 == 0 && (!(o==20000) && !(o+90>21300))) {
+    					g.drawImage(suelo2, o - x, 710, 90, 92, this);
+    				}
+    				if(o==20000) {
+    					g.drawImage(sueloInicio, o-x,710,90,92,this);
+    				}
+    				if(o+90>=21300) {
+    					g.drawImage(sueloFinal, o-x,710,90,92,this);
+    				}
+    			}
+    			//Colisiones del suelo:
+    			addPlatformToList(20000 - x, 720, 1350, 500, Tipo.BOTH);
+    			
+    			//Barrera para no caerse por los precipicios PARA PRUEBAS DE CONSTRUCCIÓN
+    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
     	
-//       			//Árboles colisionables:
-//    			g.drawImage(arbol1,918-x,355,200,370,this);
-////    			addPlatformToList(1000 - x, 400, 35, 330, Tipo.BOTH);
-//    			g.drawImage(arbol1,2918-x,355,200,370,this);
-////    			addPlatformToList(3000 - x, 400, 35, 330, Tipo.BOTH);
-//    			g.drawImage(arbol1,3918-x,355,200,370,this);
-////    			addPlatformToList(4000 - x, 400, 35, 330, Tipo.BOTH);
-//    			g.drawImage(arbol1,6218-x,355,200,370,this);
-////    			addPlatformToList(6300 - x, 400, 35, 330, Tipo.BOTH);
-//    			g.drawImage(arbol1,8518-x,355,200,370,this);
-////    			addPlatformToList(8600 - x, 400, 35, 330, Tipo.BOTH);
     			
     			//Plataformas para saltar
     			g.drawImage(plataforma1, 700 - x, 300, 100, 35, this);
@@ -2063,12 +2104,110 @@ public class Panel extends JPanel {
     			g.drawImage(plataforma1, 400 - x, 600, 100, 35, this);
     			addPlatformToList(400 - x, 600, 100, 35, Tipo.PLATFORM);
     			
-    			plataformaMovil(g,1500,600);
+    			g.drawImage(plataforma1, 1950 - x, 600, 100, 35, this);
+    			addPlatformToList(1950 - x, 600, 100, 35, Tipo.PLATFORM);
     			
-    			g.drawImage(plataforma1, 1950 - x, 420, 100, 35, this);
-    			addPlatformToList(1950 - x, 420, 100, 35, Tipo.PLATFORM);
+    			g.drawImage(plataforma1, 2050 - x, 420, 100, 35, this);
+    			addPlatformToList(2050 - x, 420, 100, 35, Tipo.PLATFORM);
     			
-    			plataformaMovil(g,2000,300);
+    			plataformaMovil(g,2250,300);
+    			
+    			g.drawImage(plataforma1, 3200 - x, 420, 100, 35, this);
+    			addPlatformToList(3200 - x, 420, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 3000 - x, 600, 100, 35, this);
+    			addPlatformToList(3000 - x, 600, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 4105 - x, 550, 100, 35, this);
+    			addPlatformToList(4105 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 4900 - x, 600, 100, 35, this);
+    			addPlatformToList(4900 - x, 600, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,5120,450);
+    			
+    			plataformaMovil(g,5400,600);
+    			
+    			plataformaMovil(g,6000,450);
+    			
+    			g.drawImage(plataforma1, 5900 - x, 600, 100, 35, this);
+    			addPlatformToList(5900 - x, 600, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,6250,300);
+    			
+    			g.drawImage(plataforma1, 7700 - x, 550, 100, 35, this);
+    			addPlatformToList(7700 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 9100 - x, 600, 100, 35, this);
+    			addPlatformToList(9100 - x, 600, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 9250 - x, 450, 100, 35, this);
+    			addPlatformToList(9250 - x, 450, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 9400 - x, 300, 100, 35, this);
+    			addPlatformToList(9400 - x, 300, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 9600 - x, 150, 100, 35, this);
+    			addPlatformToList(9600 - x, 150, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,10500,600);
+    			
+    			g.drawImage(plataforma1, 10950 - x, 500, 100, 35, this);
+    			addPlatformToList(10950 - x, 500, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,11150,400);
+    			
+    			plataformaMovil(g,11400,300);
+    			
+    			plataformaMovil(g,11650,200);
+    			
+    			plataformaMovil(g,11900,100);
+    			
+    			plataformaMovil(g,12150,300);
+    			
+    			plataformaMovil(g,12500,600);
+    			
+    			g.drawImage(plataforma1, 12950 - x, 500, 100, 35, this);
+    			addPlatformToList(12950 - x, 500, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 13150 - x, 400, 100, 35, this);
+    			addPlatformToList(13150 - x, 400, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 14000 - x, 550, 100, 35, this);
+    			addPlatformToList(14000 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 15000 - x, 550, 100, 35, this);
+    			addPlatformToList(15000 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,15200,450);
+    			
+    			g.drawImage(plataforma1, 15600 - x, 350, 100, 35, this);
+    			addPlatformToList(15600 - x, 350, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,15800,600);
+    			
+    			g.drawImage(plataforma1, 16250 - x, 450, 100, 35, this);
+    			addPlatformToList(16250 - x, 450, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,16500,350);
+    			
+//    			g.drawImage(plataforma1, 16900 - x, 250, 100, 35, this);
+//    			addPlatformToList(16900 - x, 250, 100, 35, Tipo.PLATFORM);
+//    			
+//    			plataformaMovil(g,16900,700);
+//    			
+//    			g.drawImage(plataforma1, 17200 - x, 600, 100, 35, this);
+//    			addPlatformToList(17200 - x, 600, 100, 35, Tipo.PLATFORM);
+//    			
+//    			plataformaMovil(g,17600,700);
+    			
+    			//Las cajas
+    			for(int k=0;k<entities.cajas.size();k++) {
+    				if(!(entities.cajas.get(k).isDestroyed())){    					
+    					g.drawImage(box,entities.cajas.get(k).getPosX()-x,entities.cajas.get(k).getPosY(),50,50,this);
+    					addPlatformToList( entities.cajas.get(k).getPosX()-x, entities.cajas.get(k).getPosY(), 50, 50,Tipo.BOX,k);
+    				}
+    			}
     			
     			//Monstruos no Boss
     			
@@ -2077,10 +2216,8 @@ public class Panel extends JPanel {
     				if(!entities.enemies.get(x).isDead()) {
     					
     					if(entities.enemies.get(x).getTypeEnemy().equals("fly")) {
-    						
-    						if(animaciones==1) {
-    							lado=entities.enemies.get(x).isIzDer()? 4: 0;
-    						}
+    				
+    						lado=entities.enemies.get(x).isIzDer()? 4: 0;
     						
     						g.drawImage(animFly[arrPosFly+lado], entities.enemies.get(x).getPosXEnemy() -this.x + entities.enemies.get(x).getMoveEnemy(),
         							entities.enemies.get(x).getPosYEnemy()+entities.enemies.get(x).getMoveYEnemy(), 100, 100, this);
@@ -2109,13 +2246,6 @@ public class Panel extends JPanel {
     				
     			}
     			
-    			//Las cajas
-    			for(int k=0;k<entities.cajas.size();k++) {
-    				if(!(entities.cajas.get(k).isDestroyed())){    					
-    					g.drawImage(box,entities.cajas.get(k).getPosX()-x,entities.cajas.get(k).getPosY(),50,50,this);
-    					addPlatformToList( entities.cajas.get(k).getPosX()-x, entities.cajas.get(k).getPosY(), 50, 50,Tipo.BOX,k);
-    				}
-    			}
     			
     			
     			//Nuestro keko
@@ -2172,6 +2302,18 @@ public class Panel extends JPanel {
     			
     			g.drawImage(arbol2,918-x,355,250,380,this);
     			addPlatformToList(918+115 - x, 400, 28, 330, Tipo.BOTH);
+    			
+    			g.drawImage(arbol1,3400-x,355,200,370,this);
+    			addPlatformToList(3400+97 - x, 400, 20, 330, Tipo.BOTH);
+    			
+    			g.drawImage(arbol1,4100-x,355,200,370,this);
+    			addPlatformToList(4100+97 - x, 400, 20, 330, Tipo.BOTH);
+    			
+    			g.drawImage(arbolPino,6600-x,230,400,550,this);
+    			addPlatformToList(6600+155 - x, 400, 60, 280, Tipo.BOTH);
+    			
+    			g.drawImage(arbol2,7700-x,355,250,380,this);
+    			addPlatformToList(7700+115 - x, 400, 28, 330, Tipo.BOTH);
     			
 //    			g.drawImage(piedra1,750-x,630,220,145,this);
 //    			g.drawImage(piedra2,550-x,650,180,125,this);
@@ -2262,5 +2404,10 @@ public class Panel extends JPanel {
     	System.out.println(350+x);
     	contadorPintado++;
 	}
+    
+    public boolean repintar() {
+    	repaint();
+    	return true;
+    }
 
 }

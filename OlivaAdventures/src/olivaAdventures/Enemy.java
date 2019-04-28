@@ -66,6 +66,7 @@ public class Enemy {
          */
         this.posXEnemy = posX;
         this.posYEnemy = posY;
+        this.prevYEnemy=posY;
         setEnergy();
         setEntidad();
     }

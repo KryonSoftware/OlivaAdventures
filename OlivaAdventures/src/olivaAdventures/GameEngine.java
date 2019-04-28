@@ -12,7 +12,7 @@ import javax.swing.*;
 public class GameEngine implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,
-    		spawn=false,matadoBoss=false,creditos=false;
+    		spawn=false,matadoBoss=false,creditos=false,semaforo=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
@@ -650,7 +650,7 @@ public class GameEngine implements KeyListener {
           if(enemigo.getContJumping()>=0&&enemigo.getContJumping()<5) {
         	  
         	  //isTop nos devuelve cuánto puede moverse en vertical hasta chocar contra algo
-        	  compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-20,enemigo.getPosYEnemy(),ejeX,prevX);
+        	  compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-20,enemigo.getPosYEnemy(),panel.getEjeX(),prevX);
         	  
 	          enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
 	          //Y si su respuesta es menor a la petición, sabemos que hemos chocado, por lo que pasamos el contador al punto de comenzar a acelerar hacia abajo
@@ -659,21 +659,21 @@ public class GameEngine implements KeyListener {
 	          }
           }
           else if(enemigo.getContJumping()>4&&enemigo.getContJumping()<8){
-          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-10,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-10,enemigo.getPosYEnemy(),panel.getEjeX(),prevX);
           	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==10)) {
               	contadorSalto=16;
               }
           }
           else if(enemigo.getContJumping()>7&&enemigo.getContJumping()<12){
-          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-5,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-5,enemigo.getPosYEnemy(),panel.getEjeX(),prevX);
           	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==5)) {
               	contadorSalto=16;
               }
           }
           else if(enemigo.getContJumping()>11&&enemigo.getContJumping()<15){
-          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-1,enemigo.getPosYEnemy(),ejeX,prevX);
+          	compruebaDistanciaSalto=(byte) panel.isTop(2,posLista,enemigo.getPosYEnemy()-1,enemigo.getPosYEnemy(),panel.getEjeX(),prevX);
           	enemigo.setPosYEnemy(enemigo.getPosYEnemy()-compruebaDistanciaSalto);
               if(!(compruebaDistanciaSalto==1)) {
               	contadorSalto=16;
@@ -686,7 +686,7 @@ public class GameEngine implements KeyListener {
           
           	//LE PASAMOS LOS DATOS DE ESTE MONSTRUO EN CONCRETO
           	 
-	            if(!panel.isGround(enemigo.getEntidad(),posLista,enemigo.getPosXEnemy()-ejeX + enemigo.getMoveEnemy(), enemigo.getPosYEnemy()+49, enemigo.getPrevYEnemy()+49,enemigo.getPosXEnemy()-ejeX + enemigo.getMoveEnemy())) {
+	            if(!panel.isGround(enemigo.getEntidad(),posLista,enemigo.getPosXEnemy()-panel.getEjeX() + enemigo.getMoveEnemy(), enemigo.getPosYEnemy()+49, enemigo.getPrevYEnemy()+49,enemigo.getPosXEnemy()-panel.getEjeX() + enemigo.getMoveEnemy())) {
 	            	 //A partir de este punto comienza a caer, pasamos a comprobar si algo detiene su caída:
 	                if(enemigo.getContJumping()>15&&enemigo.getContJumping()<18){
 	                	enemigo.setPrevYEnemy(enemigo.getPosYEnemy());
@@ -788,11 +788,11 @@ public class GameEngine implements KeyListener {
 			   saltoMonstruos(panel.entities.enemies.get(x),x);
 
 			   //Sólo actúa si está en el radio de acción
-			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ (panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0) +panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
-					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ (panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)+ panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
+			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX() +panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
+					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
 
 				   //Llamamos a su método para tomar decisión, que nos devolverá un char diciéndonos a dónde quiere ir
-				   switch (panel.entities.enemies.get(x).getDecission(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ (panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)+panel.entities.enemies.get(x).getMoveEnemy(),panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),
+				   switch (panel.entities.enemies.get(x).getDecission(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy(),panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),
 						   panel.keko.getPosXPlayer(),panel.keko.getPosYPlayer()-ejeY)) {
 					   case 'D':
 						   //Si no está saltando movemos 5, si no sólo 3
@@ -800,17 +800,17 @@ public class GameEngine implements KeyListener {
 							   //Comprobamos si es de los que se tiran por las plataformas o no
 							   if(panel.entities.enemies.get(x).isSuicida()) {
 								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateral,
-										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0) + panel.entities.enemies.get(x).getMoveEnemy(),
+										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 							   }
 							   else {
 								   //Si no es suicida, primero comprobamos si se va a caer o no si se mueve y se lo permitimos o no
-								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()+movLateral-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
+								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()+movLateral-panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+49,panel.entities.enemies.get(x).getPrevYEnemy()+49,
-										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
+										   panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy())) {
 									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateral,
-											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)  + panel.entities.enemies.get(x).getMoveEnemy(),
+											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy(),
 											   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 								   }
 							   }
@@ -822,25 +822,26 @@ public class GameEngine implements KeyListener {
 						   }
 						   else {
 							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,movLateralAire,
-									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0) + panel.entities.enemies.get(x).getMoveEnemy(),
+									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy(),
 									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 						   }
 						   panel.entities.enemies.get(x).setIzDer(true);
 						   break;
 					   case 'I':
+						   
 						   if(!panel.entities.enemies.get(x).isJumping() || panel.entities.enemies.get(x).getTypeEnemy().equals("fly")) {
 							   
 							   if(panel.entities.enemies.get(x).isSuicida()) {
 								   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateral,
-										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)  + panel.entities.enemies.get(x).getMoveEnemy(),
+										   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 							   }
 							   else {
-								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()-movLateral-ejeX + panel.entities.enemies.get(x).getMoveEnemy(),
+								   if(panel.isGround(panel.entities.enemies.get(x).getEntidad(),x,panel.entities.enemies.get(x).getPosXEnemy()-movLateral-panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 										   panel.entities.enemies.get(x).getPosYEnemy()+49,panel.entities.enemies.get(x).getPrevYEnemy()+49,
-										   panel.entities.enemies.get(x).getPosXEnemy()-ejeX + panel.entities.enemies.get(x).getMoveEnemy())) {
+										   panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy())) {
 									   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateral,
-											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)  + panel.entities.enemies.get(x).getMoveEnemy(),
+											   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX() + panel.entities.enemies.get(x).getMoveEnemy(),
 											   panel.entities.enemies.get(x).getPosYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 								   }
 							   }
@@ -852,19 +853,17 @@ public class GameEngine implements KeyListener {
 						   }
 						   else {
 							   panel.entities.enemies.get(x).setMoveEnemy(panel.entities.enemies.get(x).getMoveEnemy()+panel.isWall(2,x,-movLateralAire,
-									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)+ panel.entities.enemies.get(x).getMoveEnemy(),
+									   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy(),
 									   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,anchoDerecha,anchoIzquierda));
 						   }
-						   if(panel.entities.enemies.get(x).getPosXEnemy()+panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()) {
-							   panel.entities.enemies.get(x).setIzDer(false);
-						   }
-						   else {
-							   panel.entities.enemies.get(x).setIzDer(false); 
+
+						   if(panel.entities.enemies.get(x).getTypeEnemy().equals("fly") || panel.entities.enemies.get(x).getTypeEnemy().equals("boss")) {
+							   panel.entities.enemies.get(x).setIzDer(false);  
 						   }
 						   break;
 					   case 'W':
 						   
-						   compruebaDistanciaSalto=(byte) panel.isTop(2,x,panel.entities.enemies.get(x).getPosYEnemy()-13,panel.entities.enemies.get(x).getPosYEnemy(),ejeX,prevX);
+						   compruebaDistanciaSalto=(byte) panel.isTop(2,x,panel.entities.enemies.get(x).getPosYEnemy()-13,panel.entities.enemies.get(x).getPosYEnemy(),panel.getEjeX(),prevX);
 						   if(panel.entities.enemies.get(x).getPosYEnemy()+panel.entities.enemies.get(x).getMoveYEnemy()-compruebaDistanciaSalto <= panel.keko.getPosYPlayer()-panel.getEjeY() && 
 								   panel.entities.enemies.get(x).getPosYEnemy()+panel.entities.enemies.get(x).getMoveYEnemy() >= panel.keko.getPosYPlayer()-panel.getEjeY()) {
 							   panel.entities.enemies.get(x).setPosYEnemy(panel.keko.getPosYPlayer()-panel.getEjeY());
@@ -898,7 +897,7 @@ public class GameEngine implements KeyListener {
 						   }
 						   
 						   if(panel.isWall(2,x,1,
-								   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)  + panel.entities.enemies.get(x).getMoveEnemy(),
+								   panel.entities.enemies.get(x).getPosXEnemy() -panel.getEjeX()  + panel.entities.enemies.get(x).getMoveEnemy(),
 								   panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(), panel.entities.enemies.get(x).getPosYEnemy()+49,20,50)==0) {
 						   }
 						   
@@ -910,12 +909,12 @@ public class GameEngine implements KeyListener {
 		   else if(panel.entities.enemies.get(x).isEnfadado()) {
 			   
 			   //Sólo actúa si está en el radio de acción
-			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0) + panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
-					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0)+ panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
+			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
+					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+ panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
 			   
 				   if(puntuacion%4==0) {
 					   if(spawn) {
-						   panel.entities.enemies.add(new Enemy(Enemy.typeEnemies.type2, panel.keko.getPosXPlayer()+panel.getEjeX()+(panel.isSobrePlataforma()?panel.getMovSobrePlataforma():0) , -30,true));
+						   panel.entities.enemies.add(new Enemy(Enemy.typeEnemies.type2, panel.keko.getPosXPlayer()+panel.getEjeX() , -30,true));
 						   fxBoss.wagh();
 					   }
 					   spawn=false;
@@ -959,7 +958,7 @@ public class GameEngine implements KeyListener {
     	}
     	if(!pausa) {
     		panel.setPause(false);
-    		panel.repaint();
+    		semaforo=panel.repintar();
     		try {musica.continuarFondo();} catch (Exception e) {System.out.println("Fallo al reanudar la música. Error: "+e);}
     	}
     	
@@ -1017,7 +1016,7 @@ public class GameEngine implements KeyListener {
         	fxBoss.cargarWagh();
         	fxKeko.cargarSalto();
         	musica.playFondo();
-        	panel.repaint();
+        	semaforo=panel.repintar();
             Thread.sleep(2500);
         } catch (InterruptedException e) {
             System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
@@ -1089,7 +1088,7 @@ public class GameEngine implements KeyListener {
 			
 			//Pedimos el nombre del jugador:
 		    panel.setPedirNombre(true);
-		    panel.repaint();
+		    semaforo=panel.repintar();
 		    pidiendoNombre=true;
 		    if(matadoBoss) {
 		    	winLose.win();
@@ -1107,14 +1106,14 @@ public class GameEngine implements KeyListener {
 		    	musica.ganador();
 		    	creditos=true;
 		    	panel.setCreditos(true);
-		    	panel.repaint();
+		    	semaforo=panel.repintar();
 		    }
 		    
 		    if(creditos) {		    	
 		    	for(int contCreditos=0;contCreditos<4000;contCreditos++) {
 		    		if(contCreditos<3001) {
 		    			panel.setMovCreditos(contCreditos);
-		    			panel.repaint();
+		    			semaforo=panel.repintar();
 		    		}
 		    		
 		    		Thread.sleep(50); 	
@@ -1124,7 +1123,7 @@ public class GameEngine implements KeyListener {
 		    
 		    panel.setPedirNombre(false);
 			panel.setLoading(true);
-			panel.repaint();
+			semaforo=panel.repintar();
 			Thread.sleep(1500);
 			
 		} catch (Exception e) {
