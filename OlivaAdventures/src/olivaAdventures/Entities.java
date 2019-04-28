@@ -63,8 +63,24 @@ public class Entities {
         enemies.add(new Enemy(Enemy.typeEnemies.type2, 14100, 400,true));
         enemies.add(new Enemy(Enemy.typeEnemies.type2, 14200, 300,true));
         enemies.add(new Enemy(Enemy.typeEnemies.type1, 14300, 650,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.type1, 15650, 200,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 15650, 0,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.type1, 16300, 350,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 16300, 700,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.type2, 17500, 300,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.type1, 17500, 650,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 17500, 0,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.type2, 17700, 650,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 17700, 300,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.type1, 17900, 650,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 17900, 400,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.type2, 17900, 650,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 17900, 0,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 0,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 300,true));
+        enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 600,true));
         
-        enemies.add(new Enemy(Enemy.typeEnemies.boss, -800, 500,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.boss, 20500, 650,false));
 
 
         return enemies;
@@ -76,7 +92,14 @@ public class Entities {
     	
     	cajas.add(new Box(-800,670));
     	cajas.add(new Box(6700,670));
+    	cajas.add(new Box(10125,670));
     	cajas.add(new Box(14020,500));
+    	cajas.add(new Box(17700,500));
+    	cajas.add(new Box(18200,670));
+    	cajas.add(new Box(20050,670));
+    	cajas.add(new Box(20225,500));
+    	cajas.add(new Box(20475,450));
+    	cajas.add(new Box(20825,550));
     	
     	return cajas;
     }

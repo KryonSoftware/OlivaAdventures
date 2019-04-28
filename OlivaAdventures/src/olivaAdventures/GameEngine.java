@@ -759,8 +759,8 @@ public class GameEngine implements KeyListener {
 			   anchoIzquierda=50;
 			   break;
 		   case "boss":
-			   movLateral=9;
-			   movLateralAire=8;
+			   movLateral=7;
+			   movLateralAire=7;
 			   anchoDerecha=250;
 			   anchoIzquierda=250;
 			   break;
@@ -782,14 +782,17 @@ public class GameEngine implements KeyListener {
 			   
 		   }
 
+		   //Activaciones
 		   if (!panel.entities.enemies.get(x).isDead() && !panel.entities.enemies.get(x).isEnfadado() && !panel.entities.enemies.get(x).isCansado()){
 			   
 			   //Llamamos al método que comprueba/ejecuta las caídas de éstos
 			   saltoMonstruos(panel.entities.enemies.get(x),x);
 
 			   //Sólo actúa si está en el radio de acción
-			   if(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX() +panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
-					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400) {
+			   if((panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX() +panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+600 
+					   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-400)  ||  
+					   panel.entities.enemies.get(x).getTypeEnemy().equals("boss") && (panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX() +panel.entities.enemies.get(x).getMoveEnemy()<panel.keko.getPosXPlayer()+900 
+							   && panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy()>panel.keko.getPosXPlayer()-900)) {
 
 				   //Llamamos a su método para tomar decisión, que nos devolverá un char diciéndonos a dónde quiere ir
 				   switch (panel.entities.enemies.get(x).getDecission(panel.entities.enemies.get(x).getPosXEnemy()-panel.getEjeX()+panel.entities.enemies.get(x).getMoveEnemy(),panel.entities.enemies.get(x).getPosYEnemy()+ panel.entities.enemies.get(x).getMoveYEnemy(),

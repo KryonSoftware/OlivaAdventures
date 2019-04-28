@@ -801,7 +801,7 @@ public class Panel extends JPanel {
 
         for(int x=0;x<listaPlataformas.size();x++){
         	
-        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM || listaPlataformas.get(x).getTipo()==Tipo.BOTH) {
+        	if(listaPlataformas.get(x).getTipo()==Tipo.PLATFORM || listaPlataformas.get(x).getTipo()==Tipo.BOTH || listaPlataformas.get(x).getTipo()==Tipo.BOX) {
 
         		//Le indicamos que si previamente ya ha encontrado algo contra lo que está chocando que deje de mirar apra mejorar el rendimiento
 	        	if(!foundPlatform) {
@@ -852,32 +852,34 @@ public class Panel extends JPanel {
 	        			
 	        		default://Enemigos:
 	        			
-	        			if(!(z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
-	        				
-	        				if(!(y==ejeY-49) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
-	        				
-			    				if(ejeX+25>=z&&ejeX+40<=(z+g)) {
-			
-			            			if(ejeY+49>=y&&prevY<y){
-			
-			            				colision=true;
-			
-			            				foundPlatform=true;
-			            				
-			            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
-			            				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
-			            					entities.enemies.get(posLista).setPosYEnemy(y-51);
-			            				}
-			            				else {
-			            					entities.enemies.get(posLista).setPosYEnemy(y-49);
-			            				}
-			
-			            			}
-			
-			    				}
+	        			if(!(listaPlataformas.get(x).getTipo()==Tipo.BOX)) {
+	        				if(!(z==ejeX) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+		        				
+		        				if(!(y==ejeY-49) || !(listaPlataformas.get(x).getTipo()==Tipo.ENEMY)) {
+		        				
+				    				if(ejeX+25>=z&&ejeX+40<=(z+g)) {
+				
+				            			if(ejeY+49>=y&&prevY<y){
+				
+				            				colision=true;
+				
+				            				foundPlatform=true;
+				            				
+				            				//AQUÍ HAY QUE REASIGNAR LA Y DEL MONSTRUO QUE TOQUE,AHORA REASIGNA LA DEL KEKO
+				            				if(listaPlataformas.get(x).getTipo()==Tipo.ENEMY) {
+				            					entities.enemies.get(posLista).setPosYEnemy(y-51);
+				            				}
+				            				else {
+				            					entities.enemies.get(posLista).setPosYEnemy(y-49);
+				            				}
+				
+				            			}
+				
+				    				}
+				    				
+		        				}
 			    				
-	        				}
-		    				
+		        			}
 	        			}
 	        			
 	        		}
@@ -1057,8 +1059,8 @@ public class Panel extends JPanel {
 	        									correccionIzquierda=30;
 	        									break;
 	        								case "2":
-	        									correccionDerecha=0;
-	        									correccionIzquierda=70;
+	        									correccionDerecha=70;
+	        									correccionIzquierda=0;
 	        									break;
 	        								case "boss":
 	        									correccionDerecha=10;
@@ -1074,7 +1076,7 @@ public class Panel extends JPanel {
 		        							//Si choca contra el keko le quitamos vida, y en el caso del volador, colisionamos contra él
 		        							
 		        							if(listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
-//		        								entities.enemies.get(posLista).doDamage(keko);
+		        								entities.enemies.get(posLista).doDamage(keko);
 		        								
 		        								try {
 		        									fxKeko.ouch();
@@ -1126,10 +1128,8 @@ public class Panel extends JPanel {
 		        									if(s>0) {
 				        								
 				        								if(ejeX<z) {
-				        									
-				        									colision-=ejeX+anchoIzquierda-(z-s-correccionDerecha);
-				        									foundWall=true;
-				        									
+			        										colision-=ejeX+anchoIzquierda-(z-s-correccionDerecha);
+			        										foundWall=true;
 				        								}
 				        								else {
 				        									if(!(entities.enemies.get(posLista).getTypeEnemy().equals("boss"))) {
@@ -1143,9 +1143,14 @@ public class Panel extends JPanel {
 				        							else {
 				        								
 				        								if(ejeX>z) {
-				        									
-				        									colision-=ejeX-anchoDerecha-(z+g-s-correccionIzquierda);
-				        									foundWall=true;
+				        									if(entities.enemies.get(posLista).getTypeEnemy().equals("2")) {
+				        										colision-=ejeX-anchoIzquierda-(z+g-s-correccionIzquierda);
+				        										foundWall=true;
+				        									}
+				        									else {				        										
+				        										colision-=ejeX-anchoDerecha-(z+g-s-correccionIzquierda);
+				        										foundWall=true;
+				        									}
 				        									
 				        								}
 				        								else {
@@ -1948,14 +1953,14 @@ public class Panel extends JPanel {
     			g.drawImage(nube2, 7500 - (x / 3), 50, 50, 30, this);
     			g.drawImage(nube2, 8000 - (x / 3), 200, 50, 30, this);
     			g.drawImage(nube2, 8200 - (x / 3), 100, 50, 30, this);
-    			g.drawImage(nube1, 8200 - (x / 2), 200, 100, 50, this);
+    			g.drawImage(nube1, 8800 - (x / 2), 200, 100, 50, this);
     			g.drawImage(nube1, 9000 - (x / 2), 75, 100, 50, this);
-    			g.drawImage(nube1, 10500 - (x / 2), 50, 100, 50, this);
-    			g.drawImage(nube2, 12000 - (x / 3), 100, 50, 30, this);
-    			g.drawImage(nube1, 13000 - (x / 3), 120, 50, 30, this);
-    			g.drawImage(nube1, 14500 - (x / 2), 90, 100, 50, this);
-    			g.drawImage(nube2, 13000 - (x / 3), 200, 50, 30, this);
-    			g.drawImage(nube2, 14100 - (x / 2), 55, 100, 50, this);
+    			g.drawImage(nube1, 9500 - (x / 2), 50, 100, 50, this);
+    			g.drawImage(nube2, 9300 - (x / 3), 100, 50, 30, this);
+    			g.drawImage(nube1, 11000 - (x / 3), 120, 50, 30, this);
+    			g.drawImage(nube1, 12500 - (x / 2), 90, 100, 50, this);
+    			g.drawImage(nube2, 9500 - (x / 3), 200, 50, 30, this);
+    			g.drawImage(nube2, 8500 - (x / 2), 55, 100, 50, this);
     	
     			//Nuestros bloques de suelo
     			for (int o = -350; o < 2000; o += 90) {
@@ -2090,8 +2095,10 @@ public class Panel extends JPanel {
     			//Colisiones del suelo:
     			addPlatformToList(20000 - x, 720, 1350, 500, Tipo.BOTH);
     			
-    			//Barrera para no caerse por los precipicios PARA PRUEBAS DE CONSTRUCCIÓN
-    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
+    			/*Barrera para no caerse por los precipicios PARA PRUEBAS DE CONSTRUCCIÓ
+    			¡Dejadlo comentado cuando se juega en serio y comentadlo cuando se está contruyendo!*/
+    			
+//    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
     	
     			
     			//Plataformas para saltar
@@ -2173,6 +2180,9 @@ public class Panel extends JPanel {
     			g.drawImage(plataforma1, 13150 - x, 400, 100, 35, this);
     			addPlatformToList(13150 - x, 400, 100, 35, Tipo.PLATFORM);
     			
+    			g.drawImage(plataforma1, 13400 - x, 300, 100, 35, this);
+    			addPlatformToList(13400 - x, 300, 100, 35, Tipo.PLATFORM);
+    			
     			g.drawImage(plataforma1, 14000 - x, 550, 100, 35, this);
     			addPlatformToList(14000 - x, 550, 100, 35, Tipo.PLATFORM);
     			
@@ -2191,15 +2201,33 @@ public class Panel extends JPanel {
     			
     			plataformaMovil(g,16500,350);
     			
-//    			g.drawImage(plataforma1, 16900 - x, 250, 100, 35, this);
-//    			addPlatformToList(16900 - x, 250, 100, 35, Tipo.PLATFORM);
-//    			
-//    			plataformaMovil(g,16900,700);
-//    			
-//    			g.drawImage(plataforma1, 17200 - x, 600, 100, 35, this);
-//    			addPlatformToList(17200 - x, 600, 100, 35, Tipo.PLATFORM);
-//    			
-//    			plataformaMovil(g,17600,700);
+    			g.drawImage(plataforma1, 17680 - x, 550, 100, 35, this);
+    			addPlatformToList(17680 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,18400,600);
+    			
+    			plataformaMovil(g,18600,450);
+    			
+    			plataformaMovil(g,18800,350);
+    			
+    			plataformaMovil(g,19100,200);
+    			
+    			plataformaMovil(g,19600,600);
+    			
+    			g.drawImage(plataforma1, 20050 - x, 550, 100, 35, this);
+    			addPlatformToList(20050 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 20200 - x, 550, 100, 35, this);
+    			addPlatformToList(20200 - x, 550, 100, 35, Tipo.PLATFORM);
+    			
+    			plataformaMovil(g,20300,350);
+    			
+    			g.drawImage(plataforma1, 20450 - x, 500, 100, 35, this);
+    			addPlatformToList(20450 - x, 500, 100, 35, Tipo.PLATFORM);
+    			
+    			g.drawImage(plataforma1, 20800 - x, 600, 100, 35, this);
+    			addPlatformToList(20800 - x, 600, 100, 35, Tipo.PLATFORM);
+    			
     			
     			//Las cajas
     			for(int k=0;k<entities.cajas.size();k++) {
@@ -2315,6 +2343,31 @@ public class Panel extends JPanel {
     			g.drawImage(arbol2,7700-x,355,250,380,this);
     			addPlatformToList(7700+115 - x, 400, 28, 330, Tipo.BOTH);
     			
+    			g.drawImage(arbol1,13500-x,355,200,370,this);
+    			g.drawImage(arbolPino,13600-x,230,400,550,this);
+    			g.drawImage(arbol2,13550-x,355,250,380,this);
+    			addPlatformToList(13500+97 - x, 400, 13600-13450+60, 330, Tipo.BOTH);
+    			
+    			g.drawImage(arbol1,17850-x,355,200,370,this);
+    			g.drawImage(arbol2,18000-x,355,250,380,this);
+    			g.drawImage(arbolPino,17850-x,230,400,550,this);
+    			addPlatformToList(17850+115 - x, 400, 17950-17800+28, 330, Tipo.BOTH);
+    			
+    			g.drawImage(arbol2,20050-x,355,250,380,this);
+    			addPlatformToList(20050+115 - x, 400, 28, 330, Tipo.BOTH);
+    			
+    			g.drawImage(arbolPino,21100-x,230,400,550,this);
+    			addPlatformToList(21100+155 - x, 400, 60, 280, Tipo.BOTH);
+    			
+    			
+    			//Importante que sea lo último para poder ver y colisionar con todo
+    			movimientoBala(g, disparo);
+    			
+    			//No colisionables:
+    			
+    			g.drawImage(arbolPino,-450-x,230,400,550,this);
+    			g.drawImage(piedra1,50-x,630,220,145,this);
+    			
 //    			g.drawImage(piedra1,750-x,630,220,145,this);
 //    			g.drawImage(piedra2,550-x,650,180,125,this);
 //    			g.drawImage(piedra3,320-x,625,150,170,this);
@@ -2326,18 +2379,6 @@ public class Panel extends JPanel {
 //    			g.drawImage(piedra9,1700-x,650,180,125,this);
 //    			g.drawImage(piedra10,2000-x,650,180,125,this);
 //    			g.drawImage(piedra11,1500-x,650,180,125,this);
-//    			addPlatformToList(8600 - x, 400, 35, 330, Tipo.BOTH);
-    			
-    			//g.drawImage(arbol1,192-x,355,200,370,this);
-    			//addPlatformToList(279 - x, 400, 35, 330, Tipo.BOTH);
-    			
-    			//Importante que sea lo último para poder ver y colisionar con todo
-    			movimientoBala(g, disparo);
-    			
-    			//No colisionables:
-    			
-    			g.drawImage(arbolPino,-450-x,230,400,550,this);
-    			g.drawImage(piedra1,50-x,630,220,145,this);
     	
     			//Imagen del hud
     			g.drawImage(hud, -5, 695, 1010, 390, this);
