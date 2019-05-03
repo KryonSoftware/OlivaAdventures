@@ -51,6 +51,7 @@ public class PlantillaVentana {
 			GameEngine nivel = new GameEngine(ventana);
 			puntuacion=nivel.runGame();
 			nombrePuntuacion=nivel.getNombreJugador();
+			System.out.println(nivel.getNombreJugador());
 			pasarPuntuacion();
 			ventana.setVisible(false);
 		}

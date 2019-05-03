@@ -12,7 +12,7 @@ import javax.swing.*;
 public class GameEngine implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,
-    		spawn=false,matadoBoss=false,creditos=false,semaforo=false;
+    		spawn=false,matadoBoss=false,creditos=false,semaforo=false,bossEncontrado=false;
     private long contador=0;
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
@@ -23,7 +23,7 @@ public class GameEngine implements KeyListener {
     private Panel panel = new Panel();
 
 	//La música que usaremos:
-	private Musica musica= new Musica(),winLose=new Musica(),fxKeko=new Musica(),disparo=new Musica()/*,fxPow=new Musica(),fxZubat=new Musica(),fxEn2=new Musica()*/,fxBoss=new Musica();
+	private Musica musica= new Musica(),winLose=new Musica(),fxKeko=new Musica(),disparo=new Musica(),musicaBoss=new Musica(),fxBoss=new Musica();
     
 	//Getter del nombre para que lo recoja PlantillaVentana:
 	public String getNombre() {return nombre;}
@@ -945,6 +945,15 @@ public class GameEngine implements KeyListener {
     */
    private void pausa() {
    
+	   boolean pausado=false;
+	   
+	   if(panel.getEjeX()>19350) {
+		   bossEncontrado=true;
+	   }
+	   else {
+		   bossEncontrado=false;
+	   }
+	   
 	   //Si estamos en pausa
     	if(pausa) {
     		//Le decimos a panel que pinte la pantalla de pausa
@@ -953,6 +962,7 @@ public class GameEngine implements KeyListener {
     		panel.repaint();
     		//Paramos la música
     		try {musica.pausaFondo();} catch (Exception e) {System.out.println("Fallo al pausar la música. Error: "+e);}
+    		pausado=true;
     	}
     	while(pausa) {
     		//ÑAPA detenemos el hilo mientras estamos en pausa
@@ -961,8 +971,24 @@ public class GameEngine implements KeyListener {
     	}
     	if(!pausa) {
     		panel.setPause(false);
-    		semaforo=panel.repintar();
-    		try {musica.continuarFondo();} catch (Exception e) {System.out.println("Fallo al reanudar la música. Error: "+e);}
+    		if(!bossEncontrado) {			
+    			try {musica.continuarFondo();} catch (Exception e) {System.out.println("Fallo al reanudar la música. Error: "+e);}
+    			try {musicaBoss.bossStop();} catch (Exception e) {System.out.println("Fallo al detener la música. Error: "+e);}
+    		}
+    		else {
+    			try {musica.pausaFondo();} catch (Exception e) {System.out.println("Fallo al pausar la música. Error: "+e);}
+    			try {musicaBoss.boss();} catch (Exception e) {System.out.println("Fallo al reanudar la música. Error: "+e);}
+    		}
+    		if(pausado) {
+    			try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					System.out.println("Error deteniendo el tiempo al salir de la pausa. Error: "+e);
+				}
+    		}
+    		else {
+    			semaforo=panel.repintar();
+    		}
     	}
     	
     }
@@ -1019,6 +1045,7 @@ public class GameEngine implements KeyListener {
         	fxBoss.cargarWagh();
         	fxKeko.cargarSalto();
         	musica.playFondo();
+        	musicaBoss.cargarBoss();
         	semaforo=panel.repintar();
             Thread.sleep(2500);
         } catch (InterruptedException e) {
@@ -1045,12 +1072,13 @@ public class GameEngine implements KeyListener {
         			try {
                 	//Detenemos el hilo para darle tiempo al panel a cargar y ponemos la imagen de cargando
                 	panel.setLoading(true);
+                	semaforo=panel.repintar();
                     Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
-                }
-        			pausa();
+        			} catch (InterruptedException e) {
+        				System.out.println("Error de interrupción del Thread.sleep contador="+contador+". Error log: "+e);
+        			}
         			panel.setLoading(false);
+        			pausa();
 
         		}
         		else {
@@ -1088,6 +1116,7 @@ public class GameEngine implements KeyListener {
         
         try {
 			musica.stop();
+			try {musicaBoss.bossStop();} catch (Exception e) {System.out.println("Fallo al detener la música. Error: "+e);}
 			
 			//Pedimos el nombre del jugador:
 		    panel.setPedirNombre(true);

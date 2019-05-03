@@ -1076,7 +1076,7 @@ public class Panel extends JPanel {
 		        							//Si choca contra el keko le quitamos vida, y en el caso del volador, colisionamos contra él
 		        							
 		        							if(listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
-		        								entities.enemies.get(posLista).doDamage(keko);
+//		        								entities.enemies.get(posLista).doDamage(keko);
 		        								
 		        								try {
 		        									fxKeko.ouch();
@@ -1900,9 +1900,6 @@ public class Panel extends JPanel {
      */
     public void paint(Graphics g) {
     	
-//    	if(sobrePlataforma) {
-//    		this.x+=contadorMovimientoPlataforma;
-//    	}
 		this.x+=movSobrePlataforma;
 
     	
@@ -1927,9 +1924,9 @@ public class Panel extends JPanel {
     			g.fillRect(0, 0, 1000, 1000);
     	
     			//Imagen móvil de fondo
-    			for (int ñ = -1000; ñ < 6000; ñ += 750) {
+    			for (int enne = -1000; enne < 6000; enne += 750) {
     	
-    				g.drawImage(fondo, ñ - (x / 4), 0, 750, 775, this);
+    				g.drawImage(fondo, enne - (x / 4), 0, 750, 775, this);
     	
     			}
     			
@@ -2098,7 +2095,7 @@ public class Panel extends JPanel {
     			/*Barrera para no caerse por los precipicios PARA PRUEBAS DE CONSTRUCCIÓ
     			¡Dejadlo comentado cuando se juega en serio y comentadlo cuando se está contruyendo!*/
     			
-//    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
+    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
     	
     			
     			//Plataformas para saltar

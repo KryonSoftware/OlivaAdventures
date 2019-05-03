@@ -8,7 +8,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 public class Musica {
 
     /* ATTRIBUTES */
-    private BasicPlayer fondo,disparo,click,salto,ouch,exit,lose,wagh,seleccion,win,ganador;
+    private BasicPlayer fondo,disparo,click,salto,ouch,exit,lose,wagh,seleccion,win,ganador,boss;
 
     /* BASIC FUNCTIONS */
     public void playFondo() {
@@ -60,6 +60,12 @@ public class Musica {
     }
     public void win() {
         try {win.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void boss() {
+        try {boss.play();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
+    }
+    public void bossStop() {
+        try {boss.stop();} catch (BasicPlayerException e) {/*A MAMARLA LOS PUTOS LOGS EN FORMA DE EXCEPCIÓN*/}
     }
     public void lose() {
     	try {
@@ -168,7 +174,18 @@ public class Musica {
         	win.open(new File("resources/sonido/musica_fondo/win.mp3"));
         	
         } catch (Exception e) {
-            System.out.println("Error cargando la música de salida. Posible error en el path. Error: "+e);
+            System.out.println("Error cargando la música de Ganar/Perder. Posible error en el path. Error: "+e);
+        }
+    }
+    
+    public void cargarBoss(){
+    	
+        try {
+            boss=new BasicPlayer();
+        	boss.open(new File("resources/sonido/musica_fondo/rats.mp3"));
+        	
+        } catch (Exception e) {
+            System.out.println("Error cargando la música de Boss. Posible error en el path. Error: "+e);
         }
     }
     
