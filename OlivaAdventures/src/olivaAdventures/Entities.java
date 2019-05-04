@@ -80,7 +80,10 @@ public class Entities {
         enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 300,true));
         enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 600,true));
         
-        enemies.add(new Enemy(Enemy.typeEnemies.boss, 20500, 650,false));
+//        enemies.add(new Enemy(Enemy.typeEnemies.boss, 20500, 650,false));
+        
+        enemies.add(new Enemy(Enemy.typeEnemies.boss, -500, 650,false));
+
 
 
         return enemies;

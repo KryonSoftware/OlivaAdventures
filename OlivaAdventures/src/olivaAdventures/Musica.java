@@ -82,7 +82,17 @@ public class Musica {
             fondo=new BasicPlayer();
             ganador=new BasicPlayer();
             ganador.open(new File("resources/sonido/musica_fondo/ganador.mp3"));
-        	fondo.open(new File("resources/sonido/musica_fondo/welcome_to_the_jungle_8_bit.mp3"));
+            switch((int) ((Math.random() * 3) + 1)) {
+            case 1:
+            	fondo.open(new File("resources/sonido/musica_fondo/Track1.mp3"));
+            	break;
+            case 2:
+            	fondo.open(new File("resources/sonido/musica_fondo/Track2.mp3"));
+            	break;
+            case 3:
+            	fondo.open(new File("resources/sonido/musica_fondo/Track3.mp3"));
+            	break;
+            }
         } catch (Exception e) {
             System.out.println("Error cargando la música de fondo. Posible error en el path. Error: "+e);
         }

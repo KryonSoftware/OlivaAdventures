@@ -5,8 +5,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="resources"/>
+	<classpathentry excluding="olivaAdventures/Menu/" kind="src" path="src"/>
+	<classpathentry kind="src" output="bin" path="resources"/>
 	<classpathentry kind="lib" path="jars/basicplayer3.0.jar"/>
 	<classpathentry kind="lib" path="jars/commons-logging-api-1.1.jar"/>
 	<classpathentry kind="lib" path="jars/jl1.0.jar"/>
