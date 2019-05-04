@@ -46,7 +46,7 @@ public class Panel extends JPanel {
 	energia71,energia72,energia73,energia74,energia75,energia76,energia77,energia78,energia79,energia80,
 	energia81,energia82,energia83,energia84,energia85,energia86,energia87,energia88,energia89,energia90,
 	energia91,energia92,energia93,energia94,energia95,energia96,energia97,energia98,energia99,energia100,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,
-	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos,vivo,creditosScroll,box;
+	s,t,u,v,w,equis,yGriega,z,muerto,letraUno,letraDos,letraTres,vivo,creditosScroll,box;
 	
 	//Arrays de imágenes
 	private BufferedImage[] animKeko = new BufferedImage[24],animMonstruo=new BufferedImage[4], animCorazones=new BufferedImage[4],
@@ -54,7 +54,7 @@ public class Panel extends JPanel {
 							barra_energia = new BufferedImage[101],animFly = new BufferedImage[8],animLlama = new BufferedImage[8];
 	
     private int x,y,arrPosKeko=2,arrPosBarra=4,arrPosReloj=0,arrPosMonstruo=0,avanceDisparo,alturaDisparo,letra,posicionLetra=350,posPrimeraLetra,posSegundaLetra,
-    		altoLetraUno,altoLetraDos,ejeYLetraUno,ejeYLetraDos,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0,
+    		posTerceraLetra,altoLetraUno,altoLetraDos,altoLetraTres,ejeYLetraUno,ejeYLetraDos,ejeYLetraTres,posicionBala,arrPosFly=0,arrPosLlama=0,arrPosBoss=0,animaciones=0,anMons=0,lado=0,estados=0,
     		contadorMovimientoPlataforma,movCreditos=0,movSobrePlataforma=0,recienAterrizado=0;
     
     public String nombreElegido="",tercLetra="",segLetra="";
@@ -64,7 +64,8 @@ public class Panel extends JPanel {
     private long momentoDisparo=0,contadorPintado=0;
     
     private boolean pause=false,disparo,disparado=false,impacto=false,loading=false,pedirNombre=false,primeraLetra=false,segundaLetra=false,
-    		terceraLetra=false,ganador=false,creditos=false,plataformaDerecha=false,sobrePlataforma=false,aterrizado=false,corregirEjeX=false;
+    		terceraLetra=false,ganador=false,creditos=false,plataformaDerecha=false,sobrePlataforma=false,aterrizado=false,corregirEjeX=false,
+    		terceraLetraPintar=false;
     
     //Instanciamos el player:
     public Player keko = new Player(350,720-89);
@@ -193,7 +194,7 @@ public class Panel extends JPanel {
 			fondo = ImageIO.read(new File("resources/Mapa/fondo.jpg"));
 			muerto = ImageIO.read(new File("resources/Menu/MUERTO.png"));
 			vivo = ImageIO.read(new File("resources/Menu/VIVO.png"));
-			creditosScroll = ImageIO.read(new File("resources/Menu/fondoScores.jpg"));
+			creditosScroll = ImageIO.read(new File("resources/Menu/creditos.png"));
 
 			//FONDO DEL HUD
 			hud = ImageIO.read(new File("resources/Hud/hud/proxy.duckduckgo.com.png"));
@@ -1383,6 +1384,7 @@ public class Panel extends JPanel {
     			segLetra="A";
     		}
     		else {
+    			letraTres=a;
     			tercLetra="A";
     		}
     		break;
@@ -1397,6 +1399,7 @@ public class Panel extends JPanel {
     			segLetra="B";
     		}
     		else {
+    			letraTres=b;
     			tercLetra="B";
     		}
     		break;
@@ -1411,6 +1414,7 @@ public class Panel extends JPanel {
     			segLetra="C";
     		}
     		else {
+    			letraTres=c;
     			tercLetra="C";
     		}
     		break;
@@ -1425,6 +1429,7 @@ public class Panel extends JPanel {
     			segLetra="D";
     		}
     		else {
+    			letraTres=d;
     			tercLetra="D";
     		}
     		break;
@@ -1439,6 +1444,7 @@ public class Panel extends JPanel {
     			segLetra="E";
     		}
     		else {
+    			letraTres=e;
     			tercLetra="E";
     		}
     		break;
@@ -1453,6 +1459,7 @@ public class Panel extends JPanel {
     			segLetra="F";
     		}
     		else {
+    			letraTres=f;
     			tercLetra="F";
     		}
     		break;
@@ -1467,6 +1474,7 @@ public class Panel extends JPanel {
     			segLetra="G";
     		}
     		else {
+    			letraTres=this.g;
     			tercLetra="G";
     		}
     		break;
@@ -1481,6 +1489,7 @@ public class Panel extends JPanel {
     			segLetra="H";
     		}
     		else {
+    			letraTres=h;
     			tercLetra="H";
     		}
     		break;
@@ -1495,6 +1504,7 @@ public class Panel extends JPanel {
     			segLetra="I";
     		}
     		else {
+    			letraTres=i;
     			tercLetra="I";
     		}
     		break;
@@ -1509,6 +1519,7 @@ public class Panel extends JPanel {
     			segLetra="J";
     		}
     		else {
+    			letraTres=j;
     			tercLetra="J";
     		}
     		break;
@@ -1523,6 +1534,7 @@ public class Panel extends JPanel {
     			segLetra="K";
     		}
     		else {
+    			letraTres=k;
     			tercLetra="K";
     		}
     		break;
@@ -1537,6 +1549,7 @@ public class Panel extends JPanel {
     			segLetra="L";
     		}
     		else {
+    			letraTres=l;
     			tercLetra="L";
     		}
     		break;
@@ -1551,6 +1564,7 @@ public class Panel extends JPanel {
     			segLetra="M";
     		}
     		else {
+    			letraTres=m;
     			tercLetra="M";
     		}
     		break;
@@ -1565,6 +1579,7 @@ public class Panel extends JPanel {
     			segLetra="N";
     		}
     		else {
+    			letraTres=n;
     			tercLetra="N";
     		}
     		break;
@@ -1579,6 +1594,7 @@ public class Panel extends JPanel {
     			segLetra="O";
     		}
     		else {
+    			letraTres=o;
     			tercLetra="O";
     		}
     		break;
@@ -1593,6 +1609,7 @@ public class Panel extends JPanel {
     			segLetra="P";
     		}
     		else {
+    			letraTres=p;
     			tercLetra="P";
     		}
     		break;
@@ -1607,6 +1624,7 @@ public class Panel extends JPanel {
     			segLetra="Q";
     		}
     		else {
+    			letraTres=q;
     			tercLetra="Q";
     		}
     		break;
@@ -1621,6 +1639,7 @@ public class Panel extends JPanel {
     			segLetra="R";
     		}
     		else {
+    			letraTres=r;
     			tercLetra="R";
     		}
     		break;
@@ -1635,6 +1654,7 @@ public class Panel extends JPanel {
     			segLetra="S";
     		}
     		else {
+    			letraTres=s;
     			tercLetra="S";
     		}
     		break;
@@ -1649,6 +1669,7 @@ public class Panel extends JPanel {
     			segLetra="T";
     		}
     		else {
+    			letraTres=t;
     			tercLetra="T";
     		}
     		break;
@@ -1663,6 +1684,7 @@ public class Panel extends JPanel {
     			segLetra="U";
     		}
     		else {
+    			letraTres=u;
     			tercLetra="U";
     		}
     		break;
@@ -1677,6 +1699,7 @@ public class Panel extends JPanel {
     			segLetra="V";
     		}
     		else {
+    			letraTres=v;
     			tercLetra="V";
     		}
     		break;
@@ -1691,6 +1714,7 @@ public class Panel extends JPanel {
     			segLetra="W";
     		}
     		else {
+    			letraTres=w;
     			tercLetra="W";
     		}
     		break;
@@ -1705,6 +1729,7 @@ public class Panel extends JPanel {
     			segLetra="X";
     		}
     		else {
+    			letraTres=equis;
     			tercLetra="X";
     		}
     		break;
@@ -1719,6 +1744,7 @@ public class Panel extends JPanel {
     			segLetra="Y";
     		}
     		else {
+    			letraTres=yGriega;
     			tercLetra="Y";
     		}
     		break;
@@ -1732,7 +1758,8 @@ public class Panel extends JPanel {
     			letraDos=z;
     			segLetra="Z";
     		}
-    		else {
+    		if(terceraLetra){
+    			letraTres=z;
     			tercLetra="Z";
     		}
     		break;
@@ -1743,12 +1770,13 @@ public class Panel extends JPanel {
     		}
     		if(terceraLetra) {
     			nombreElegido+=tercLetra;
+    			terceraLetraPintar=true;
+    			break;
     		}
     		if(segundaLetra) {
-    			if(posicionLetra==550) {
-    				nombreElegido+=segLetra;
-    				terceraLetra=true;
-    			}
+				nombreElegido+=segLetra;
+				terceraLetra=true;
+			
     		}
     		
     		primeraLetra=true;
@@ -2363,19 +2391,34 @@ public class Panel extends JPanel {
     			//No colisionables:
     			
     			g.drawImage(arbolPino,-450-x,230,400,550,this);
-    			g.drawImage(piedra1,50-x,630,220,145,this);
     			
-//    			g.drawImage(piedra1,750-x,630,220,145,this);
-//    			g.drawImage(piedra2,550-x,650,180,125,this);
-//    			g.drawImage(piedra3,320-x,625,150,170,this);
-//    			g.drawImage(piedra4,100-x,650,180,125,this);
-//    			g.drawImage(piedra5,-100-x,650,180,125,this);
-//    			g.drawImage(piedra6,890-x,650,180,125,this);
-//    			g.drawImage(piedra7,1200-x,650,180,125,this);
-//    			g.drawImage(piedra8,400-x,650,180,125,this);
-//    			g.drawImage(piedra9,1700-x,650,180,125,this);
-//    			g.drawImage(piedra10,2000-x,650,180,125,this);
-//    			g.drawImage(piedra11,1500-x,650,180,125,this);
+    			
+    			g.drawImage(piedra1,50-x,650,180,120,this);   			
+    			g.drawImage(piedra5,-200-x,560,180,290,this);
+    			g.drawImage(piedra2,600-x,670,140,90,this);
+    			g.drawImage(piedra1,1570-x,650,180,120,this);
+    			//piedras al otro lado del primer precipicio
+    			g.drawImage(piedra1,2490-x,650,180,120,this);
+    			g.drawImage(piedra5,3300-x,560,180,290,this);
+    			g.drawImage(piedra8,3800-x,640,220,145,this);
+    			g.drawImage(piedra5,4500-x,560,180,290,this);
+    			//piedras al otro lado del segundo precipicio
+    			g.drawImage(piedra1,6100-x,650,180,120,this);
+    			g.drawImage(piedra4,6820-x,640,140,150,this);
+    			//piedras al otro lado del tercer precipicio
+    			g.drawImage(piedra9,7380-x,660,140,120,this);
+    			g.drawImage(piedra1,8000-x,650,180,120,this);
+    			g.drawImage(piedra8,8868-x,640,220,145,this);
+    			//piedras al otro lado del cuarto precipicio
+    			g.drawImage(piedra3,14357-x,630,150,165,this);
+    			//piedras al otro lado del quinto precipicio
+    			g.drawImage(piedra1,17282-x,650,180,120,this);
+    			g.drawImage(piedra5,17690-x,560,180,290,this);
+    			//piedras boss
+    			g.drawImage(piedra6,20358-x,625,100,180,this);
+    			g.drawImage(piedra2,20998-x,670,140,90,this);
+    			
+    			
     	
     			//Imagen del hud
     			g.drawImage(hud, -5, 695, 1010, 390, this);
@@ -2408,7 +2451,7 @@ public class Panel extends JPanel {
     		else {
     			
     			if(!creditos) {
-    				g.drawImage(ganador? vivo: muerto,-500,-10,2000,1050,this);
+    				g.drawImage(ganador? vivo: muerto,0,0,1020,1020,this);
     				
     				meterNombrePuntuacion(g,letra);
     				
@@ -2427,6 +2470,14 @@ public class Panel extends JPanel {
     					posSegundaLetra=posicionLetra;
     					ejeYLetraDos=letra==KeyEvent.VK_MINUS ? 800 : 750;
     					altoLetraDos=letra==KeyEvent.VK_MINUS ? 20 : 114;
+    				}
+    				if(terceraLetraPintar) {
+    					g.drawImage(letraTres,posTerceraLetra,ejeYLetraTres,66,altoLetraTres,this);
+    				}
+    				else {
+    					posTerceraLetra=posicionLetra;
+    					ejeYLetraTres=letra==KeyEvent.VK_MINUS ? 800 : 750;
+    					altoLetraTres=letra==KeyEvent.VK_MINUS ? 20 : 114;
     				}
         			
         		}

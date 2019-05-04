@@ -14,7 +14,7 @@ public class GameEngine implements KeyListener {
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,
     		spawn=false,matadoBoss=false,creditos=false,semaforo=false,bossEncontrado=false;
     private long contador=0;
-    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=360,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
+    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=520,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
 	private String nombre="XXX";
 	public JFrame ventana;
@@ -103,12 +103,15 @@ public class GameEngine implements KeyListener {
 				System.out.println("Error deteniendo el hilo para dar tiempo a cargar la imagen de la letra seleccionada "
 						+ "(eligiendo letras y repintando desde los listeners de GameEngine)/n/n Log: "+e);
 			}
-    		panel.repaint();
+    		if(letraOK<3) {
+    			semaforo=panel.repintar();
+    		}
     		
     		if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER) {
     			letraOK++;
-    			if(letraOK>2) {
+    			if(letraOK>3) {
     				pidiendoNombre=false;
+    				try {Thread.sleep(250);} catch (InterruptedException e) {System.out.println("Error parando el tiempo tras pedir el nombre. Error: "+e);}
     			}
     		}
     		
@@ -1046,6 +1049,7 @@ public class GameEngine implements KeyListener {
         	fxKeko.cargarSalto();
         	musica.playFondo();
         	musicaBoss.cargarBoss();
+        	ejeY=300;
         	semaforo=panel.repintar();
             Thread.sleep(2500);
         } catch (InterruptedException e) {
@@ -1067,6 +1071,7 @@ public class GameEngine implements KeyListener {
         			panel.reset(tempVidas);
         			ejeX=0;ejeY=0;prevY=720-89;prevX=0;
         			panel.setEjeX(ejeX);
+        			ejeY=300;
         	        panel.setEjeY(ejeY);
         	       
         			try {
@@ -1142,7 +1147,7 @@ public class GameEngine implements KeyListener {
 		    }
 		    
 		    if(creditos) {		    	
-		    	for(int contCreditos=0;contCreditos<4000;contCreditos++) {
+		    	for(int contCreditos=0;contCreditos<3250;contCreditos++) {
 		    		if(contCreditos<3001) {
 		    			panel.setMovCreditos(contCreditos);
 		    			semaforo=panel.repintar();
