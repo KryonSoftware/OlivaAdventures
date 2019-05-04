@@ -80,9 +80,10 @@ public class Entities {
         enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 300,true));
         enemies.add(new Enemy(Enemy.typeEnemies.fly, 20000, 600,true));
         
-//        enemies.add(new Enemy(Enemy.typeEnemies.boss, 20500, 650,false));
+        enemies.add(new Enemy(Enemy.typeEnemies.boss, 20500, 650,false));
         
-        enemies.add(new Enemy(Enemy.typeEnemies.boss, -500, 650,false));
+        //Activar este boss y desactivar el de arriba para que la partida acabe nada más empezar como si hubieses ganado
+//        enemies.add(new Enemy(Enemy.typeEnemies.boss, -500, 650,false));
 
 
 

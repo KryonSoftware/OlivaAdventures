@@ -1077,7 +1077,9 @@ public class Panel extends JPanel {
 		        							//Si choca contra el keko le quitamos vida, y en el caso del volador, colisionamos contra él
 		        							
 		        							if(listaPlataformas.get(x).getTipo()==Tipo.PLAYER) {
-//		        								entities.enemies.get(posLista).doDamage(keko);
+		        								
+		        								//Comentar esta línea para volverse inmortal
+		        								entities.enemies.get(posLista).doDamage(keko);
 		        								
 		        								try {
 		        									fxKeko.ouch();
@@ -2123,7 +2125,7 @@ public class Panel extends JPanel {
     			/*Barrera para no caerse por los precipicios PARA PRUEBAS DE CONSTRUCCIÓ
     			¡Dejadlo comentado cuando se juega en serio y comentadlo cuando se está contruyendo!*/
     			
-    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
+//    			addPlatformToList(-350 - x, 775, 25000, 500, Tipo.BOTH);
     	
     			
     			//Plataformas para saltar
