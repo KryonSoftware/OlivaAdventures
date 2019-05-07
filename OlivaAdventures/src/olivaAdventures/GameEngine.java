@@ -47,7 +47,7 @@ public class GameEngine implements KeyListener {
         this.ventana.add(panel);
 
         //Dejamos el frame visible al final para evitar problemas:
-        ventana.setVisible(true);
+        this.ventana.setVisible(true);
 
     }
 
@@ -962,7 +962,7 @@ public class GameEngine implements KeyListener {
     		//Le decimos a panel que pinte la pantalla de pausa
     		panel.setPause(true);
     		//Hacemos un repaint con la pantalla de pausa
-    		panel.repaint();
+    		semaforo=panel.repintar();
     		//Paramos la música
     		try {musica.pausaFondo();} catch (Exception e) {System.out.println("Fallo al pausar la música. Error: "+e);}
     		pausado=true;
