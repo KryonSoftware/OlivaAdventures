@@ -1180,4 +1180,13 @@ public class GameEngine implements KeyListener {
         
     }
     
+    /**
+     * Método para eliminar la ventana del juego
+     */
+    public boolean matarVentana() {
+    	this.ventana.setVisible(false);
+    	this.ventana.dispose();
+    	return true;
+    }
+    
 }
