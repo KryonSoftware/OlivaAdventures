@@ -39,6 +39,7 @@ public class GameEngine implements KeyListener {
     	//Valores del frame:
         this.ventana.setSize(1000,1000);
         this.ventana.setResizable(false);
+        this.ventana.setUndecorated(true);
         this.ventana.addKeyListener(this);
         this.ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.ventana.setLocationRelativeTo(null);
