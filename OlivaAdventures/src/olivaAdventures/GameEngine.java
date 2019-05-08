@@ -17,7 +17,7 @@ public class GameEngine implements KeyListener {
     private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=520,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
 	private String nombre="XXX";
-	public JFrame ventana;
+	public JFrame ventana=new JFrame();
     
     //Inicializamos el panel que va dentro del Frame:
     private Panel panel = new Panel();
@@ -33,9 +33,9 @@ public class GameEngine implements KeyListener {
     * El constructor simplemente se encarga de meter el panel en el frame que se le ha pasado y cargar sus listeners.
     * @param frame  JFrame del menú que usará el juego.
     */
-    public GameEngine(JFrame ventana){
+    public GameEngine(){
 
-    	this.ventana=ventana;
+//    	this.ventana=ventana;
     	//Valores del frame:
         this.ventana.setSize(1000,1000);
         this.ventana.setResizable(false);

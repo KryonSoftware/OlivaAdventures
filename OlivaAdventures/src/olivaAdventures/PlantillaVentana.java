@@ -45,13 +45,13 @@ public class PlantillaVentana {
 			ventana.setVisible(true);
 			menu = new Menu(ventana, this);
 			
-
 		} 
 		else if (tipus.equals(TipoVentana.Nivel)) {
-			GameEngine nivel = new GameEngine(ventana);
+			GameEngine nivel = new GameEngine();
+			ventana.setVisible(false);
+			ventana.dispose();
 			puntuacion=nivel.runGame();
 			nombrePuntuacion=nivel.getNombreJugador();
-			System.out.println(nivel.getNombreJugador());
 			pasarPuntuacion();
 			ventana.setVisible(false);
 		}

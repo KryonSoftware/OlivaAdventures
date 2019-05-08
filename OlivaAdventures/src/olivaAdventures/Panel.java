@@ -2492,7 +2492,8 @@ public class Panel extends JPanel {
     	else {
     		g.drawImage(cargando,0,0,1000,1000,this);
     	}
-    	System.out.println(350+x);
+    	//Línea que nos indica nuestra posición...descomentar para construir nivel
+//    	System.out.println(350+x);
     	contadorPintado++;
 	}
     
