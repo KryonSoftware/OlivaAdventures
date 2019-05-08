@@ -2497,6 +2497,10 @@ public class Panel extends JPanel {
     	contadorPintado++;
 	}
     
+    /**
+     * Método repaint pero deteniendo el hilo que lo llama esperando al true.
+     * @return
+     */
     public boolean repintar() {
     	repaint();
     	return true;
