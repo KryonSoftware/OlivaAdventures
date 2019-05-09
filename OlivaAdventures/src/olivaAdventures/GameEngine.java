@@ -986,7 +986,10 @@ public class GameEngine implements KeyListener {
     	}
     	while(pausa) {
     		//ÑAPA detenemos el hilo mientras estamos en pausa
-    		System.out.println("pausa");
+//    		System.out.println("pausa");
+    		try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {System.out.println("Fallo durante la pausa. Error: "+e);}
     		//Estamos obligados a hacerle hacer algo dentro del while o se queda sordo a la variable pausa, imagino que es cosa de que el procesador se pone a full
     	}
     	if(!pausa) {

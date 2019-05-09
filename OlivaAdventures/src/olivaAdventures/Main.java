@@ -12,7 +12,7 @@ public class Main {
 		while(true) {
 			
 			while (!(pv.menu.nivel) && !(pv.menu.scoresTF)) {
-				System.out.println("Menú - Esperando");
+//				System.out.println("Menú - Esperando");
 				try {
 					Thread.sleep(10);
 				} catch (InterruptedException e) {
@@ -27,7 +27,7 @@ public class Main {
 			else {
 				pv.cambiarTipodeVentana(TipoVentana.Puntuacion);
 				while (pv.prueba2.scoresOn) {
-					System.out.println("Scores - Esperando");
+//					System.out.println("Scores - Esperando");
 					try {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {

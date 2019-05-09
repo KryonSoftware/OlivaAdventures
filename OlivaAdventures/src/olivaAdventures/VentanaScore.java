@@ -12,7 +12,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import javax.imageio.ImageIO;
 
@@ -33,7 +34,7 @@ public class VentanaScore implements KeyListener {
 
 	public volatile boolean scoresOn=true;
 
-	private String path = "resources/Menu/puntuaciones.txt";
+	private String path = "/Menu/puntuaciones.txt";
 	public JFrame frame;	
 	private Dimension Dim = new Dimension(frameX, frameY);
 
@@ -80,8 +81,8 @@ public class VentanaScore implements KeyListener {
 	private void lecturaFichero() {
 
 		try {
-
-			BufferedReader br = new BufferedReader(new FileReader(path));
+//			.getBytes("UTF-8")
+			BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path),"UTF-8"));
 			String linea;
 
 			linea = br.readLine();
@@ -225,13 +226,13 @@ public class VentanaScore implements KeyListener {
 //		Graphics2D g = new Graphics2D();
 //		BufferedImage img = null;
 //		try {
-//		    img = ImageIO.read(new File("resources/Menu/fondoScores.gif"));
+//		    img = ImageIO.read(new File("/Menu/fondoScores.gif"));
 //		} catch (IOException e) {
 //		}
 //		g.drawImage(img, 0, 0, frameX, frameY, null);
 		
 		JLabel labelDeFondoAtras = new JLabel();
-		labelDeFondoAtras.setIcon(obtenerImagenPathAbsoluto("resources/Menu/fondoScores.jpg"));
+		labelDeFondoAtras.setIcon(obtenerImagenPathAbsoluto("/Menu/fondoScores.jpg"));
 		labelDeFondoAtras.setBounds(0,-10,1000,1100);
 		JLabel labelDeFondo = new JLabel();
 		labelDeFondo = new JLabel();
@@ -242,7 +243,7 @@ public class VentanaScore implements KeyListener {
 		//labelDeFondo.setForeground(Color.red);
 		
 		//labelDeFondo.setIcon(obtenerImagen("ajedre.gif"));
-		labelDeFondo.setIcon(obtenerImagenPathAbsoluto("resources/Menu/Scores13.png"));
+		labelDeFondo.setIcon(obtenerImagenPathAbsoluto("/Menu/Scores13.png"));
 		
 //		labelDeFondoAtras.setOpaque(true);
 //		frame.add(labelDeFondoAtras);
@@ -358,56 +359,56 @@ public class VentanaScore implements KeyListener {
 
 	private String seleccionarPathImagen(String caracter) {
 
-		String pathImagen = "resources/Menu/NumerosyLetras/Point.png";
+		String pathImagen = "/Menu/NumerosyLetras/Point.png";
 
 		/* --- LETRAS --- */
-		if (caracter.equals("A")) { pathImagen = "resources/Menu/NumerosyLetras/A.png"; }
-		if (caracter.equals("B")) { pathImagen = "resources/Menu/NumerosyLetras/B.png"; }
-		if (caracter.equals("C")) { pathImagen = "resources/Menu/NumerosyLetras/C.png"; }
-		if (caracter.equals("D")) { pathImagen = "resources/Menu/NumerosyLetras/D.png"; }
-		if (caracter.equals("E")) { pathImagen = "resources/Menu/NumerosyLetras/E.png"; }
-		if (caracter.equals("F")) { pathImagen = "resources/Menu/NumerosyLetras/F.png"; }
-		if (caracter.equals("G")) { pathImagen = "resources/Menu/NumerosyLetras/G.png"; }
-		if (caracter.equals("H")) { pathImagen = "resources/Menu/NumerosyLetras/H.png"; }
-		if (caracter.equals("I")) { pathImagen = "resources/Menu/NumerosyLetras/1.png"; }
-		if (caracter.equals("J")) { pathImagen = "resources/Menu/NumerosyLetras/J.png"; }
-		if (caracter.equals("K")) { pathImagen = "resources/Menu/NumerosyLetras/K.png"; }
-		if (caracter.equals("L")) { pathImagen = "resources/Menu/NumerosyLetras/L.png"; }
-		if (caracter.equals("M")) { pathImagen = "resources/Menu/NumerosyLetras/M.png"; }
-		if (caracter.equals("N")) { pathImagen = "resources/Menu/NumerosyLetras/N.png"; }
-		if (caracter.equals("O")) { pathImagen = "resources/Menu/NumerosyLetras/O.png"; }
-		if (caracter.equals("P")) { pathImagen = "resources/Menu/NumerosyLetras/P.png"; }
-		if (caracter.equals("Q")) { pathImagen = "resources/Menu/NumerosyLetras/Q.png"; }
-		if (caracter.equals("R")) { pathImagen = "resources/Menu/NumerosyLetras/R.png"; }
-		if (caracter.equals("S")) { pathImagen = "resources/Menu/NumerosyLetras/S.png"; }
-		if (caracter.equals("T")) { pathImagen = "resources/Menu/NumerosyLetras/T.png"; }
-		if (caracter.equals("U")) { pathImagen = "resources/Menu/NumerosyLetras/U.png"; }
-		if (caracter.equals("V")) { pathImagen = "resources/Menu/NumerosyLetras/V.png"; }
-		if (caracter.equals("W")) { pathImagen = "resources/Menu/NumerosyLetras/W.png"; }
-		if (caracter.equals("X")) { pathImagen = "resources/Menu/NumerosyLetras/X.png"; }
-		if (caracter.equals("Y")) { pathImagen = "resources/Menu/NumerosyLetras/Y.png"; }
-		if (caracter.equals("Z")) { pathImagen = "resources/Menu/NumerosyLetras/Z.png"; }
+		if (caracter.equals("A")) { pathImagen = "/Menu/NumerosyLetras/A.png"; }
+		if (caracter.equals("B")) { pathImagen = "/Menu/NumerosyLetras/B.png"; }
+		if (caracter.equals("C")) { pathImagen = "/Menu/NumerosyLetras/C.png"; }
+		if (caracter.equals("D")) { pathImagen = "/Menu/NumerosyLetras/D.png"; }
+		if (caracter.equals("E")) { pathImagen = "/Menu/NumerosyLetras/E.png"; }
+		if (caracter.equals("F")) { pathImagen = "/Menu/NumerosyLetras/F.png"; }
+		if (caracter.equals("G")) { pathImagen = "/Menu/NumerosyLetras/G.png"; }
+		if (caracter.equals("H")) { pathImagen = "/Menu/NumerosyLetras/H.png"; }
+		if (caracter.equals("I")) { pathImagen = "/Menu/NumerosyLetras/1.png"; }
+		if (caracter.equals("J")) { pathImagen = "/Menu/NumerosyLetras/J.png"; }
+		if (caracter.equals("K")) { pathImagen = "/Menu/NumerosyLetras/K.png"; }
+		if (caracter.equals("L")) { pathImagen = "/Menu/NumerosyLetras/L.png"; }
+		if (caracter.equals("M")) { pathImagen = "/Menu/NumerosyLetras/M.png"; }
+		if (caracter.equals("N")) { pathImagen = "/Menu/NumerosyLetras/N.png"; }
+		if (caracter.equals("O")) { pathImagen = "/Menu/NumerosyLetras/O.png"; }
+		if (caracter.equals("P")) { pathImagen = "/Menu/NumerosyLetras/P.png"; }
+		if (caracter.equals("Q")) { pathImagen = "/Menu/NumerosyLetras/Q.png"; }
+		if (caracter.equals("R")) { pathImagen = "/Menu/NumerosyLetras/R.png"; }
+		if (caracter.equals("S")) { pathImagen = "/Menu/NumerosyLetras/S.png"; }
+		if (caracter.equals("T")) { pathImagen = "/Menu/NumerosyLetras/T.png"; }
+		if (caracter.equals("U")) { pathImagen = "/Menu/NumerosyLetras/U.png"; }
+		if (caracter.equals("V")) { pathImagen = "/Menu/NumerosyLetras/V.png"; }
+		if (caracter.equals("W")) { pathImagen = "/Menu/NumerosyLetras/W.png"; }
+		if (caracter.equals("X")) { pathImagen = "/Menu/NumerosyLetras/X.png"; }
+		if (caracter.equals("Y")) { pathImagen = "/Menu/NumerosyLetras/Y.png"; }
+		if (caracter.equals("Z")) { pathImagen = "/Menu/NumerosyLetras/Z.png"; }
 
 		/* --- NUMEROS --- */
-		if (caracter.equals("0")) { pathImagen = "resources/Menu/NumerosyLetras/0.png"; }
-		if (caracter.equals("1")) { pathImagen = "resources/Menu/NumerosyLetras/1.png"; }
-		if (caracter.equals("2")) { pathImagen = "resources/Menu/NumerosyLetras/2.png"; }
-		if (caracter.equals("3")) { pathImagen = "resources/Menu/NumerosyLetras/3.png"; }
-		if (caracter.equals("4")) { pathImagen = "resources/Menu/NumerosyLetras/4.png"; }
-		if (caracter.equals("5")) { pathImagen = "resources/Menu/NumerosyLetras/5.png"; }
-		if (caracter.equals("6")) { pathImagen = "resources/Menu/NumerosyLetras/6.png"; }
-		if (caracter.equals("7")) { pathImagen = "resources/Menu/NumerosyLetras/7.png"; }
-		if (caracter.equals("8")) { pathImagen = "resources/Menu/NumerosyLetras/8.png"; }
-		if (caracter.equals("9")) { pathImagen = "resources/Menu/NumerosyLetras/9.png"; }
+		if (caracter.equals("0")) { pathImagen = "/Menu/NumerosyLetras/0.png"; }
+		if (caracter.equals("1")) { pathImagen = "/Menu/NumerosyLetras/1.png"; }
+		if (caracter.equals("2")) { pathImagen = "/Menu/NumerosyLetras/2.png"; }
+		if (caracter.equals("3")) { pathImagen = "/Menu/NumerosyLetras/3.png"; }
+		if (caracter.equals("4")) { pathImagen = "/Menu/NumerosyLetras/4.png"; }
+		if (caracter.equals("5")) { pathImagen = "/Menu/NumerosyLetras/5.png"; }
+		if (caracter.equals("6")) { pathImagen = "/Menu/NumerosyLetras/6.png"; }
+		if (caracter.equals("7")) { pathImagen = "/Menu/NumerosyLetras/7.png"; }
+		if (caracter.equals("8")) { pathImagen = "/Menu/NumerosyLetras/8.png"; }
+		if (caracter.equals("9")) { pathImagen = "/Menu/NumerosyLetras/9.png"; }
 
-		if (caracter.equals("-")) { pathImagen = "resources/Menu/NumerosyLetras/-.png"; }
+		if (caracter.equals("-")) { pathImagen = "/Menu/NumerosyLetras/-.png"; }
 
 		return pathImagen;
 	}
 
 	private ImageIcon obtenerImagenPathAbsoluto(String pathImagen) {
 
-		return new ImageIcon(pathImagen);
+		return new ImageIcon(getClass().getResource(pathImagen));
 	}
 
 	/* --- METODOS CUATERNARIOS --- */

@@ -81,16 +81,16 @@ public class Musica {
         try {
             fondo=new BasicPlayer();
             ganador=new BasicPlayer();
-            ganador.open(new File("resources/sonido/musica_fondo/ganador.mp3"));
+            ganador.open(getClass().getResource("/sonido/musica_fondo/ganador.mp3"));
             switch((int) ((Math.random() * 3) + 1)) {
             case 1:
-            	fondo.open(new File("resources/sonido/musica_fondo/Track1.mp3"));
+            	fondo.open(getClass().getResource("/sonido/musica_fondo/Track1.mp3"));
             	break;
             case 2:
-            	fondo.open(new File("resources/sonido/musica_fondo/Track2.mp3"));
+            	fondo.open(getClass().getResource("/sonido/musica_fondo/Track2.mp3"));
             	break;
             case 3:
-            	fondo.open(new File("resources/sonido/musica_fondo/Track3.mp3"));
+            	fondo.open(getClass().getResource("/sonido/musica_fondo/Track3.mp3"));
             	break;
             }
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class Musica {
         try {
             disparo=new BasicPlayer();
 
-        	disparo.open(new File("resources/sonido/sonido_pistola/shot.mp3"));
+        	disparo.open(getClass().getResource("/sonido/sonido_pistola/shot.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de disparo. Posible error en el path. Error: "+e);
         }
@@ -114,7 +114,7 @@ public class Musica {
         try {
             click=new BasicPlayer();
 
-        	click.open(new File("resources/sonido/Menu/click.mp3"));
+        	click.open(getClass().getResource("/sonido/Menu/click.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de click. Posible error en el path. Error: "+e);
         }
@@ -125,7 +125,7 @@ public class Musica {
         try {
             wagh=new BasicPlayer();
 
-        	wagh.open(new File("resources/monstruo/Boss/Angry/grito_boss.mp3"));
+        	wagh.open(getClass().getResource("/monstruo/Boss/Angry/grito_boss.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de wagh. Posible error en el path. Error: "+e);
         }
@@ -136,7 +136,7 @@ public class Musica {
         try {
             ouch=new BasicPlayer();
             
-        	ouch.open(new File("resources/sonido/danno/danno.mp3"));
+        	ouch.open(getClass().getResource("/sonido/danno/danno.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de ouch. Posible error en el path. Error: "+e);
         }
@@ -147,7 +147,7 @@ public class Musica {
         try {
             salto=new BasicPlayer();
             
-        	salto.open(new File("resources/sonido/salto/salto.mp3"));
+        	salto.open(getClass().getResource("/sonido/salto/salto.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de salto. Posible error en el path. Error: "+e);
         }
@@ -158,7 +158,7 @@ public class Musica {
         try {
             seleccion=new BasicPlayer();
             
-        	seleccion.open(new File("resources/sonido/Menu/selected.mp3"));
+        	seleccion.open(getClass().getResource("/sonido/Menu/selected.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de selección. Posible error en el path. Error: "+e);
         }
@@ -169,7 +169,7 @@ public class Musica {
         try {
             exit=new BasicPlayer();
             
-        	exit.open(new File("resources/sonido/Menu/exit.mp3"));
+        	exit.open(getClass().getResource("/sonido/Menu/exit.mp3"));
         } catch (Exception e) {
             System.out.println("Error cargando la música de salida. Posible error en el path. Error: "+e);
         }
@@ -180,8 +180,8 @@ public class Musica {
         try {
             win=new BasicPlayer();
             lose=new BasicPlayer();
-        	lose.open(new File("resources/sonido/musica_fondo/lose.mp3"));
-        	win.open(new File("resources/sonido/musica_fondo/win.mp3"));
+        	lose.open(getClass().getResource("/sonido/musica_fondo/lose.mp3"));
+        	win.open(getClass().getResource("/sonido/musica_fondo/win.mp3"));
         	
         } catch (Exception e) {
             System.out.println("Error cargando la música de Ganar/Perder. Posible error en el path. Error: "+e);
@@ -192,7 +192,7 @@ public class Musica {
     	
         try {
             boss=new BasicPlayer();
-        	boss.open(new File("resources/sonido/musica_fondo/rats.mp3"));
+        	boss.open(getClass().getResource("/sonido/musica_fondo/rats.mp3"));
         	
         } catch (Exception e) {
             System.out.println("Error cargando la música de Boss. Posible error en el path. Error: "+e);

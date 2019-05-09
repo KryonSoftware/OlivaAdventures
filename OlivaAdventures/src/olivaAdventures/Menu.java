@@ -25,12 +25,12 @@ public class Menu implements KeyListener {
 	
 	private int contadorTecla = 1;
 
-	private String newGameImagen = "resources/Menu/newGame.png";
-	private String scoresImagen = "resources/Menu/Scores.png";
-	private String exitImagen = "resources/Menu/exit.png";
-	private ImageIcon newGame = new ImageIcon(newGameImagen);
-	private ImageIcon scores = new ImageIcon(scoresImagen);
-	private ImageIcon exit = new ImageIcon(exitImagen);
+	private String newGameImagen = "/Menu/newGame.png";
+	private String scoresImagen = "/Menu/Scores.png";
+	private String exitImagen = "/Menu/exit.png";
+	private ImageIcon newGame = new ImageIcon(getClass().getResource(newGameImagen));
+	private ImageIcon scores = new ImageIcon(getClass().getResource(scoresImagen));
+	private ImageIcon exit = new ImageIcon(getClass().getResource(exitImagen));
 	public boolean scoresTF=false;
 	
 	Musica navegar=new Musica(),seleccion = new Musica();
