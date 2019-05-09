@@ -12,12 +12,12 @@ import javax.swing.*;
 public class GameEngine implements KeyListener {
 
     private boolean saltando=false,arriba=false,derecha=false,izquierda=false,pausa=false,gatillo=false,gameOver=false,pidiendoNombre=false,
-    		spawn=false,matadoBoss=false,creditos=false,semaforo=false,bossEncontrado=false;
+    		spawn=false,matadoBoss=false,creditos=false,semaforo=false,bossEncontrado=false,pensando=false;
     private long contador=0;
-    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=520,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo;
+    private int ejeX=0,ejeY=0,prevY=720-89,prevX=0,puntuacion=520,segundosCambiarImagenTiempo=this.puntuacion/25,contarSegundosCambiarImagenTiempo,anteriorLetra;
 	private byte contadorSalto=0,cambio=0,respirando=0,compruebaDistanciaSalto=0,letraOK=0,impulso=0,anDisp=26;
 	private String nombre="XXX";
-	public JFrame ventana=new JFrame();
+	public JFrame ventana=new JFrame("Oliva Adventures");
     
     //Inicializamos el panel que va dentro del Frame:
     private Panel panel = new Panel();
@@ -94,29 +94,6 @@ public class GameEngine implements KeyListener {
     		}
     		
     	}
-    	//Cuando nos pida el nombre para la puntuación:
-    	else {
-    		
-    		panel.setLetra(keyEvent.getKeyCode());
-    		try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				System.out.println("Error deteniendo el hilo para dar tiempo a cargar la imagen de la letra seleccionada "
-						+ "(eligiendo letras y repintando desde los listeners de GameEngine)/n/n Log: "+e);
-			}
-    		if(letraOK<3) {
-    			semaforo=panel.repintar();
-    		}
-    		
-    		if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER) {
-    			letraOK++;
-    			if(letraOK>3) {
-    				pidiendoNombre=false;
-    				try {Thread.sleep(250);} catch (InterruptedException e) {System.out.println("Error parando el tiempo tras pedir el nombre. Error: "+e);}
-    			}
-    		}
-    		
-    	}
 
     }
 
@@ -142,6 +119,45 @@ public class GameEngine implements KeyListener {
             	gatillo=false;
             default:;
             }
+    		
+    	}
+    	//Cuando nos pida el nombre para la puntuación:
+    	else {
+    		
+    		if(!pensando) {
+	    		pensando=true;
+	    		panel.setLetra(keyEvent.getKeyCode());
+	    		try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					System.out.println("Error deteniendo el hilo para dar tiempo a cargar la imagen de la letra seleccionada "
+							+ "(eligiendo letras y repintando desde los listeners de GameEngine)/n/n Log: "+e);
+				}
+	    		if(letraOK<3) {
+	    			semaforo=panel.repintar();
+	    		}
+	    		else {
+	    			letraOK++;
+	    			pidiendoNombre=false;
+	    		}
+	    		
+	    		if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER && !(anteriorLetra==KeyEvent.VK_ENTER) || keyEvent.getKeyCode()==KeyEvent.VK_ENTER && letraOK>3) {
+	    			letraOK++;
+	    			if(letraOK>3) {
+	    				if (getNombreJugador().matches("[A-Z]{3}")) {
+	    					pidiendoNombre=false;
+		    				try {Thread.sleep(250);} catch (InterruptedException e) {System.out.println("Error parando el tiempo tras pedir el nombre. Error: "+e);}
+	    				}
+	    				else {
+	    					letraOK=0;
+	    					panel.reiniciarLetras();
+	    				}
+	    			}
+	    		}
+	    		
+	    		anteriorLetra=keyEvent.getKeyCode();
+	    		pensando=false;
+    		}
     		
     	}
     	

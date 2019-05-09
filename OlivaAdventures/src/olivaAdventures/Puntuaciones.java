@@ -221,8 +221,8 @@ public class Puntuaciones {
 
 		else if (comprobar.equals(comprobar.nombre)) {
 			if (!nombre.matches("[A-Z]{3}")) {	
-				if (activaSout == true) System.out.println(">> NOMBRE RESTABLECIDO << El nombre introducido no esta dentro de los parametros aceptados, se establecera por defecto *AAA*.");
-				nombre = "AAA";								
+				if (activaSout == true) System.out.println(">> NOMBRE RESTABLECIDO << El nombre introducido no esta dentro de los parametros aceptados, se establecera por defecto *DAM*.");
+				nombre = "DAM";								
 			}
 		}
 

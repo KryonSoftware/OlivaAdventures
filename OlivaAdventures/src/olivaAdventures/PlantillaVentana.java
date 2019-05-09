@@ -52,6 +52,7 @@ public class PlantillaVentana {
 			ventana.dispose();
 			puntuacion=nivel.runGame();
 			nombrePuntuacion=nivel.getNombreJugador();
+			System.out.println(nombrePuntuacion);
 			pasarPuntuacion();
 			boolean semaforo=nivel.matarVentana();
 			ventana.setVisible(false);

@@ -115,6 +115,10 @@ public class Panel extends JPanel {
 
 	public void setArrPosLlama(int arrPosLlama) {this.arrPosLlama = arrPosLlama;}
 
+	public int getPosicionLetra() {return posicionLetra;}
+
+	public void setPosicionLetra(int posicionLetra) {this.posicionLetra = posicionLetra;}
+
 	public boolean isLoading() {return loading;}
 
 	public void setLoading(boolean loading) {this.loading = loading;}
@@ -2504,6 +2508,19 @@ public class Panel extends JPanel {
     public boolean repintar() {
     	repaint();
     	return true;
+    }
+    
+    /**
+     * Método para resetear las letras cuando eliges el nombre.
+     */
+    public void reiniciarLetras() {
+    	
+    	posicionLetra=350;
+    	primeraLetra=false;
+    	segundaLetra=false;
+    	terceraLetraPintar=false;
+    	terceraLetra=false;
+    	
     }
 
 }
