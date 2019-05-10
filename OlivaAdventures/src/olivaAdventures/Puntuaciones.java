@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Puntuaciones {
 
@@ -15,7 +16,28 @@ public class Puntuaciones {
 	private String name;											// Nombre que ya estaba en el top.
 	private String score;											// Puntuacion que ya estaba en el top.
 
-	private String path = "resources/Menu/puntuaciones.txt";
+	private String path = System.getProperty("os.name").equals("Windows")? "C:\\Windows\\Temp" : "/tmp/puntuaciones.txt"/*"/Menu/puntuaciones.txt"*/;
+	private String pathEsc=getPathEsc();
+
+	private String getPathEsc() {
+		
+		String puth="";
+		
+		switch(System.getProperty("os.name")) {
+		case "Linux":
+			puth="/tmp/puntuaciones.txt";
+			break;
+		case "Windows":
+			puth="C:\\Windows\\Temp";
+
+			break;
+			default:	
+				puth="/tmp/puntuaciones.txt";
+				
+		}
+		
+		return puth;
+	}
 	private String linea;											// Variable donde se guarda la lectura de la linea del archivo de las puntuaciones: *path*.
 	private String nuevaPuntuacion;									// Puntuaciones que toquen guardarse en el top.
 	public int p = 5;												// Puntuaciones totales que se escribiran (esta variable solo se modificara desde aqui).
@@ -72,7 +94,18 @@ public class Puntuaciones {
 
 		try {
 
-			BufferedReader br = new BufferedReader(new FileReader(path));
+			BufferedReader br;
+			
+			try {
+				
+				br = new BufferedReader(new FileReader(path));
+				linea = br.readLine();
+				
+			}catch(Exception e) {
+				
+				br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/Menu/puntuaciones.txt"),"UTF-8"));
+				linea = br.readLine();
+			}
 
 			linea = br.readLine();
 			comprobacion(comprobar.linea);
@@ -114,7 +147,7 @@ public class Puntuaciones {
 
 			if (nuevaPuntuacionEscrita == true) {			// Comprobamos si es necesario (otra vez) reescribir el *.txt*. En este caso, se retocara si hay cambio en el orden.
 
-				BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+				BufferedWriter bw = new BufferedWriter(new FileWriter(pathEsc));
 
 				ordenarTopProv();
 				for (int i=0 ; i<p ; i++) {					// Escribimos las puntuaciones en orden.

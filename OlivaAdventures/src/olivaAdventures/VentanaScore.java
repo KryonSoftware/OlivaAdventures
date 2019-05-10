@@ -34,7 +34,28 @@ public class VentanaScore implements KeyListener {
 
 	public volatile boolean scoresOn=true;
 
-	private String path = "/Menu/puntuaciones.txt";
+	private String path = System.getProperty("os.name").equals("Windows")? "C:\\Windows\\Temp||puntuaciones.txt" : "/tmp/puntuaciones.txt"/*"/Menu/puntuaciones.txt"*/;
+	private String pathEsc=getPathEsc();
+
+	private String getPathEsc() {
+		
+		String puth="";
+		
+		switch(System.getProperty("os.name")) {
+		case "Linux":
+			puth="/tmp/puntuaciones.txt";
+			break;
+		case "Windows":
+			puth="C:\\Windows\\Temp\\puntuaciones.txt";
+
+			break;
+			default:			
+				puth="/tmp/puntuaciones.txt";
+				
+		}
+		
+		return puth;
+	}
 	public JFrame frame;	
 	private Dimension Dim = new Dimension(frameX, frameY);
 
@@ -82,10 +103,21 @@ public class VentanaScore implements KeyListener {
 
 		try {
 //			.getBytes("UTF-8")
-			BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(path),"UTF-8"));
+			
+			BufferedReader br;
 			String linea;
+			
+			try {
+				
+				br = new BufferedReader(new FileReader(path));
+				linea = br.readLine();
+				
+			}catch(Exception e) {
+				
+				br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/Menu/puntuaciones.txt"),"UTF-8"));
+				linea = br.readLine();
+			}
 
-			linea = br.readLine();
 			for (int i=0 ; i<5 ; i++) {
 				puntuacion[i] = linea;
 				linea = br.readLine();
