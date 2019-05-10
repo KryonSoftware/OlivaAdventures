@@ -16,7 +16,7 @@ public class Puntuaciones {
 	private String name;											// Nombre que ya estaba en el top.
 	private String score;											// Puntuacion que ya estaba en el top.
 
-	private String path = System.getProperty("os.name").equals("Windows")? "C:\\Windows\\Temp" : "/tmp/puntuaciones.txt"/*"/Menu/puntuaciones.txt"*/;
+	private String path = System.getProperty("os.name").equals("Windows")? "C:\\Temp" : "/tmp/puntuaciones.txt"/*"/Menu/puntuaciones.txt"*/;
 	private String pathEsc=getPathEsc();
 
 	private String getPathEsc() {
@@ -28,7 +28,7 @@ public class Puntuaciones {
 			puth="/tmp/puntuaciones.txt";
 			break;
 		case "Windows":
-			puth="C:\\Windows\\Temp";
+			puth="C:\\Temp";
 
 			break;
 			default:	
