@@ -16,7 +16,7 @@ public class Puntuaciones {
 	private String name;											// Nombre que ya estaba en el top.
 	private String score;											// Puntuacion que ya estaba en el top.
 
-	private String path = System.getProperty("os.name").equals("Windows")? "C:\\Windows\\Temp" : "/tmp/puntuaciones.txt"/*"/Menu/puntuaciones.txt"*/;
+	private String path = System.getProperty("os.name").equals("Linux")? "/tmp/puntuaciones.txt" : "C:\\Windows\\Temp";
 	private String pathEsc=getPathEsc();
 
 	private String getPathEsc() {
@@ -27,12 +27,8 @@ public class Puntuaciones {
 		case "Linux":
 			puth="/tmp/puntuaciones.txt";
 			break;
-		case "Windows":
+		default:
 			puth="C:\\Windows\\Temp";
-
-			break;
-			default:	
-				puth="/tmp/puntuaciones.txt";
 				
 		}
 		
@@ -106,8 +102,7 @@ public class Puntuaciones {
 				br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/Menu/puntuaciones.txt"),"UTF-8"));
 				linea = br.readLine();
 			}
-
-			linea = br.readLine();
+			
 			comprobacion(comprobar.linea);
 
 			for (c=0 ; c<p ; c++) {								// Usamos un bucle *for* porque la tabla de puntuaciones siempre constara de las lineas que decidamos.
