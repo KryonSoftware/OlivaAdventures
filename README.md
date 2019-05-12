@@ -1,16 +1,10 @@
 # OlivaAdventures
 OlivaAdventures. Juego de plataformas hecho desde cero. Práctica programación.
 
-Recursos dependientes de estructuración interna de Eclipse. Dan problemas en otros IDEs.
-
-JDK superior a 1.8 (OpenJDK 11 o superior recomendado).
+Requisitos:
+  -Resolución mínima: FULLHD.
+  -JDK>1.8 (recomendado).
 
 SOPORTE MULTIPLATAFORMA:
-
--Windows 10
-
--Debian
-
--ArchLinux (frecuencia refresco lenta. Lag con la música y sonidos)
-
--MacOs
+  -Windows
+  -Linux (Distros ArchLinux ssufren problema de lag por autodesfocus de la ventana).
