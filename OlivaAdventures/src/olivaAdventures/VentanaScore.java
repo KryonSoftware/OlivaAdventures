@@ -48,9 +48,7 @@ public class VentanaScore implements KeyListener {
 			puth="/tmp/puntuaciones.txt";
 			break;
 		default:
-			puth="C:\\Temp\\puntuaciones.txt";
-
-				
+			puth="C:\\Temp\\puntuaciones.txt";	
 		}
 		
 		return puth;

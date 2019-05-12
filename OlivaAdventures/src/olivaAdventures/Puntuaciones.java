@@ -30,9 +30,7 @@ public class Puntuaciones {
 			puth="/tmp/puntuaciones.txt";
 			break;
 		default:
-			puth="C:\\Windows\\Temp";
-
-				
+			puth="C:\\Windows\\Temp";	
 		}
 		
 		return puth;
