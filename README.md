@@ -11,4 +11,4 @@ SOPORTE MULTIPLATAFORMA:
 
  -Windows
  
- -Linux (Distros ArchLinux ssufren problema de lag por autodesfocus de la ventana).
+ -Linux (Distros ArchLinux sufren problema de lag por autodesfocus de la ventana).
