@@ -34,7 +34,9 @@ public class VentanaScore implements KeyListener {
 
 	public volatile boolean scoresOn=true;
 
+	
 	private String path = System.getProperty("os.name").equals("Linux")? "/tmp/puntuaciones.txt" : "C:\\Temp\\puntuaciones.txt";
+
 	private String pathEsc=getPathEsc();
 
 	private String getPathEsc() {
@@ -47,6 +49,7 @@ public class VentanaScore implements KeyListener {
 			break;
 		default:
 			puth="C:\\Temp\\puntuaciones.txt";
+
 				
 		}
 		
